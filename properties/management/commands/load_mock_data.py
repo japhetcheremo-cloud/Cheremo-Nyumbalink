@@ -42,11 +42,14 @@ class Command(BaseCommand):
                 first_name='Japhet',
                 last_name='Cheremo',
                 is_verified=True,
+                profile_picture='profile_pics/japhet_landlord.jpg',
                 bio='Professional landlord offering high-end premium housing experiences in Nairobi, Mombasa, and Kisumu.'
             )
             self.stdout.write("Landlord created: japhet_landlord / LandlordPassword123")
         else:
             landlord = CustomUser.objects.get(username='japhet_landlord')
+            landlord.profile_picture = 'profile_pics/japhet_landlord.jpg'
+            landlord.save()
 
         # Tenant
         if not CustomUser.objects.filter(username='tenant_john').exists():
