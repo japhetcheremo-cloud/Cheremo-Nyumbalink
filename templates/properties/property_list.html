@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Houses - Cheremo NyumbaLink{% endblock %}
+
+{% block content %}
+<section class="py-12 bg-gray-50 flex-grow">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col lg:flex-row gap-8">
+            
+            <!-- Filters Sidebar -->
+            <div class="w-full lg:w-80 bg-white rounded-2xl border border-gray-150 p-6 shadow-sm h-fit">
+                <div class="flex items-center justify-between border-b border-gray-150 pb-4 mb-6">
+                    <h3 class="font-extrabold text-brandDark font-poppins flex items-center gap-1.5"><i class="fa-solid fa-sliders text-brandBlue"></i> Filters</h3>
+                    <a href="{% url 'property_list' %}" class="text-[11px] text-brandBlue font-bold hover:underline">Clear All</a>
+                </div>
+                
+                <form action="{% url 'property_list' %}" method="GET" class="space-y-5">
+                    <!-- Text query search -->
+                    <div class="flex flex-col gap-1.5">
+                        <label for="q_search" class="text-xs font-semibold text-gray-750">General Query</label>
+                        <input type="text" name="q" id="q_search" value="{{ params.q|default:'' }}" placeholder="e.g. bedsitter, Westlands"
+                               class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-800">
+                    </div>
+
+                    <!-- Category -->
+                    <div class="flex flex-col gap-1.5">
+                        <label for="cat_search" class="text-xs font-semibold text-gray-750">Property Category</label>
+                        <select name="category" id="cat_search"
+                                class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-700">
+                            <option value="">All Categories</option>
+                            {% for code, label in categories %}
+                            <option value="{{ code }}" {% if params.category == code %}selected{% endif %}>{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Location county -->
+                    <div class="flex flex-col gap-1.5">
+                        <label for="county_search" class="text-xs font-semibold text-gray-750">County</label>
+                        <input type="text" name="county" id="county_search" value="{{ params.county|default:'' }}" placeholder="e.g. Nairobi"
+                               class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-800">
+                    </div>
+
+                    <!-- Location town -->
+                    <div class="flex flex-col gap-1.5">
+                        <label for="town_search" class="text-xs font-semibold text-gray-750">Town</label>
+                        <input type="text" name="town" id="town_search" value="{{ params.town|default:'' }}" placeholder="e.g. Eldoret"
+                               class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-800">
+                    </div>
+
+                    <!-- Price boundaries -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="flex flex-col gap-1.5">
+                            <label for="minp" class="text-xs font-semibold text-gray-750">Min Price</label>
+                            <input type="number" name="min_price" id="minp" value="{{ params.min_price|default:'' }}" placeholder="KES"
+                                   class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-850">
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label for="maxp" class="text-xs font-semibold text-gray-750">Max Price</label>
+                            <input type="number" name="max_price" id="maxp" value="{{ params.max_price|default:'' }}" placeholder="KES"
+                                   class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-850">
+                        </div>
+                    </div>
+
+                    <!-- Bedrooms / Bathrooms -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="flex flex-col gap-1.5">
+                            <label for="beds" class="text-xs font-semibold text-gray-750">Bedrooms</label>
+                            <select name="bedrooms" id="beds"
+                                    class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-750">
+                                <option value="any">Any</option>
+                                <option value="0" {% if params.bedrooms == '0' %}selected{% endif %}>Bedsitter</option>
+                                <option value="1" {% if params.bedrooms == '1' %}selected{% endif %}>1 Bed</option>
+                                <option value="2" {% if params.bedrooms == '2' %}selected{% endif %}>2 Bed</option>
+                                <option value="3" {% if params.bedrooms == '3' %}selected{% endif %}>3 Bed</option>
+                                <option value="4" {% if params.bedrooms == '4' %}selected{% endif %}>4+ Bed</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label for="baths" class="text-xs font-semibold text-gray-750">Bathrooms</label>
+                            <select name="bathrooms" id="baths"
+                                    class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-750">
+                                <option value="any">Any</option>
+                                <option value="1" {% if params.bathrooms == '1' %}selected{% endif %}>1 Bath</option>
+                                <option value="2" {% if params.bathrooms == '2' %}selected{% endif %}>2 Bath</option>
+                                <option value="3" {% if params.bathrooms == '3' %}selected{% endif %}>3+ Bath</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Predefined Amenities check blocks -->
+                    <div class="flex flex-col gap-2 pt-2 border-t border-gray-150">
+                        <span class="text-xs font-semibold text-gray-750">Amenities</span>
+                        <div class="max-h-48 overflow-y-auto space-y-2.5 pr-1">
+                            {% for amenity in amenities %}
+                            <label class="flex items-center gap-2 cursor-pointer text-xs text-gray-600">
+                                <input type="checkbox" name="amenities" value="{{ amenity.id }}" 
+                                       {% if amenity.id|stringformat:"i" in params.amenities %}checked{% endif %}
+                                       class="rounded border-gray-300 text-brandBlue focus:ring-brandBlue h-3.5 w-3.5">
+                                <span>{{ amenity.name }}</span>
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-brandBlue hover:bg-brandDark text-white font-bold py-3 rounded-xl transition text-xs shadow-md mt-4">
+                        Apply Filters
+                    </button>
+                </form>
+            </div>
+
+            <!-- Listings Display Panel -->
+            <div class="flex-grow">
+                <div class="flex justify-between items-center mb-6">
+                    <span class="text-xs text-gray-400 font-semibold">{{ properties.count }} rental properties listed</span>
+                </div>
+
+                {% if properties %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {% for property in properties %}
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-150 overflow-hidden flex flex-col group hover:shadow-md transition duration-300">
+                        <!-- Image Wrap -->
+                        <div class="relative h-56 bg-gray-100 flex-shrink-0">
+                            {% if property.images.all %}
+                                {% for img in property.images.all %}
+                                    {% if img.is_featured %}
+                                    <img src="{{ img.image.url }}" alt="{{ property.title }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=600" alt="{{ property.title }}" class="h-full w-full object-cover">
+                            {% endif %}
+                            
+                            <span class="absolute top-4 left-4 bg-brandBlue text-white text-[10px] uppercase font-bold px-3 py-1.5 rounded-lg">
+                                {{ property.get_category_display }}
+                            </span>
+                            
+                            {% if property.created_by.is_verified %}
+                            <span class="absolute top-4 right-4 bg-brandGold text-brandDark text-[9px] uppercase font-extrabold px-2.5 py-1.5 rounded-lg flex items-center gap-1 shadow-md">
+                                <i class="fa-solid fa-circle-check text-brandBlue"></i> Verified Landlord
+                            </span>
+                            {% endif %}
+                        </div>
+
+                        <!-- Card text content -->
+                        <div class="p-5 flex-grow flex flex-col">
+                            <div class="flex items-center justify-between gap-2 mb-2">
+                                <span class="text-xs text-gray-400">ID: {{ property.property_id }}</span>
+                                <span class="font-extrabold text-lg text-brandBlue font-poppins">KES {{ property.monthly_rent|floatformat:0 }}<span class="text-xs text-gray-450 font-normal">/mo</span></span>
+                            </div>
+                            
+                            <h3 class="font-bold text-base text-brandDark mb-2 line-clamp-1 group-hover:text-brandBlue transition font-poppins">{{ property.title }}</h3>
+                            <p class="text-xs text-gray-500 flex items-center gap-1.5 mb-4"><i class="fa-solid fa-location-dot text-brandGold"></i> {{ property.estate }}, {{ property.town }}</p>
+
+                            <!-- Mini facts -->
+                            <div class="grid grid-cols-3 gap-2 border-t border-b border-gray-100 py-2.5 mb-5 text-center text-xs text-gray-500">
+                                <div class="flex flex-col items-center gap-0.5">
+                                    <i class="fa-solid fa-bed text-brandBlue text-[11px]"></i>
+                                    <span>{{ property.bedrooms }} Bed</span>
+                                </div>
+                                <div class="flex flex-col items-center gap-0.5 border-l border-r border-gray-100">
+                                    <i class="fa-solid fa-bath text-brandBlue text-[11px]"></i>
+                                    <span>{{ property.bathrooms }} Bath</span>
+                                </div>
+                                <div class="flex flex-col items-center gap-0.5">
+                                    <i class="fa-solid fa-layer-group text-brandBlue text-[11px]"></i>
+                                    <span>Floor {{ property.floor_number }}</span>
+                                </div>
+                            </div>
+
+                            <a href="{% url 'property_detail' property.id %}" class="mt-auto w-full bg-brandBlue hover:bg-brandDark text-white font-semibold text-center text-xs py-3 rounded-xl transition flex items-center justify-center gap-1.5">
+                                View Details <i class="fa-solid fa-arrow-right-long"></i>
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-20 bg-white rounded-2xl border border-gray-150 flex flex-col items-center justify-center">
+                    <i class="fa-solid fa-house-laptop text-5xl text-gray-300 mb-4 animate-bounce"></i>
+                    <h3 class="font-bold text-brandDark text-lg">No Listings Found</h3>
+                    <p class="text-xs text-gray-500 mt-1 max-w-sm">We couldn't find any vacant rental properties matching your current search parameters. Try expanding your search county or price ranges.</p>
+                </div>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Verify Identity - Cheremo NyumbaLink{% endblock %}
+
+{% block content %}
+<section class="py-12 bg-gray-50 flex-grow">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6">
+        <div class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 sm:p-10">
+            <!-- Header -->
+            <div class="border-b border-gray-100 pb-6 mb-6">
+                <span class="p-3 bg-brandBlue/5 text-brandBlue rounded-2xl inline-block mb-3">
+                    <i class="fa-solid fa-user-shield text-2xl text-brandBlue"></i>
+                </span>
+                <h1 class="text-2xl font-extrabold text-brandDark font-poppins">Identity Verification</h1>
+                <p class="text-xs text-gray-400 mt-1">Submit documents to verify your landlord status and earn user trust badges.</p>
+            </div>
+
+            <!-- Guidelines block -->
+            <div class="p-4 rounded-xl bg-brandBlue/5 border border-brandBlue/10 text-xs text-brandBlue leading-relaxed mb-6">
+                <h4 class="font-bold flex items-center gap-1.5 mb-1"><i class="fa-solid fa-circle-info"></i> Upload Guidelines</h4>
+                Please upload a scanned PDF copy or clear photo image containing either your National ID, Passport, business permit, or property title deed documents. Max file size: 5MB.
+            </div>
+
+            <!-- Form -->
+            <form action="{% url 'upload_verification' %}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                {% csrf_token %}
+                
+                <div class="flex flex-col gap-2">
+                    <label for="verification_document" class="text-xs font-semibold text-gray-700">Select Verification Document</label>
+                    <input type="file" name="verification_document" id="verification_document" required accept=".pdf,image/*"
+                           class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-800 cursor-pointer">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 pt-4">
+                    <a href="{% url 'dashboard_redirect' %}" class="py-3.5 border border-gray-200 text-brandDark font-semibold text-center rounded-xl hover:bg-gray-50 transition text-sm">
+                        Cancel
+                    </a>
+                    <button type="submit" class="bg-brandBlue hover:bg-brandDark text-white font-bold py-3.5 rounded-xl transition shadow-md text-sm">
+                        Upload Document
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

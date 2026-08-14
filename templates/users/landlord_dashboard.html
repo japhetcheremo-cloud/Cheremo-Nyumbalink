@@ -1,0 +1,243 @@
+{% extends 'base.html' %}
+
+{% block title %}Landlord Dashboard - Cheremo NyumbaLink{% endblock %}
+
+{% block content %}
+<section class="py-12 bg-gray-50 flex-grow">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Welcome Header -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 mb-8">
+            <div class="flex items-center gap-4">
+                {% if user.profile_picture %}
+                <img class="h-16 w-16 rounded-full object-cover border-2 border-brandGold" src="{{ user.profile_picture.url }}" alt="{{ user.username }}">
+                {% else %}
+                <div class="h-16 w-16 rounded-full bg-brandBlue text-white flex items-center justify-center font-bold border-2 border-brandGold text-2xl uppercase">
+                    {{ user.username|slice:":2" }}
+                </div>
+                {% endif %}
+                <div>
+                    <h1 class="text-xl md:text-2xl font-extrabold text-brandDark font-poppins">Jambo, {{ user.first_name|default:user.username }}!</h1>
+                    <p class="text-xs text-gray-500 mt-1">Role: {{ user.get_role_display }} &bull; Verification Status: 
+                        {% if user.is_verified %}
+                            <span class="text-green-500 font-bold"><i class="fa-solid fa-circle-check"></i> Verified</span>
+                        {% else %}
+                            <span class="text-yellow-600 font-bold"><i class="fa-solid fa-triangle-exclamation"></i> Not Verified</span>
+                            {% if user.verification_document %}
+                                <span class="text-xs text-gray-400 font-normal ml-1">(Review Pending)</span>
+                            {% else %}
+                                <a href="{% url 'upload_verification' %}" class="text-xs text-brandBlue font-bold hover:underline ml-1">Upload Documents Now</a>
+                            {% endif %}
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            <div class="flex flex-wrap gap-3">
+                <a href="{% url 'property_create' %}" class="px-4 py-2.5 bg-brandGold hover:bg-yellow-500 text-brandDark text-xs font-bold rounded-xl transition shadow-md flex items-center gap-1.5 gold-glow border-b-2 border-yellow-600">
+                    <i class="fa-solid fa-plus"></i> List New Property
+                </a>
+                <a href="{% url 'profile_settings' %}" class="px-4 py-2.5 bg-white hover:bg-gray-50 text-brandDark text-xs font-bold rounded-xl border border-gray-200 transition flex items-center gap-1.5">
+                    <i class="fa-regular fa-user"></i> Settings
+                </a>
+            </div>
+        </div>
+
+        <!-- Metrics widgets -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm flex items-center gap-4">
+                <span class="p-3 bg-brandBlue/5 text-brandBlue rounded-xl hidden sm:inline-block"><i class="fa-solid fa-house-circle-check text-xl"></i></span>
+                <div>
+                    <span class="block text-2xl font-extrabold text-brandDark font-poppins">{{ metrics.total_properties }}</span>
+                    <span class="text-[10px] text-gray-400 font-semibold uppercase tracking-wider block mt-0.5">Total Listed</span>
+                </div>
+            </div>
+            <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm flex items-center gap-4">
+                <span class="p-3 bg-green-50 text-green-600 rounded-xl hidden sm:inline-block"><i class="fa-solid fa-door-open text-xl"></i></span>
+                <div>
+                    <span class="block text-2xl font-extrabold text-brandDark font-poppins">{{ metrics.available_properties }}</span>
+                    <span class="text-[10px] text-gray-400 font-semibold uppercase tracking-wider block mt-0.5">Available</span>
+                </div>
+            </div>
+            <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm flex items-center gap-4">
+                <span class="p-3 bg-yellow-50 text-yellow-600 rounded-xl hidden sm:inline-block"><i class="fa-solid fa-calendar-days text-xl"></i></span>
+                <div>
+                    <span class="block text-2xl font-extrabold text-brandDark font-poppins">{{ metrics.pending_bookings }}</span>
+                    <span class="text-[10px] text-gray-400 font-semibold uppercase tracking-wider block mt-0.5">View Bookings</span>
+                </div>
+            </div>
+            <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm flex items-center gap-4">
+                <span class="p-3 bg-brandGold/10 text-brandGold rounded-xl hidden sm:inline-block"><i class="fa-solid fa-hand-holding-dollar text-xl"></i></span>
+                <div>
+                    <span class="block text-2xl font-extrabold text-brandDark font-poppins">KES {{ metrics.revenue|floatformat:0 }}</span>
+                    <span class="text-[10px] text-gray-400 font-semibold uppercase tracking-wider block mt-0.5">Estimated Revenue</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard main panel -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Properties list table -->
+            <div class="lg:col-span-2 flex flex-col gap-8">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                    <h3 class="font-extrabold text-lg text-brandDark font-poppins mb-4 flex items-center justify-between border-b border-gray-50 pb-3">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-house-chimney text-brandBlue"></i> My Properties</span>
+                        <a href="{% url 'property_create' %}" class="text-xs text-brandBlue font-bold hover:underline">Add Property</a>
+                    </h3>
+                    
+                    {% if properties %}
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs text-gray-500">
+                            <thead>
+                                <tr class="text-[10px] uppercase font-bold text-gray-400 border-b border-gray-100 pb-2">
+                                    <th class="py-2">Property Name</th>
+                                    <th class="py-2">Rent / Deposit</th>
+                                    <th class="py-2">Status</th>
+                                    <th class="py-2 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for property in properties %}
+                                <tr class="border-b border-gray-50 hover:bg-gray-50 transition">
+                                    <td class="py-4">
+                                        <div class="flex items-center gap-2">
+                                            <div class="h-10 w-10 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                                                {% if property.images.all %}
+                                                    {% for img in property.images.all %}
+                                                        {% if img.is_featured %}
+                                                        <img src="{{ img.image.url }}" alt="" class="h-full w-full object-cover">
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=150" alt="" class="h-full w-full object-cover">
+                                                {% endif %}
+                                            </div>
+                                            <div class="flex flex-col min-w-0">
+                                                <span class="font-bold text-brandDark truncate max-w-[150px]">{{ property.title }}</span>
+                                                <span class="text-[10px] text-gray-400 truncate">{{ property.estate }}, {{ property.town }}</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4">
+                                        <span class="font-semibold text-brandDark block">KES {{ property.monthly_rent|floatformat:0 }}</span>
+                                        <span class="text-[9px] text-gray-400 block">Dep: KES {{ property.deposit|floatformat:0 }}</span>
+                                    </td>
+                                    <td class="py-4">
+                                        {% if property.status == 'available' %}
+                                            <span class="px-2 py-0.5 bg-green-100 text-green-800 rounded-full font-bold text-[9px] uppercase">Available</span>
+                                        {% elif property.status == 'occupied' %}
+                                            <span class="px-2 py-0.5 bg-gray-100 text-gray-800 rounded-full font-bold text-[9px] uppercase">Occupied</span>
+                                        {% elif property.status == 'pending' %}
+                                            <span class="px-2 py-0.5 bg-yellow-100 text-yellow-800 rounded-full font-bold text-[9px] uppercase">Awaiting Approval</span>
+                                        {% elif property.status == 'renovation' %}
+                                            <span class="px-2 py-0.5 bg-red-100 text-red-800 rounded-full font-bold text-[9px] uppercase">Renovation</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="py-4 text-right flex items-center justify-end gap-2.5">
+                                        <a href="{% url 'property_detail' property.id %}" class="p-2 text-gray-500 hover:text-brandBlue bg-gray-50 rounded-lg hover:bg-brandBlue/5" title="View Detail"><i class="fa-regular fa-eye"></i></a>
+                                        <a href="{% url 'property_update' property.id %}" class="p-2 text-gray-500 hover:text-brandGold bg-gray-50 rounded-lg hover:bg-brandGold/10" title="Edit Listing"><i class="fa-regular fa-pen-to-square"></i></a>
+                                        <a href="{% url 'property_delete' property.id %}" class="p-2 text-gray-500 hover:text-red-600 bg-gray-50 rounded-lg hover:bg-red-50" title="Delete Listing"><i class="fa-regular fa-trash-can"></i></a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="text-xs text-gray-400 py-6 text-center">You have no listed properties yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Leads Column -->
+            <div class="flex flex-col gap-8">
+                
+                <!-- Applications manager -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                    <h3 class="font-extrabold text-lg text-brandDark font-poppins mb-4 flex items-center gap-2 border-b border-gray-50 pb-3"><i class="fa-solid fa-file-signature text-brandBlue"></i> Rental Applicants</h3>
+                    
+                    {% if applications %}
+                    <div class="space-y-4">
+                        {% for app in applications %}
+                        <div class="p-4 rounded-xl border border-gray-100 flex flex-col gap-3">
+                            <div class="flex justify-between items-start gap-2">
+                                <div class="flex flex-col">
+                                    <span class="font-bold text-xs text-brandDark">{{ app.tenant.username }}</span>
+                                    <span class="text-[10px] text-gray-400 mt-0.5">Property: {{ app.property.title }}</span>
+                                </div>
+                                <div class="flex gap-2">
+                                    <a href="{% url 'chat_thread' app.tenant.id %}" class="h-7 w-7 rounded-lg bg-brandBlue/5 text-brandBlue flex items-center justify-center text-xs" title="Chat with applicant"><i class="fa-regular fa-comments"></i></a>
+                                </div>
+                            </div>
+                            {% if app.message %}
+                            <p class="text-[11px] text-gray-500 italic bg-gray-50 p-2 rounded-lg leading-relaxed">"{{ app.message }}"</p>
+                            {% endif %}
+                            
+                            {% if app.status == 'pending' %}
+                            <div class="grid grid-cols-2 gap-2 mt-1">
+                                <a href="{% url 'manage_application' app.id 'accepted' %}" class="py-2 bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg text-[10px] text-center uppercase tracking-wider">Accept</a>
+                                <a href="{% url 'manage_application' app.id 'rejected' %}" class="py-2 bg-red-100 hover:bg-red-200 text-red-600 font-bold rounded-lg text-[10px] text-center uppercase tracking-wider">Reject</a>
+                            </div>
+                            {% else %}
+                            <div class="text-right text-[10px] uppercase font-bold">
+                                {% if app.status == 'accepted' %}
+                                <span class="text-green-600">Accepted</span>
+                                {% else %}
+                                <span class="text-red-600">Rejected</span>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="text-xs text-gray-400 py-6 text-center">No active rental applications received.</p>
+                    {% endif %}
+                </div>
+
+                <!-- Bookings manager -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                    <h3 class="font-extrabold text-lg text-brandDark font-poppins mb-4 flex items-center gap-2 border-b border-gray-50 pb-3"><i class="fa-regular fa-calendar-check text-brandBlue"></i> Viewing Bookings</h3>
+                    
+                    {% if bookings %}
+                    <div class="space-y-4">
+                        {% for booking in bookings %}
+                        <div class="p-4 rounded-xl border border-gray-100 flex flex-col gap-3">
+                            <div class="flex justify-between items-start gap-2">
+                                <div class="flex flex-col">
+                                    <span class="font-bold text-xs text-brandDark">{{ booking.tenant.username }}</span>
+                                    <span class="text-[10px] text-gray-400 mt-0.5">Date: {{ booking.date }} @ {{ booking.time }}</span>
+                                </div>
+                                <a href="{% url 'chat_thread' booking.tenant.id %}" class="h-7 w-7 rounded-lg bg-brandBlue/5 text-brandBlue flex items-center justify-center text-xs" title="Chat with tenant"><i class="fa-regular fa-comments"></i></a>
+                            </div>
+                            <span class="text-[10px] text-gray-500 font-semibold">House: {{ booking.property.title }}</span>
+                            
+                            {% if booking.status == 'pending' %}
+                            <div class="grid grid-cols-2 gap-2 mt-1">
+                                <a href="{% url 'manage_booking' booking.id 'confirmed' %}" class="py-2 bg-brandBlue hover:bg-brandDark text-white font-bold rounded-lg text-[10px] text-center uppercase tracking-wider">Confirm</a>
+                                <a href="{% url 'manage_booking' booking.id 'declined' %}" class="py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold rounded-lg text-[10px] text-center uppercase tracking-wider">Decline</a>
+                            </div>
+                            {% else %}
+                            <div class="text-right text-[10px] uppercase font-bold">
+                                {% if booking.status == 'confirmed' %}
+                                <span class="text-green-600">Confirmed</span>
+                                {% elif booking.status == 'declined' %}
+                                <span class="text-red-600">Declined</span>
+                                {% else %}
+                                <span class="text-gray-500">Cancelled</span>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="text-xs text-gray-400 py-6 text-center">No active viewing bookings scheduled.</p>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

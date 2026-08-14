@@ -1,0 +1,373 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ property.title }} - Cheremo NyumbaLink{% endblock %}
+
+{% block extra_css %}
+<!-- Leaflet.js Maps CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<style>
+    #detail-map {
+        height: 350px;
+        width: 100%;
+        border-radius: 1rem;
+        z-index: 10;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="py-12 bg-gray-50 flex-grow">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Header title section -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 border-b border-gray-150 pb-6 bg-white rounded-2xl p-6 shadow-sm">
+            <div class="flex flex-col gap-1.5">
+                <div class="flex items-center gap-2 flex-wrap">
+                    <span class="bg-brandBlue text-white text-[10px] uppercase font-bold px-2.5 py-1 rounded-lg">
+                        {{ property.get_category_display }}
+                    </span>
+                    <span class="text-xs text-gray-400 font-semibold">ID: {{ property.property_id }}</span>
+                </div>
+                <h1 class="text-2xl md:text-3xl font-extrabold text-brandDark font-poppins leading-tight">{{ property.title }}</h1>
+                <p class="text-xs text-gray-500 flex items-center gap-1.5"><i class="fa-solid fa-location-dot text-brandGold"></i> {{ property.address }}, {{ property.estate }}, {{ property.town }}</p>
+            </div>
+            
+            <div class="flex flex-col items-start md:items-end gap-1.5">
+                <span class="text-3xl font-extrabold text-brandBlue font-poppins">KES {{ property.monthly_rent|floatformat:0 }}<span class="text-xs text-gray-400 font-normal">/month</span></span>
+                <span class="text-[11px] text-gray-500 font-medium">Deposit: KES {{ property.deposit|floatformat:0 }} &bull; Service: KES {{ property.service_charge|floatformat:0 }}</span>
+            </div>
+        </div>
+
+        <!-- Image Gallery Carousel -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <!-- Large Display -->
+            <div class="lg:col-span-2 rounded-2xl overflow-hidden shadow-md h-[400px] md:h-[480px] bg-gray-200">
+                {% if property.images.all %}
+                    {% for img in property.images.all %}
+                        {% if img.is_featured %}
+                        <img id="primary-gallery-display" src="{{ img.image.url }}" alt="{{ property.title }}" class="h-full w-full object-cover">
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=1200" alt="{{ property.title }}" class="h-full w-full object-cover">
+                {% endif %}
+            </div>
+            
+            <!-- Thumbnails sidebar list -->
+            <div class="flex lg:flex-col gap-3.5 overflow-x-auto lg:overflow-y-auto h-24 lg:h-[480px] pr-1">
+                {% if property.images.all %}
+                    {% for img in property.images.all %}
+                    <button onclick="document.getElementById('primary-gallery-display').src='{{ img.image.url }}'" 
+                            class="h-20 w-28 lg:w-full lg:h-32 rounded-xl overflow-hidden border-2 border-transparent hover:border-brandGold focus:outline-none flex-shrink-0 transition">
+                        <img src="{{ img.image.url }}" class="h-full w-full object-cover" alt="">
+                    </button>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-gray-400 text-xs flex items-center justify-center h-full">No extra images.</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Main details grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Information side -->
+            <div class="lg:col-span-2 flex flex-col gap-8">
+                
+                <!-- Description -->
+                <div class="bg-white rounded-2xl border border-gray-150 p-6 md:p-8 shadow-sm">
+                    <h3 class="font-extrabold text-lg text-brandDark font-poppins mb-4 border-b border-gray-50 pb-3">Property Description</h3>
+                    <p class="text-xs text-gray-500 leading-relaxed whitespace-pre-line">{{ property.description }}</p>
+                </div>
+
+                <!-- Specs Table & Quick Stats -->
+                <div class="bg-white rounded-2xl border border-gray-150 p-6 md:p-8 shadow-sm">
+                    <h3 class="font-extrabold text-lg text-brandDark font-poppins mb-4 border-b border-gray-50 pb-3">Specifications</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center mb-6">
+                        <div class="bg-gray-50 rounded-xl p-3 border border-gray-100">
+                            <span class="block text-[10px] text-gray-400 font-semibold uppercase">Bedrooms</span>
+                            <span class="block text-base font-extrabold text-brandBlue font-poppins mt-1">{{ property.bedrooms }} Bed</span>
+                        </div>
+                        <div class="bg-gray-50 rounded-xl p-3 border border-gray-100">
+                            <span class="block text-[10px] text-gray-400 font-semibold uppercase">Bathrooms</span>
+                            <span class="block text-base font-extrabold text-brandBlue font-poppins mt-1">{{ property.bathrooms }} Bath</span>
+                        </div>
+                        <div class="bg-gray-50 rounded-xl p-3 border border-gray-100">
+                            <span class="block text-[10px] text-gray-400 font-semibold uppercase">Area</span>
+                            <span class="block text-base font-extrabold text-brandBlue font-poppins mt-1">{{ property.square_footage|default:'N/A' }} sqft</span>
+                        </div>
+                        <div class="bg-gray-50 rounded-xl p-3 border border-gray-100">
+                            <span class="block text-[10px] text-gray-400 font-semibold uppercase">Floor</span>
+                            <span class="block text-base font-extrabold text-brandBlue font-poppins mt-1">Level {{ property.floor_number }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Amenities check blocks -->
+                <div class="bg-white rounded-2xl border border-gray-150 p-6 md:p-8 shadow-sm">
+                    <h3 class="font-extrabold text-lg text-brandDark font-poppins mb-4 border-b border-gray-50 pb-3">Amenities & Perks</h3>
+                    {% if property.amenities.all %}
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                        {% for am in property.amenities.all %}
+                        <div class="flex items-center gap-2.5 text-xs text-gray-600">
+                            <span class="h-6 w-6 rounded-full bg-brandBlue/5 text-brandBlue flex items-center justify-center text-[10px]">
+                                <i class="{{ am.icon|default:'fa-solid fa-check' }}"></i>
+                            </span>
+                            <span class="font-medium">{{ am.name }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="text-xs text-gray-400">No specific amenities catalogued for this house.</p>
+                    {% endif %}
+                </div>
+
+                <!-- Video Tour -->
+                {% if property.video_url %}
+                <div class="bg-white rounded-2xl border border-gray-150 p-6 md:p-8 shadow-sm">
+                    <h3 class="font-extrabold text-lg text-brandDark font-poppins mb-4 border-b border-gray-50 pb-3">Video Tour</h3>
+                    <a href="{{ property.video_url }}" target="_blank" class="flex items-center gap-3 bg-red-50 hover:bg-red-100 text-red-600 p-4 rounded-xl transition border border-red-100">
+                        <i class="fa-brands fa-youtube text-3xl"></i>
+                        <div class="flex flex-col text-left">
+                            <span class="text-sm font-bold font-poppins">Watch Video Walkthrough Tour</span>
+                            <span class="text-[11px] text-red-500">Opens externally in new tab</span>
+                        </div>
+                    </a>
+                </div>
+                {% endif %}
+
+                <!-- Leaflet map representation -->
+                <div class="bg-white rounded-2xl border border-gray-150 p-6 md:p-8 shadow-sm">
+                    <h3 class="font-extrabold text-lg text-brandDark font-poppins mb-4 border-b border-gray-50 pb-3 flex justify-between items-center">
+                        <span>Interactive Coordinates Map</span>
+                        <span class="text-[10px] text-gray-400 font-normal">Lat: {{ property.latitude|default:'-1.292' }}, Long: {{ property.longitude|default:'36.82' }}</span>
+                    </h3>
+                    <div id="detail-map"></div>
+                </div>
+
+                <!-- Reviews section -->
+                <div class="bg-white rounded-2xl border border-gray-150 p-6 md:p-8 shadow-sm">
+                    <h3 class="font-extrabold text-lg text-brandDark font-poppins mb-4 border-b border-gray-50 pb-3 flex justify-between items-center">
+                        <span>Ratings & Reviews</span>
+                        <span class="text-xs text-brandBlue font-bold"><i class="fa-solid fa-star text-brandGold mr-1"></i> {{ rating_avg|default:'0' }} average rating</span>
+                    </h3>
+                    
+                    <!-- Write a review block -->
+                    {% if user.is_authenticated %}
+                    <form action="{% url 'add_review' property.id %}" method="POST" class="mb-8 border-b border-gray-100 pb-8 space-y-4">
+                        {% csrf_token %}
+                        <h4 class="font-bold text-xs text-brandDark">Leave a Review</h4>
+                        <div class="flex items-center gap-3">
+                            <label for="rating" class="text-xs text-gray-500">Select Rating Stars:</label>
+                            <select name="rating" id="rating" required class="bg-gray-50 border border-gray-200 rounded-lg p-2 text-xs focus:ring-brandBlue text-gray-700">
+                                <option value="5">5 Stars (Excellent)</option>
+                                <option value="4">4 Stars (Good)</option>
+                                <option value="3">3 Stars (Average)</option>
+                                <option value="2">2 Stars (Poor)</option>
+                                <option value="1">1 Star (Very Bad)</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label for="text" class="text-xs text-gray-500">Write Comments</label>
+                            <textarea name="text" id="text" rows="3" required placeholder="Describe your experience with the house and landlord..."
+                                      class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-800"></textarea>
+                        </div>
+                        <button type="submit" class="bg-brandBlue hover:bg-brandDark text-white font-bold py-2 px-5 rounded-lg text-xs transition">Submit Review</button>
+                    </form>
+                    {% endif %}
+
+                    {% if reviews %}
+                    <div class="space-y-6">
+                        {% for rev in reviews %}
+                        <div class="flex flex-col gap-1 border-b border-gray-50 pb-4 last:border-b-0 last:pb-0 text-xs text-gray-500">
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-brandDark">{{ rev.tenant.username }}</span>
+                                <span class="text-brandGold flex gap-0.5">
+                                    {% for i in "12345"|slice:":rev.rating" %}<i class="fa-solid fa-star text-[10px]"></i>{% endfor %}
+                                </span>
+                            </div>
+                            <span class="text-[9px] text-gray-400">{{ rev.date|date:"F d, Y" }}</span>
+                            <p class="text-xs text-gray-500 leading-relaxed mt-2">"{{ rev.text }}"</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="text-xs text-gray-400 py-4 text-center">No reviews listed yet. Be the first to leave a review!</p>
+                    {% endif %}
+                </div>
+
+            </div>
+
+            <!-- Action column (Booking widgets / Landlord details) -->
+            <div class="flex flex-col gap-8">
+                
+                <!-- Booking Widget -->
+                <div class="bg-white rounded-2xl border border-gray-150 p-6 shadow-sm flex flex-col">
+                    <h3 class="font-extrabold text-brandDark font-poppins border-b border-gray-50 pb-3 mb-4"><i class="fa-regular fa-calendar-check text-brandBlue mr-1"></i> Book a Viewing</h3>
+                    
+                    {% if user.is_authenticated %}
+                    <form action="{% url 'book_viewing' property.id %}" method="POST" class="space-y-4">
+                        {% csrf_token %}
+                        <div class="flex flex-col gap-1">
+                            <label for="date" class="text-[10px] font-semibold text-gray-700">Preferred Date</label>
+                            <input type="date" name="date" id="date" required
+                                   class="w-full bg-gray-50 border border-gray-200 rounded-lg p-2.5 text-xs focus:ring-brandBlue text-gray-800">
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label for="time" class="text-[10px] font-semibold text-gray-700">Preferred Time</label>
+                            <input type="time" name="time" id="time" required
+                                   class="w-full bg-gray-50 border border-gray-200 rounded-lg p-2.5 text-xs focus:ring-brandBlue text-gray-800">
+                        </div>
+                        <div class="flex flex-col gap-1">
+                            <label for="message" class="text-[10px] font-semibold text-gray-700">Note (Optional)</label>
+                            <textarea name="message" id="message" rows="2" placeholder="e.g. Hello, I want to inspect the room..."
+                                      class="w-full bg-gray-50 border border-gray-200 rounded-lg p-2.5 text-xs focus:ring-brandBlue text-gray-800"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-brandGold hover:bg-yellow-500 text-brandDark font-bold py-3 rounded-xl transition text-xs shadow-md gold-glow">
+                            Request Viewing
+                        </button>
+                    </form>
+                    {% else %}
+                    <p class="text-xs text-gray-400 py-4 text-center">Please <a href="{% url 'login' %}" class="text-brandBlue font-bold hover:underline">login</a> to schedule viewing tours.</p>
+                    {% endif %}
+                </div>
+
+                <!-- Rental Application Widget -->
+                <div class="bg-white rounded-2xl border border-gray-150 p-6 shadow-sm flex flex-col">
+                    <h3 class="font-extrabold text-brandDark font-poppins border-b border-gray-50 pb-3 mb-4"><i class="fa-solid fa-file-signature text-brandBlue mr-1"></i> Apply for Rental</h3>
+                    
+                    {% if user.is_authenticated %}
+                    <form action="{% url 'apply_rental' property.id %}" method="POST" class="space-y-4">
+                        {% csrf_token %}
+                        <div class="flex flex-col gap-1">
+                            <label for="app_msg" class="text-[10px] font-semibold text-gray-700">Introduction Note</label>
+                            <textarea name="message" id="app_msg" rows="3" required placeholder="Tell the landlord who you are, when you want to move in, and your current occupation..."
+                                      class="w-full bg-gray-50 border border-gray-200 rounded-lg p-2.5 text-xs focus:ring-brandBlue text-gray-800"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-brandBlue hover:bg-brandDark text-white font-bold py-3 rounded-xl transition text-xs shadow-md">
+                            Submit Rental Application
+                        </button>
+                    </form>
+                    {% else %}
+                    <p class="text-xs text-gray-400 py-4 text-center">Please <a href="{% url 'login' %}" class="text-brandBlue font-bold hover:underline">login</a> to submit rental applications.</p>
+                    {% endif %}
+                </div>
+
+                <!-- Landlord Support Card -->
+                <div class="bg-white rounded-2xl border border-gray-150 p-6 shadow-sm flex flex-col gap-4">
+                    <h3 class="font-extrabold text-brandDark font-poppins border-b border-gray-50 pb-3 mb-1"><i class="fa-regular fa-id-badge text-brandBlue mr-1"></i> Landlord Contact</h3>
+                    
+                    <div class="flex items-center gap-3">
+                        {% if property.created_by.profile_picture %}
+                        <img class="h-12 w-12 rounded-full object-cover border border-brandGold" src="{{ property.created_by.profile_picture.url }}" alt="">
+                        {% else %}
+                        <div class="h-12 w-12 rounded-full bg-brandBlue text-white flex items-center justify-center font-bold border border-brandGold uppercase text-sm">
+                            {{ property.created_by.username|slice:":2" }}
+                        </div>
+                        {% endif %}
+                        <div class="flex flex-col min-w-0">
+                            <span class="font-bold text-xs text-brandDark truncate">{{ property.created_by.first_name|default:property.created_by.username }}</span>
+                            <span class="text-[9px] uppercase tracking-wider text-gray-400 font-semibold">
+                                {% if property.created_by.is_verified %}
+                                <span class="text-green-500 font-extrabold"><i class="fa-solid fa-circle-check"></i> Verified Landlord</span>
+                                {% else %}
+                                Standard Landlord
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+
+                    {% if property.created_by.bio %}
+                    <p class="text-[11px] text-gray-500 leading-relaxed italic bg-gray-50 p-2.5 rounded-lg border border-gray-100">"{{ property.created_by.bio }}"</p>
+                    {% endif %}
+
+                    <!-- Action buttons -->
+                    <div class="flex flex-col gap-2.5 pt-2">
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'chat_thread' property.created_by.id %}" class="w-full bg-brandBlue/5 hover:bg-brandBlue/15 text-brandBlue font-bold py-2.5 rounded-lg text-center text-xs transition flex items-center justify-center gap-1.5">
+                            <i class="fa-regular fa-comments"></i> In-App Chat
+                        </a>
+                        {% endif %}
+                        
+                        {% if property.created_by.phone %}
+                        <a href="https://wa.me/{{ property.created_by.phone|cut:'+'|cut:' ' }}" target="_blank" rel="noopener noreferrer" class="w-full bg-[#25D366] hover:bg-[#20ba5a] text-white font-bold py-2.5 rounded-lg text-center text-xs transition flex items-center justify-center gap-1.5 shadow-sm">
+                            <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp Landlord
+                        </a>
+                        <a href="tel:{{ property.created_by.phone }}" class="w-full border border-gray-200 hover:bg-gray-50 text-gray-700 font-semibold py-2.5 rounded-lg text-center text-xs transition flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-phone text-xs"></i> Call Landlord: {{ property.created_by.phone }}
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- House rules -->
+                {% if property.house_rules %}
+                <div class="bg-white rounded-2xl border border-gray-150 p-6 shadow-sm">
+                    <h3 class="font-extrabold text-brandDark font-poppins border-b border-gray-50 pb-3 mb-3"><i class="fa-solid fa-scale-balanced text-brandBlue mr-1"></i> House Rules</h3>
+                    <p class="text-xs text-gray-500 leading-relaxed whitespace-pre-line">{{ property.house_rules }}</p>
+                </div>
+                {% endif %}
+
+                <!-- Nearby spots -->
+                <div class="bg-white rounded-2xl border border-gray-150 p-6 shadow-sm flex flex-col gap-4">
+                    <h3 class="font-extrabold text-brandDark font-poppins border-b border-gray-50 pb-3 mb-1"><i class="fa-solid fa-route text-brandBlue mr-1"></i> Nearby Places</h3>
+                    <ul class="space-y-3.5 text-xs text-gray-500">
+                        <li class="flex items-start gap-2.5">
+                            <i class="fa-solid fa-school text-brandBlue mt-0.5 text-xs flex-shrink-0"></i>
+                            <div>
+                                <span class="font-bold text-brandDark block text-[11px]">Schools & Academies</span>
+                                <span class="text-[10px] text-gray-400 leading-relaxed">{{ property.nearby_schools|default:'Information not logged.' }}</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-2.5">
+                            <i class="fa-solid fa-hospital text-brandBlue mt-0.5 text-xs flex-shrink-0"></i>
+                            <div>
+                                <span class="font-bold text-brandDark block text-[11px]">Hospitals & Pharmacy</span>
+                                <span class="text-[10px] text-gray-400 leading-relaxed">{{ property.nearby_hospitals|default:'Information not logged.' }}</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-2.5">
+                            <i class="fa-solid fa-cart-shopping text-brandBlue mt-0.5 text-xs flex-shrink-0"></i>
+                            <div>
+                                <span class="font-bold text-brandDark block text-[11px]">Shopping Malls</span>
+                                <span class="text-[10px] text-gray-450 leading-relaxed">{{ property.nearby_shopping|default:'Information not logged.' }}</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-2.5">
+                            <i class="fa-solid fa-bus text-brandBlue mt-0.5 text-xs flex-shrink-0"></i>
+                            <div>
+                                <span class="font-bold text-brandDark block text-[11px]">Bus Terminals</span>
+                                <span class="text-[10px] text-gray-400 leading-relaxed">{{ property.nearby_bus_stops|default:'Information not logged.' }}</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Leaflet.js map library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+    // Initialize coordinate map mock
+    document.addEventListener("DOMContentLoaded", function() {
+        var lat = parseFloat("{{ property.latitude|default:'-1.2921' }}");
+        var lng = parseFloat("{{ property.longitude|default:'36.8219' }}");
+        
+        var map = L.map('detail-map').setView([lat, lng], 15);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+        
+        var marker = L.marker([lat, lng]).addTo(map);
+        marker.bindPopup("<b>{{ property.title }}</b><br>{{ property.estate }}, {{ property.town }}").openPopup();
+    });
+</script>
+{% endblock %}

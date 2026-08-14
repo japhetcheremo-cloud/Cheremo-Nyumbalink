@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Property - Cheremo NyumbaLink{% endblock %}
+
+{% block content %}
+<section class="py-12 bg-gray-50 flex-grow flex items-center justify-center min-h-[70vh]">
+    <div class="max-w-md w-full px-4 sm:px-6">
+        <div class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 text-center flex flex-col items-center">
+            <span class="p-4 bg-red-50 text-red-600 rounded-full mb-4">
+                <i class="fa-regular fa-trash-can text-3xl"></i>
+            </span>
+            <h1 class="text-xl font-extrabold text-brandDark font-poppins">Delete Property Listing?</h1>
+            <p class="text-xs text-gray-500 mt-2 leading-relaxed">
+                Are you sure you want to permanently delete the listing for <strong>"{{ property.title }}"</strong>? This action cannot be undone, and all associated viewing bookings and applications will be deleted.
+            </p>
+
+            <form action="{% url 'property_delete' property.id %}" method="POST" class="w-full mt-6 grid grid-cols-2 gap-4">
+                {% csrf_token %}
+                <a href="{% url 'landlord_dashboard' %}" class="py-3 border border-gray-200 text-brandDark font-semibold rounded-xl hover:bg-gray-50 transition text-xs flex items-center justify-center">
+                    No, Cancel
+                </a>
+                <button type="submit" class="bg-red-600 hover:bg-red-750 text-white font-bold py-3 rounded-xl transition shadow-md text-xs">
+                    Yes, Delete
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

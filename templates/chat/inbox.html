@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Conversations Inbox - Cheremo NyumbaLink{% endblock %}
+
+{% block content %}
+<section class="py-12 bg-gray-50 flex-grow">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6">
+        <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden flex flex-col min-h-[60vh]">
+            
+            <!-- Header -->
+            <div class="border-b border-gray-100 p-6 md:p-8 bg-white flex-shrink-0">
+                <h1 class="text-xl md:text-2xl font-extrabold text-brandDark font-poppins flex items-center gap-2"><i class="fa-regular fa-comments text-brandBlue"></i> Messaging Inbox</h1>
+                <p class="text-xs text-gray-500 mt-1">Communicate directly with landlords, agents, or prospective tenants.</p>
+            </div>
+
+            <!-- List -->
+            <div class="divide-y divide-gray-50 overflow-y-auto flex-grow">
+                {% if conversations %}
+                    {% for convo in conversations %}
+                    <div class="p-6 flex items-center justify-between gap-4 hover:bg-gray-50 transition">
+                        <div class="flex items-center gap-3.5 min-w-0">
+                            <!-- Avatar -->
+                            {% if convo.partner.profile_picture %}
+                            <img class="h-12 w-12 rounded-full object-cover border border-brandGold" src="{{ convo.partner.profile_picture.url }}" alt="">
+                            {% else %}
+                            <div class="h-12 w-12 rounded-full bg-brandBlue text-white flex items-center justify-center font-bold border border-brandGold uppercase text-sm flex-shrink-0">
+                                {{ convo.partner.username|slice:":2" }}
+                            </div>
+                            {% endif %}
+                            
+                            <div class="flex flex-col min-w-0">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-bold text-sm text-brandDark truncate">{{ convo.partner.username }}</span>
+                                    <span class="text-[9px] uppercase tracking-wider text-gray-400 font-semibold bg-gray-100 px-2 py-0.5 rounded">{{ convo.partner.get_role_display }}</span>
+                                </div>
+                                <p class="text-xs text-gray-550 truncate mt-1 leading-normal">
+                                    {% if convo.last_message.sender == user %}
+                                    <span class="text-gray-400">You:</span>
+                                    {% endif %}
+                                    {{ convo.last_message.content }}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col items-end gap-2 flex-shrink-0">
+                            <span class="text-[10px] text-gray-400">{{ convo.last_message.timestamp|date:"d M, Y" }}</span>
+                            <div class="flex items-center gap-3">
+                                {% if convo.unread_count > 0 %}
+                                <span class="h-5 px-1.5 rounded-full bg-brandBlue text-white font-bold text-[10px] flex items-center justify-center shadow-sm">
+                                    {{ convo.unread_count }} new
+                                </span>
+                                {% endif %}
+                                <a href="{% url 'chat_thread' convo.partner.id %}" class="px-4 py-2 bg-brandBlue hover:bg-brandDark text-white text-xs font-bold rounded-lg transition shadow-sm">
+                                    Chat
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                <div class="text-center py-20 flex flex-col items-center justify-center">
+                    <i class="fa-regular fa-comments text-5xl text-gray-300 mb-4 animate-pulse"></i>
+                    <h3 class="font-bold text-brandDark text-lg">Your Inbox is Empty</h3>
+                    <p class="text-xs text-gray-400 mt-1 max-w-xs">Start a conversation directly from a property details page to contact landlords or tenants.</p>
+                </div>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}

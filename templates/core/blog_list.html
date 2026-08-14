@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Real Estate Blog - Cheremo NyumbaLink{% endblock %}
+
+{% block content %}
+<section class="bg-brandDark py-20 text-white relative">
+    <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-brandBlue filter blur-[120px] opacity-40"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-4xl font-extrabold font-poppins">NyumbaLink Insights</h1>
+        <p class="mt-4 text-gray-300 max-w-2xl mx-auto text-sm leading-relaxed">
+            Stay informed with the latest rental tips, interior design hacks, moving guides, and Kenyan real estate updates.
+        </p>
+    </div>
+</section>
+
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {% if blogs %}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {% for blog in blogs %}
+            <div class="bg-white rounded-2xl shadow-md hover:shadow-lg transition duration-300 border border-gray-100 overflow-hidden group flex flex-col">
+                <div class="relative h-56 overflow-hidden bg-gray-100 flex-shrink-0">
+                    {% if blog.image %}
+                    <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80&w=600" alt="{{ blog.title }}" class="h-full w-full object-cover">
+                    {% endif %}
+                    <span class="absolute top-4 left-4 bg-brandGold text-brandDark text-[10px] uppercase font-bold tracking-wider px-3 py-1.5 rounded-lg shadow-md">
+                        {{ blog.get_category_display }}
+                    </span>
+                </div>
+                <div class="p-6 flex-grow flex flex-col">
+                    <span class="text-xs text-gray-400 mb-2 block"><i class="fa-regular fa-calendar-days mr-1.5"></i> {{ blog.created_at|date:"M d, Y" }} by {{ blog.author.username }}</span>
+                    <h3 class="font-bold text-lg text-brandDark mb-3 line-clamp-2 group-hover:text-brandBlue transition font-poppins">{{ blog.title }}</h3>
+                    <p class="text-xs text-gray-500 line-clamp-3 mb-4 leading-relaxed">{{ blog.content|striptags }}</p>
+                    <a href="{% url 'blog_detail' blog.slug %}" class="mt-auto text-xs font-bold text-brandBlue group-hover:text-brandDark transition flex items-center gap-1">
+                        Read Full Article <i class="fa-solid fa-arrow-right-long ml-0.5 text-[10px]"></i>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-20 bg-gray-50 rounded-2xl border border-dashed border-gray-200 max-w-md mx-auto">
+            <i class="fa-regular fa-newspaper text-5xl text-gray-300 mb-4"></i>
+            <h3 class="font-bold text-brandDark text-lg">No Blog Posts Yet</h3>
+            <p class="text-xs text-gray-400 mt-1">Check back later for interesting real estate news and guides.</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

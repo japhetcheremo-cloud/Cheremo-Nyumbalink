@@ -1,0 +1,223 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if property %}Edit {{ property.title }}{% else %}List New Rental Property{% endif %} - Cheremo NyumbaLink{% endblock %}
+
+{% block content %}
+<section class="py-12 bg-gray-50 flex-grow">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6">
+        <div class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 sm:p-10">
+            <!-- Header -->
+            <div class="border-b border-gray-100 pb-6 mb-8">
+                <h1 class="text-2xl font-extrabold text-brandDark font-poppins">
+                    {% if property %}Edit Rental Listing{% else %}List New Rental Property{% endif %}
+                </h1>
+                <p class="text-xs text-gray-400 mt-1">Provide detailed pricing, descriptions, locations, and images for your house.</p>
+            </div>
+
+            <!-- Form -->
+            <form action="{% if property %}{% url 'property_update' property.id %}{% else %}{% url 'property_create' %}{% endif %}" 
+                  method="POST" enctype="multipart/form-data" class="space-y-8">
+                {% csrf_token %}
+                
+                <!-- Section: Basic Info -->
+                <div class="space-y-4">
+                    <h3 class="text-sm font-bold text-brandBlue uppercase font-poppins tracking-wider border-b border-gray-50 pb-2">1. Basic Information</h3>
+                    
+                    <div class="flex flex-col gap-1.5">
+                        <label for="title" class="text-xs font-semibold text-gray-700">Property Listing Title</label>
+                        <input type="text" name="title" id="title" required value="{{ property.title|default:'' }}" placeholder="e.g. Spacious 2 Bedroom Apartment in Westlands"
+                               class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-805">
+                    </div>
+
+                    <div class="flex flex-col gap-1.5">
+                        <label for="description" class="text-xs font-semibold text-gray-700">Detailed Description</label>
+                        <textarea name="description" id="description" rows="5" required placeholder="Describe the room, layout, views, utilities, water supply status, safety..."
+                                  class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-805">{{ property.description|default:'' }}</textarea>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div class="flex flex-col gap-1.5">
+                            <label for="category" class="text-xs font-semibold text-gray-700">Housing Category</label>
+                            <select name="category" id="category" required
+                                    class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-700">
+                                {% for code, label in categories %}
+                                <option value="{{ code }}" {% if property.category == code %}selected{% endif %}>{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label for="square_footage" class="text-xs font-semibold text-gray-700">Square Footage (Optional)</label>
+                            <input type="number" name="square_footage" id="square_footage" value="{{ property.square_footage|default:'' }}" placeholder="e.g. 850"
+                                   class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-805">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section: Pricing & Details -->
+                <div class="space-y-4">
+                    <h3 class="text-sm font-bold text-brandBlue uppercase font-poppins tracking-wider border-b border-gray-50 pb-2">2. Pricing & Room Specs</h3>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                        <div class="flex flex-col gap-1.5">
+                            <label for="monthly_rent" class="text-xs font-semibold text-gray-700">Monthly Rent (KES)</label>
+                            <input type="number" name="monthly_rent" id="monthly_rent" required value="{{ property.monthly_rent|floatformat:0|default:'' }}" placeholder="e.g. 25000"
+                                   class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-805">
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label for="deposit" class="text-xs font-semibold text-gray-700">Security Deposit (KES)</label>
+                            <input type="number" name="deposit" id="deposit" required value="{{ property.deposit|floatformat:0|default:'' }}" placeholder="e.g. 25000"
+                                   class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-805">
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label for="service_charge" class="text-xs font-semibold text-gray-700">Service Charge (KES)</label>
+                            <input type="number" name="service_charge" id="service_charge" value="{{ property.service_charge|floatformat:0|default:'0' }}" placeholder="e.g. 2000"
+                                   class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-805">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                        <div class="flex flex-col gap-1.5">
+                            <label for="bedrooms" class="text-xs font-semibold text-gray-700">Bedrooms Count</label>
+                            <input type="number" name="bedrooms" id="bedrooms" required value="{{ property.bedrooms|default:'0' }}" placeholder="0 for bedsitter"
+                                   class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-805">
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label for="bathrooms" class="text-xs font-semibold text-gray-700">Bathrooms Count</label>
+                            <input type="number" name="bathrooms" id="bathrooms" required value="{{ property.bathrooms|default:'1' }}" placeholder="e.g. 1"
+                                   class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-805">
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label for="floor_number" class="text-xs font-semibold text-gray-700">Floor Level</label>
+                            <input type="number" name="floor_number" id="floor_number" value="{{ property.floor_number|default:'0' }}" placeholder="0 for ground floor"
+                                   class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-805">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section: Location details -->
+                <div class="space-y-4">
+                    <h3 class="text-sm font-bold text-brandBlue uppercase font-poppins tracking-wider border-b border-gray-50 pb-2">3. Property Location</h3>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                        <div class="flex flex-col gap-1.5">
+                            <label for="county" class="text-xs font-semibold text-gray-700">County</label>
+                            <input type="text" name="county" id="county" required value="{{ property.county|default:'' }}" placeholder="e.g. Nairobi"
+                                   class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-805">
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label for="town" class="text-xs font-semibold text-gray-700">Town</label>
+                            <input type="text" name="town" id="town" required value="{{ property.town|default:'' }}" placeholder="e.g. Westlands"
+                                   class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-805">
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label for="estate" class="text-xs font-semibold text-gray-700">Estate / Road</label>
+                            <input type="text" name="estate" id="estate" required value="{{ property.estate|default:'' }}" placeholder="e.g. Kilimani, Woodley"
+                                   class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-805">
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-1.5">
+                        <label for="address" class="text-xs font-semibold text-gray-700">Street / Court / Building Name</label>
+                        <input type="text" name="address" id="address" required value="{{ property.address|default:'' }}" placeholder="e.g. Rose Wood Court, Block A, Room 12"
+                               class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-805">
+                    </div>
+                </div>
+
+                <!-- Section: Amenities -->
+                <div class="space-y-4">
+                    <h3 class="text-sm font-bold text-brandBlue uppercase font-poppins tracking-wider border-b border-gray-50 pb-2">4. Amenities & House Perks</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                        {% for am in amenities %}
+                        <label class="flex items-center gap-2 cursor-pointer text-xs text-gray-600">
+                            <input type="checkbox" name="amenities" value="{{ am.id }}" 
+                                   {% if am in property.amenities.all %}checked{% endif %}
+                                   class="rounded border-gray-300 text-brandBlue focus:ring-brandBlue h-3.5 w-3.5">
+                            <span>{{ am.name }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Section: Media & Uploads -->
+                <div class="space-y-4">
+                    <h3 class="text-sm font-bold text-brandBlue uppercase font-poppins tracking-wider border-b border-gray-50 pb-2">5. Photos & Media Tour</h3>
+                    
+                    <div class="flex flex-col gap-1.5">
+                        <label for="images" class="text-xs font-semibold text-gray-700">Upload Property Images (Upload multiple)</label>
+                        <input type="file" name="images" id="images" multiple {% if not property %}required{% endif %} accept="image/*"
+                               class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs focus:outline-none text-gray-500 cursor-pointer">
+                    </div>
+
+                    <div class="flex flex-col gap-1.5">
+                        <label for="video_url" class="text-xs font-semibold text-gray-700">Video Tour Link (Optional)</label>
+                        <input type="url" name="video_url" id="video_url" value="{{ property.video_url|default:'' }}" placeholder="e.g. https://www.youtube.com/watch?v=..."
+                               class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-805">
+                    </div>
+                </div>
+
+                <!-- Section: Rules & Surrounding spots -->
+                <div class="space-y-4">
+                    <h3 class="text-sm font-bold text-brandBlue uppercase font-poppins tracking-wider border-b border-gray-50 pb-2">6. Surrounding Places & Guidelines</h3>
+                    
+                    <div class="flex flex-col gap-1.5">
+                        <label for="house_rules" class="text-xs font-semibold text-gray-700">House Rules (e.g. No Pets, Curfew limits)</label>
+                        <textarea name="house_rules" id="house_rules" rows="3" placeholder="Write rules for tenants..."
+                                  class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-805">{{ property.house_rules|default:'' }}</textarea>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div class="flex flex-col gap-1.5">
+                            <label for="nearby_schools" class="text-xs font-semibold text-gray-700">Nearby Schools</label>
+                            <input type="text" name="nearby_schools" id="nearby_schools" value="{{ property.nearby_schools|default:'' }}" placeholder="e.g. Kilimani Primary, Riara School"
+                                   class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-805">
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label for="nearby_hospitals" class="text-xs font-semibold text-gray-700">Nearby Hospitals</label>
+                            <input type="text" name="nearby_hospitals" id="nearby_hospitals" value="{{ property.nearby_hospitals|default:'' }}" placeholder="e.g. Nairobi Hospital, Coptic Hospital"
+                                   class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-805">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div class="flex flex-col gap-1.5">
+                            <label for="nearby_shopping" class="text-xs font-semibold text-gray-700">Nearby Shopping Centres</label>
+                            <input type="text" name="nearby_shopping" id="nearby_shopping" value="{{ property.nearby_shopping|default:'' }}" placeholder="e.g. Yaya Centre, Prestige Plaza"
+                                   class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-805">
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label for="nearby_bus_stops" class="text-xs font-semibold text-gray-700">Nearby Bus Stops / Stage</label>
+                            <input type="text" name="nearby_bus_stops" id="nearby_bus_stops" value="{{ property.nearby_bus_stops|default:'' }}" placeholder="e.g. Yaya Stage, Prestige Stage"
+                                   class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-805">
+                        </div>
+                    </div>
+                </div>
+
+                {% if property %}
+                <!-- Status toggler -->
+                <div class="space-y-4">
+                    <h3 class="text-sm font-bold text-brandBlue uppercase font-poppins tracking-wider border-b border-gray-50 pb-2">7. Availability Status</h3>
+                    <div class="flex flex-col gap-1.5">
+                        <label for="status" class="text-xs font-semibold text-gray-700">Update Availability Status</label>
+                        <select name="status" id="status" class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-750">
+                            <option value="available" {% if property.status == 'available' %}selected{% endif %}>Available</option>
+                            <option value="occupied" {% if property.status == 'occupied' %}selected{% endif %}>Occupied / Rented</option>
+                            <option value="renovation" {% if property.status == 'renovation' %}selected{% endif %}>Under Renovation</option>
+                        </select>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Form submissions buttons -->
+                <div class="grid grid-cols-2 gap-4 pt-6 border-t border-gray-100">
+                    <a href="{% url 'landlord_dashboard' %}" class="py-3.5 border border-gray-200 text-brandDark font-semibold text-center rounded-xl hover:bg-gray-50 transition text-sm">
+                        Cancel
+                    </a>
+                    <button type="submit" class="bg-brandBlue hover:bg-brandDark text-white font-bold py-3.5 rounded-xl transition shadow-md text-sm">
+                        {% if property %}Save Changes{% else %}Submit Listing{% endif %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

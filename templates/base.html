@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Cheremo NyumbaLink - Find Your Perfect Home, Faster{% endblock %}</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="{% block meta_description %}Cheremo NyumbaLink is Kenya's premier smart house hunting platform. Connecting tenants with verified landlords and property agents.{% endblock %}">
+    <meta name="keywords" content="house hunting, rent apartment, kenya real estate, landlord portal, tenant portal, nairobi rentals">
+    <meta name="author" content="Japhet Cheremo">
+    
+    <!-- Google Fonts: Poppins & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandBlue: '#0B3D91',
+                        brandGold: '#F4B400',
+                        brandDark: '#07214e',
+                        brandLight: '#f4f6fc',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        poppins: ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f6fc;
+            scroll-behavior: smooth;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+        }
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+        .glassmorphism-dark {
+            background: rgba(11, 61, 145, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .floating-btn-shadow {
+            box-shadow: 0 10px 25px -5px rgba(11, 61, 145, 0.4);
+        }
+        .gold-glow:hover {
+            box-shadow: 0 0 20px rgba(244, 180, 0, 0.6);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #0B3D91;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #07214e;
+        }
+    </style>
+    
+    <!-- Custom Stylesheet -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Toast Notifications -->
+    {% if messages %}
+    <div class="fixed top-24 right-5 z-50 flex flex-col gap-3 max-w-md">
+        {% for message in messages %}
+        <div class="p-4 rounded-xl shadow-lg flex items-center gap-3 animate-bounce glassmorphism {% if message.tags == 'success' %} border-l-4 border-green-500 text-green-800 {% elif message.tags == 'error' %} border-l-4 border-red-500 text-red-800 {% else %} border-l-4 border-brandBlue text-brandBlue {% endif %}" role="alert">
+            {% if message.tags == 'success' %}
+            <i class="fa-solid fa-circle-check text-green-500 text-xl"></i>
+            {% elif message.tags == 'error' %}
+            <i class="fa-solid fa-circle-xmark text-red-500 text-xl"></i>
+            {% else %}
+            <i class="fa-solid fa-circle-info text-brandBlue text-xl"></i>
+            {% endif %}
+            <div class="text-sm font-medium">{{ message }}</div>
+            <button onclick="this.parentElement.remove()" class="ml-auto text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-40 w-full transition-all duration-300 {% block nav_class %}glassmorphism border-b border-gray-200/50 shadow-sm{% endblock %}">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="{% url 'home' %}" class="flex items-center gap-2">
+                        <span class="p-2.5 rounded-xl bg-brandBlue text-white shadow-md flex items-center justify-center">
+                            <i class="fa-solid fa-house-chimney-window text-xl text-brandGold"></i>
+                        </span>
+                        <div class="flex flex-col">
+                            <span class="font-extrabold text-xl font-poppins tracking-tight text-brandBlue leading-tight">NYUMBA<span class="text-brandGold">LINK</span></span>
+                            <span class="text-[9px] uppercase tracking-widest font-semibold text-gray-500">Cheremo Platform</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Desktop Menu -->
+                <nav class="hidden md:flex items-center space-x-8 font-medium text-sm text-gray-700">
+                    <a href="{% url 'home' %}" class="hover:text-brandBlue transition">Home</a>
+                    <a href="{% url 'property_list' %}" class="hover:text-brandBlue transition">Properties</a>
+                    <a href="{% url 'about' %}" class="hover:text-brandBlue transition">About Us</a>
+                    <a href="{% url 'faq' %}" class="hover:text-brandBlue transition">FAQ</a>
+                    <a href="{% url 'blog_list' %}" class="hover:text-brandBlue transition">Blog</a>
+                    <a href="{% url 'contact' %}" class="hover:text-brandBlue transition">Contact</a>
+                </nav>
+
+                <!-- Auth Buttons / User Area -->
+                <div class="hidden md:flex items-center space-x-4">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'inbox' %}" class="relative p-2 text-gray-600 hover:text-brandBlue transition rounded-full hover:bg-gray-100 flex items-center justify-center">
+                            <i class="fa-regular fa-comments text-xl"></i>
+                            <!-- Dynamic Unread Indicator in a real setup -->
+                        </a>
+                        
+                        <a href="{% url 'dashboard_redirect' %}" class="px-5 py-2.5 rounded-xl bg-brandBlue text-white font-semibold text-sm hover:bg-brandDark transition shadow-md flex items-center gap-2">
+                            <i class="fa-solid fa-gauge-high"></i> Dashboard
+                        </a>
+                        
+                        <div class="relative group">
+                            <button class="flex items-center gap-2 focus:outline-none">
+                                {% if user.profile_picture %}
+                                <img class="h-10 w-10 rounded-full object-cover border-2 border-brandGold" src="{{ user.profile_picture.url }}" alt="{{ user.username }}">
+                                {% else %}
+                                <div class="h-10 w-10 rounded-full bg-brandBlue text-white flex items-center justify-center font-bold border-2 border-brandGold uppercase">
+                                    {{ user.username|slice:":2" }}
+                                </div>
+                                {% endif %}
+                                <i class="fa-solid fa-angle-down text-xs text-gray-500"></i>
+                            </button>
+                            <!-- Dropdown -->
+                            <div class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-2 hidden group-hover:block transition duration-200">
+                                <div class="px-4 py-2 border-b border-gray-100">
+                                    <p class="text-xs text-gray-400">Signed in as</p>
+                                    <p class="text-sm font-semibold text-gray-800 truncate">{{ user.username }}</p>
+                                </div>
+                                <a href="{% url 'profile_settings' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-brandBlue"><i class="fa-regular fa-user mr-2"></i> Settings</a>
+                                {% if user.role == 'landlord' or user.role == 'agent' %}
+                                <a href="{% url 'property_create' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-brandBlue"><i class="fa-solid fa-plus mr-2"></i> Add Property</a>
+                                {% endif %}
+                                <a href="{% url 'logout' %}" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50"><i class="fa-solid fa-arrow-right-from-bracket mr-2"></i> Logout</a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="font-semibold text-sm text-brandBlue hover:text-brandDark transition px-4 py-2.5">Login</a>
+                        <a href="{% url 'register' %}" class="px-5 py-2.5 rounded-xl bg-brandGold text-brandDark font-semibold text-sm hover:bg-yellow-500 transition shadow-sm gold-glow">Register</a>
+                    {% endif %}
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="flex items-center md:hidden">
+                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-brandBlue focus:outline-none p-2 rounded-lg hover:bg-gray-100">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-gray-200 bg-white/95 backdrop-blur-md transition-all duration-300">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-center">
+                <a href="{% url 'home' %}" class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-brandBlue">Home</a>
+                <a href="{% url 'property_list' %}" class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-brandBlue">Properties</a>
+                <a href="{% url 'about' %}" class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-brandBlue">About</a>
+                <a href="{% url 'faq' %}" class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-brandBlue">FAQ</a>
+                <a href="{% url 'blog_list' %}" class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-brandBlue">Blog</a>
+                <a href="{% url 'contact' %}" class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-brandBlue">Contact</a>
+                
+                <hr class="my-2 border-gray-100">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'dashboard_redirect' %}" class="block px-3 py-3 rounded-md text-base font-medium text-brandBlue hover:bg-gray-50"><i class="fa-solid fa-gauge-high mr-2"></i>Dashboard</a>
+                    <a href="{% url 'inbox' %}" class="block px-3 py-3 rounded-md text-base font-medium text-brandBlue hover:bg-gray-50"><i class="fa-regular fa-comments mr-2"></i>Messages</a>
+                    <a href="{% url 'profile_settings' %}" class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50"><i class="fa-regular fa-user mr-2"></i>Profile Settings</a>
+                    <a href="{% url 'logout' %}" class="block px-3 py-3 rounded-md text-base font-medium text-red-600 hover:bg-red-50"><i class="fa-solid fa-arrow-right-from-bracket mr-2"></i>Logout</a>
+                {% else %}
+                    <div class="grid grid-cols-2 gap-2 p-2">
+                        <a href="{% url 'login' %}" class="py-2.5 rounded-lg border border-brandBlue text-brandBlue font-semibold text-sm">Login</a>
+                        <a href="{% url 'register' %}" class="py-2.5 rounded-lg bg-brandGold text-brandDark font-semibold text-sm">Register</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-brandDark text-white pt-16 pb-8 border-t-4 border-brandGold">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <!-- Info Column -->
+                <div class="flex flex-col gap-4">
+                    <div class="flex items-center gap-2">
+                        <span class="p-2 rounded-lg bg-white/10 text-brandGold flex items-center justify-center">
+                            <i class="fa-solid fa-house-chimney-window text-lg"></i>
+                        </span>
+                        <span class="font-extrabold text-lg font-poppins tracking-tight text-white leading-tight">NYUMBA<span class="text-brandGold">LINK</span></span>
+                    </div>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        Cheremo NyumbaLink is a modern property listing platform designed to connect tenants with verified landlord listings across Kenya seamlessly.
+                    </p>
+                    <div class="flex items-center gap-3 mt-2">
+                        <a href="#" class="h-8 w-8 rounded-lg bg-white/5 hover:bg-brandGold hover:text-brandDark transition flex items-center justify-center text-sm text-gray-400"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="h-8 w-8 rounded-lg bg-white/5 hover:bg-brandGold hover:text-brandDark transition flex items-center justify-center text-sm text-gray-400"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#" class="h-8 w-8 rounded-lg bg-white/5 hover:bg-brandGold hover:text-brandDark transition flex items-center justify-center text-sm text-gray-400"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="h-8 w-8 rounded-lg bg-white/5 hover:bg-brandGold hover:text-brandDark transition flex items-center justify-center text-sm text-gray-400"><i class="fa-brands fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+
+                <!-- Navigation Links -->
+                <div>
+                    <h3 class="text-sm font-semibold uppercase tracking-wider text-brandGold mb-4 font-poppins">Quick Links</h3>
+                    <ul class="space-y-2 text-xs text-gray-400">
+                        <li><a href="{% url 'property_list' %}" class="hover:text-white transition">Browse Houses</a></li>
+                        <li><a href="{% url 'about' %}" class="hover:text-white transition">About Us</a></li>
+                        <li><a href="{% url 'faq' %}" class="hover:text-white transition">Frequently Asked Questions</a></li>
+                        <li><a href="{% url 'blog_list' %}" class="hover:text-white transition">Real Estate Blog</a></li>
+                        <li><a href="{% url 'contact' %}" class="hover:text-white transition">Get in Touch</a></li>
+                    </ul>
+                </div>
+
+                <!-- Categories -->
+                <div>
+                    <h3 class="text-sm font-semibold uppercase tracking-wider text-brandGold mb-4 font-poppins">Popular Categories</h3>
+                    <ul class="space-y-2 text-xs text-gray-400">
+                        <li><a href="{% url 'property_list' %}?category=one_bedroom" class="hover:text-white transition">One Bedroom Apartments</a></li>
+                        <li><a href="{% url 'property_list' %}?category=two_bedroom" class="hover:text-white transition">Two Bedroom Apartments</a></li>
+                        <li><a href="{% url 'property_list' %}?category=studio" class="hover:text-white transition">Studio Apartments</a></li>
+                        <li><a href="{% url 'property_list' %}?category=bedsitter" class="hover:text-white transition">Bedsitter Units</a></li>
+                        <li><a href="{% url 'property_list' %}?category=hostel" class="hover:text-white transition">Student Hostels</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info / Newsletter -->
+                <div>
+                    <h3 class="text-sm font-semibold uppercase tracking-wider text-brandGold mb-4 font-poppins">Contact Info</h3>
+                    <ul class="space-y-3 text-xs text-gray-400">
+                        <li class="flex items-start gap-2.5">
+                            <i class="fa-solid fa-location-dot mt-0.5 text-brandGold"></i>
+                            <span>Nairobi, Kenya<br>Mombasa Road, Cheremo Plaza</span>
+                        </li>
+                        <li class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-phone text-brandGold"></i>
+                            <a href="tel:+254719678760" class="hover:text-white transition">+254 719 678 760</a>
+                        </li>
+                        <li class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-envelope text-brandGold"></i>
+                            <a href="mailto:japhetcheremo@gmail.com" class="hover:text-white transition">japhetcheremo@gmail.com</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Lower Footer -->
+            <div class="border-t border-white/10 pt-8 mt-8 flex flex-col md:flex-row items-center justify-between text-xs text-gray-400 gap-4">
+                <div>
+                    &copy; 2026 Cheremo NyumbaLink. All Rights Reserved. Designed by Google DeepMind Antigravity.
+                </div>
+                <div class="flex items-center gap-6">
+                    <a href="{% url 'privacy' %}" class="hover:text-white transition">Privacy Policy</a>
+                    <a href="{% url 'terms' %}" class="hover:text-white transition">Terms & Conditions</a>
+                    <a href="{% url 'cookies' %}" class="hover:text-white transition">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Persistent Floating Contact Buttons -->
+    <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
+        <!-- WhatsApp -->
+        <a href="https://wa.me/254719678760" target="_blank" rel="noopener noreferrer" 
+           class="h-14 w-14 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-lg transition-transform hover:scale-110 floating-btn-shadow gold-glow focus:outline-none"
+           title="Chat on WhatsApp">
+            <i class="fa-brands fa-whatsapp text-3xl"></i>
+        </a>
+        <!-- Email -->
+        <a href="mailto:japhetcheremo@gmail.com" 
+           class="h-14 w-14 rounded-full bg-brandBlue text-white flex items-center justify-center shadow-lg transition-transform hover:scale-110 floating-btn-shadow gold-glow focus:outline-none border-2 border-brandGold"
+           title="Send Email">
+            <i class="fa-regular fa-envelope text-2xl text-brandGold"></i>
+        </a>
+    </div>
+
+    <!-- Mobile Navigation Toggle Script -->
+    <script>
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        if (btn && menu) {
+            btn.addEventListener('click', () => {
+                menu.classList.toggle('hidden');
+            });
+        }
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

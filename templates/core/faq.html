@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}FAQ - Cheremo NyumbaLink{% endblock %}
+
+{% block content %}
+<section class="bg-brandDark py-20 text-white relative">
+    <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-brandBlue filter blur-[120px] opacity-40"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-4xl font-extrabold font-poppins">Frequently Asked Questions</h1>
+        <p class="mt-4 text-gray-300 max-w-2xl mx-auto text-sm leading-relaxed">
+            Get instant solutions to common issues regarding renting, listings, and landlord verification processes.
+        </p>
+    </div>
+</section>
+
+<section class="py-20 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Accordion container -->
+        <div class="space-y-6">
+            
+            <!-- Category: Renting -->
+            <div class="flex flex-col gap-4">
+                <h3 class="text-lg font-bold text-brandBlue uppercase tracking-wider font-poppins border-b border-gray-100 pb-2"><i class="fa-solid fa-people-roof mr-1"></i> Renting Questions</h3>
+                
+                <details class="group bg-gray-50 rounded-2xl border border-gray-100 p-6 [&_summary::-webkit-details-marker]:hidden cursor-pointer transition-all duration-300" open>
+                    <summary class="flex items-center justify-between gap-4 focus:outline-none">
+                        <h4 class="font-bold text-sm text-brandDark">How do I book a viewing on the platform?</h4>
+                        <span class="text-brandBlue transition duration-300 group-open:-rotate-180">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </span>
+                    </summary>
+                    <p class="mt-4 text-xs text-gray-500 leading-relaxed">
+                        To book a viewing, log in to your tenant account, navigate to the property listing you are interested in, select your preferred date and time on the booking widget, write a short introductory note, and submit. The landlord or property agent will receive the booking request instantly and accept/decline.
+                    </p>
+                </details>
+
+                <details class="group bg-gray-50 rounded-2xl border border-gray-100 p-6 [&_summary::-webkit-details-marker]:hidden cursor-pointer transition-all duration-300">
+                    <summary class="flex items-center justify-between gap-4 focus:outline-none">
+                        <h4 class="font-bold text-sm text-brandDark">Are there viewing fees on Cheremo NyumbaLink?</h4>
+                        <span class="text-brandBlue transition duration-300 group-open:-rotate-180">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </span>
+                    </summary>
+                    <p class="mt-4 text-xs text-gray-500 leading-relaxed">
+                        No. A core value of Cheremo NyumbaLink is the total elimination of viewing fees. Booking a house viewing on this platform is completely free. We strongly warn tenants against paying any external "viewing fees" or "commission fees" before verifying properties physically.
+                    </p>
+                </details>
+            </div>
+
+            <!-- Category: Landlords -->
+            <div class="flex flex-col gap-4 pt-6">
+                <h3 class="text-lg font-bold text-brandBlue uppercase tracking-wider font-poppins border-b border-gray-100 pb-2"><i class="fa-solid fa-key mr-1"></i> Landlord & Listing Questions</h3>
+                
+                <details class="group bg-gray-50 rounded-2xl border border-gray-100 p-6 [&_summary::-webkit-details-marker]:hidden cursor-pointer transition-all duration-300">
+                    <summary class="flex items-center justify-between gap-4 focus:outline-none">
+                        <h4 class="font-bold text-sm text-brandDark">How long does it take for a property listing to appear on search result pages?</h4>
+                        <span class="text-brandBlue transition duration-300 group-open:-rotate-180">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </span>
+                    </summary>
+                    <p class="mt-4 text-xs text-gray-500 leading-relaxed">
+                        To maintain high quality and prevent rental scams, all new property listings enter a "Pending" status and are reviewed manually by our administrators. This validation process usually takes between 2 to 12 hours. Once approved, the listing goes live instantly, and the landlord receives a notification.
+                    </p>
+                </details>
+
+                <details class="group bg-gray-50 rounded-2xl border border-gray-100 p-6 [&_summary::-webkit-details-marker]:hidden cursor-pointer transition-all duration-300">
+                    <summary class="flex items-center justify-between gap-4 focus:outline-none">
+                        <h4 class="font-bold text-sm text-brandDark">What is the "Verified Landlord" badge?</h4>
+                        <span class="text-brandBlue transition duration-300 group-open:-rotate-180">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </span>
+                    </summary>
+                    <p class="mt-4 text-xs text-gray-500 leading-relaxed">
+                        The verification badge is given to landlords or agents who submit physical proof of identity and property ownership documents (e.g. title deeds, utility bills, business certificates). Verified listings are prioritized in searches and command significantly higher trust levels from tenants.
+                    </p>
+                </details>
+            </div>
+
+            <!-- Category: General & Security -->
+            <div class="flex flex-col gap-4 pt-6">
+                <h3 class="text-lg font-bold text-brandBlue uppercase tracking-wider font-poppins border-b border-gray-100 pb-2"><i class="fa-solid fa-shield-halved mr-1"></i> Security & Fraud Protection</h3>
+                
+                <details class="group bg-gray-50 rounded-2xl border border-gray-100 p-6 [&_summary::-webkit-details-marker]:hidden cursor-pointer transition-all duration-300">
+                    <summary class="flex items-center justify-between gap-4 focus:outline-none">
+                        <h4 class="font-bold text-sm text-brandDark">What should I do if I encounter a suspicious listing or landlord?</h4>
+                        <span class="text-brandBlue transition duration-300 group-open:-rotate-180">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </span>
+                    </summary>
+                    <p class="mt-4 text-xs text-gray-500 leading-relaxed">
+                        If a listing has false coordinates, incorrect images, or the landlord requests booking fees before physical meetings, click the "Report" flag on the property details page immediately. Our compliance department will investigate the issue and suspend fraudulent accounts within 4 hours.
+                    </p>
+                </details>
+            </div>
+            
+        </div>
+    </div>
+</section>
+{% endblock %}

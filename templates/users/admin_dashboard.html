@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard - Cheremo NyumbaLink{% endblock %}
+
+{% block content %}
+<section class="py-12 bg-gray-50 flex-grow">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Welcome Header -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 mb-8">
+            <div>
+                <h1 class="text-xl md:text-2xl font-extrabold text-brandDark font-poppins">Administration Central Panel</h1>
+                <p class="text-xs text-gray-500 mt-1">Logged in as system admin: <strong>{{ user.username }}</strong></p>
+            </div>
+            <span class="px-4 py-2 bg-brandGold text-brandDark font-extrabold text-xs rounded-xl shadow-sm border border-brandGold/30">System Control Portal</span>
+        </div>
+
+        <!-- Metrics cards -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm flex items-center gap-4">
+                <span class="p-3 bg-brandBlue/5 text-brandBlue rounded-xl"><i class="fa-solid fa-users text-xl"></i></span>
+                <div>
+                    <span class="block text-2xl font-extrabold text-brandDark font-poppins">{{ stats.total_users }}</span>
+                    <span class="text-[10px] text-gray-400 font-semibold uppercase tracking-wider block mt-0.5">Total Registered Users</span>
+                </div>
+            </div>
+            <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm flex items-center gap-4">
+                <span class="p-3 bg-green-50 text-green-600 rounded-xl"><i class="fa-solid fa-house-circle-check text-xl"></i></span>
+                <div>
+                    <span class="block text-2xl font-extrabold text-brandDark font-poppins">{{ stats.total_properties }}</span>
+                    <span class="text-[10px] text-gray-400 font-semibold uppercase tracking-wider block mt-0.5">Total Property Listings</span>
+                </div>
+            </div>
+            <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm flex items-center gap-4">
+                <span class="p-3 bg-yellow-50 text-yellow-600 rounded-xl"><i class="fa-solid fa-hourglass-half text-xl"></i></span>
+                <div>
+                    <span class="block text-2xl font-extrabold text-brandDark font-poppins">{{ stats.pending_approvals }}</span>
+                    <span class="text-[10px] text-gray-400 font-semibold uppercase tracking-wider block mt-0.5">Properties Pending Approval</span>
+                </div>
+            </div>
+            <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm flex items-center gap-4">
+                <span class="p-3 bg-brandGold/10 text-brandGold rounded-xl"><i class="fa-solid fa-calendar-check text-xl"></i></span>
+                <div>
+                    <span class="block text-2xl font-extrabold text-brandDark font-poppins">{{ stats.active_bookings }}</span>
+                    <span class="text-[10px] text-gray-400 font-semibold uppercase tracking-wider block mt-0.5">Confirmed View Bookings</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            
+            <!-- Pending Property Listings Approval -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <h3 class="font-extrabold text-lg text-brandDark font-poppins mb-4 flex items-center gap-2 border-b border-gray-50 pb-3"><i class="fa-regular fa-clock text-brandBlue"></i> Approve Property Listings</h3>
+                
+                {% if pending_properties %}
+                <div class="space-y-4">
+                    {% for property in pending_properties %}
+                    <div class="p-4 rounded-xl border border-gray-100 flex items-center justify-between gap-4">
+                        <div class="flex flex-col min-w-0">
+                            <h4 class="font-bold text-sm text-brandDark truncate"><a href="{% url 'property_detail' property.id %}" target="_blank" class="hover:text-brandBlue">{{ property.title }}</a></h4>
+                            <span class="text-[10px] text-gray-400 mt-0.5">Listed by: {{ property.created_by.username }} &bull; Town: {{ property.town }} &bull; KES {{ property.monthly_rent|floatformat:0 }}</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <a href="{% url 'approve_property' property.id %}" class="px-3.5 py-2 bg-green-500 hover:bg-green-600 text-white text-[10px] font-bold uppercase rounded-lg transition">Approve</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-xs text-gray-400 py-6 text-center">There are no property listings awaiting moderation.</p>
+                {% endif %}
+            </div>
+
+            <!-- Landlords & Agents Identity Verification -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                <h3 class="font-extrabold text-lg text-brandDark font-poppins mb-4 flex items-center gap-2 border-b border-gray-50 pb-3"><i class="fa-solid fa-user-shield text-brandBlue"></i> Landlord / Agent Verification</h3>
+                
+                {% if pending_verifications %}
+                <div class="space-y-4">
+                    {% for u in pending_verifications %}
+                    <div class="p-4 rounded-xl border border-gray-100 flex items-center justify-between gap-4">
+                        <div class="flex flex-col min-w-0">
+                            <span class="font-bold text-sm text-brandDark truncate">{{ u.username }} ({{ u.get_role_display }})</span>
+                            <span class="text-[10px] text-gray-400 mt-0.5">Phone: {{ u.phone }} &bull; Email: {{ u.email }}</span>
+                            <a href="{{ u.verification_document.url }}" download class="text-[10px] text-brandBlue hover:underline font-bold mt-1.5 flex items-center gap-1"><i class="fa-solid fa-file-arrow-down"></i> Download Verification Doc</a>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <a href="{% url 'verify_user' u.id %}" class="px-3.5 py-2 bg-brandBlue hover:bg-brandDark text-white text-[10px] font-bold uppercase rounded-lg transition">Verify</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-xs text-gray-400 py-6 text-center">No identity verification documents submitted.</p>
+                {% endif %}
+            </div>
+            
+        </div>
+
+    </div>
+</section>
+{% endblock %}

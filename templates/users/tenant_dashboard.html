@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+
+{% block title %}Tenant Dashboard - Cheremo NyumbaLink{% endblock %}
+
+{% block content %}
+<section class="py-12 bg-gray-50 flex-grow">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Welcome Header -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 mb-8">
+            <div class="flex items-center gap-4">
+                {% if user.profile_picture %}
+                <img class="h-16 w-16 rounded-full object-cover border-2 border-brandGold" src="{{ user.profile_picture.url }}" alt="{{ user.username }}">
+                {% else %}
+                <div class="h-16 w-16 rounded-full bg-brandBlue text-white flex items-center justify-center font-bold border-2 border-brandGold text-2xl uppercase">
+                    {{ user.username|slice:":2" }}
+                </div>
+                {% endif %}
+                <div>
+                    <h1 class="text-xl md:text-2xl font-extrabold text-brandDark font-poppins">Jambo, {{ user.first_name|default:user.username }}!</h1>
+                    <p class="text-xs text-gray-500 mt-1">Tenant Profile &bull; Account Verified: 
+                        {% if user.is_verified %}
+                            <span class="text-green-500 font-bold"><i class="fa-solid fa-circle-check"></i> Yes</span>
+                        {% else %}
+                            <span class="text-gray-400 font-bold">Standard</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            <div class="flex flex-wrap gap-3">
+                <a href="{% url 'property_list' %}" class="px-4 py-2.5 bg-brandBlue hover:bg-brandDark text-white text-xs font-bold rounded-xl transition shadow-md flex items-center gap-1.5">
+                    <i class="fa-solid fa-magnifying-glass"></i> Search Houses
+                </a>
+                <a href="{% url 'profile_settings' %}" class="px-4 py-2.5 bg-gray-150 hover:bg-gray-250 text-brandDark text-xs font-bold rounded-xl border border-gray-200 transition flex items-center gap-1.5">
+                    <i class="fa-regular fa-user"></i> Edit Profile
+                </a>
+            </div>
+        </div>
+
+        <!-- Dashboard Grid Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Bookings & Applications Column -->
+            <div class="lg:col-span-2 flex flex-col gap-8">
+                
+                <!-- Bookings Accordion/Table -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                    <h3 class="font-extrabold text-lg text-brandDark font-poppins mb-4 flex items-center gap-2 border-b border-gray-50 pb-3"><i class="fa-regular fa-calendar-check text-brandBlue"></i> Viewing Bookings</h3>
+                    
+                    {% if bookings %}
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs text-gray-500">
+                            <thead>
+                                <tr class="text-[10px] uppercase font-bold text-gray-400 border-b border-gray-100 pb-2">
+                                    <th class="py-2">Property</th>
+                                    <th class="py-2">Date & Time</th>
+                                    <th class="py-2">Landlord Support</th>
+                                    <th class="py-2 text-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for booking in bookings %}
+                                <tr class="border-b border-gray-50 hover:bg-gray-50 transition">
+                                    <td class="py-4 font-bold text-brandDark">
+                                        <a href="{% url 'property_detail' booking.property.id %}" class="hover:text-brandBlue">{{ booking.property.title }}</a>
+                                    </td>
+                                    <td class="py-4">
+                                        {{ booking.date }} at {{ booking.time }}
+                                    </td>
+                                    <td class="py-4 flex items-center gap-2">
+                                        <a href="{% url 'chat_thread' booking.property.created_by.id %}" class="text-brandBlue font-semibold hover:underline flex items-center gap-1"><i class="fa-regular fa-comments"></i> Chat</a>
+                                    </td>
+                                    <td class="py-4 text-center">
+                                        {% if booking.status == 'confirmed' %}
+                                            <span class="px-2.5 py-1 bg-green-100 text-green-800 rounded-full font-bold text-[10px] uppercase">Confirmed</span>
+                                        {% elif booking.status == 'declined' %}
+                                            <span class="px-2.5 py-1 bg-red-100 text-red-800 rounded-full font-bold text-[10px] uppercase">Declined</span>
+                                        {% elif booking.status == 'cancelled' %}
+                                            <span class="px-2.5 py-1 bg-gray-100 text-gray-800 rounded-full font-bold text-[10px] uppercase">Cancelled</span>
+                                        {% else %}
+                                            <span class="px-2.5 py-1 bg-yellow-100 text-yellow-800 rounded-full font-bold text-[10px] uppercase">Pending</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="text-xs text-gray-400 py-6 text-center">You have no upcoming viewing bookings scheduled.</p>
+                    {% endif %}
+                </div>
+
+                <!-- Rental Applications -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                    <h3 class="font-extrabold text-lg text-brandDark font-poppins mb-4 flex items-center gap-2 border-b border-gray-50 pb-3"><i class="fa-solid fa-file-signature text-brandBlue"></i> Rental Applications</h3>
+                    
+                    {% if applications %}
+                    <div class="space-y-4">
+                        {% for app in applications %}
+                        <div class="p-4 rounded-xl border border-gray-100 flex items-center justify-between gap-4">
+                            <div class="flex flex-col">
+                                <h4 class="font-bold text-sm text-brandDark">
+                                    <a href="{% url 'property_detail' app.property.id %}" class="hover:text-brandBlue">{{ app.property.title }}</a>
+                                </h4>
+                                <span class="text-[10px] text-gray-400 mt-0.5">Applied: {{ app.created_at|date:"M d, Y" }} &bull; Price: KES {{ app.property.monthly_rent|floatformat:0 }}</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                {% if app.status == 'accepted' %}
+                                    <span class="px-2.5 py-1 bg-green-150 text-green-800 rounded-full font-bold text-[10px] uppercase">Accepted</span>
+                                {% elif app.status == 'rejected' %}
+                                    <span class="px-2.5 py-1 bg-red-150 text-red-800 rounded-full font-bold text-[10px] uppercase">Rejected</span>
+                                {% else %}
+                                    <span class="px-2.5 py-1 bg-yellow-150 text-yellow-800 rounded-full font-bold text-[10px] uppercase">Reviewing</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="text-xs text-gray-400 py-6 text-center">No applications submitted yet.</p>
+                    {% endif %}
+                </div>
+
+            </div>
+
+            <!-- Saved Favorites Column -->
+            <div class="flex flex-col gap-8">
+                
+                <!-- Saved properties -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col">
+                    <h3 class="font-extrabold text-lg text-brandDark font-poppins mb-4 flex items-center gap-2 border-b border-gray-50 pb-3"><i class="fa-regular fa-heart text-brandBlue"></i> Saved Listings</h3>
+                    
+                    {% if favorites %}
+                    <div class="space-y-4">
+                        {% for fav in favorites %}
+                        <div class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-xl transition">
+                            <div class="h-12 w-12 rounded-lg bg-gray-100 overflow-hidden flex-shrink-0">
+                                {% if fav.property.images.all %}
+                                    {% for img in fav.property.images.all %}
+                                        {% if img.is_featured %}
+                                        <img src="{{ img.image.url }}" alt="" class="h-full w-full object-cover">
+                                        {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                    <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=150" alt="" class="h-full w-full object-cover">
+                                {% endif %}
+                            </div>
+                            <div class="flex-grow min-w-0">
+                                <h4 class="font-bold text-xs text-brandDark truncate"><a href="{% url 'property_detail' fav.property.id %}" class="hover:text-brandBlue">{{ fav.property.title }}</a></h4>
+                                <span class="text-[10px] text-brandBlue font-semibold block mt-0.5">KES {{ fav.property.monthly_rent|floatformat:0 }}</span>
+                            </div>
+                            <a href="{% url 'toggle_favorite' fav.property.id %}" class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition"><i class="fa-solid fa-heart"></i></a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="text-xs text-gray-400 py-6 text-center">You haven't saved any listings to your favorites list.</p>
+                    {% endif %}
+                </div>
+
+                <!-- Reviews left -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col">
+                    <h3 class="font-extrabold text-lg text-brandDark font-poppins mb-4 flex items-center gap-2 border-b border-gray-50 pb-3"><i class="fa-regular fa-star text-brandBlue"></i> Your Reviews</h3>
+                    
+                    {% if reviews %}
+                    <div class="space-y-4">
+                        {% for rev in reviews %}
+                        <div class="flex flex-col gap-1 text-xs text-gray-500">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-brandDark truncate max-w-[120px]">{{ rev.property.title }}</span>
+                                <span class="text-brandGold flex gap-0.5">
+                                    {% for i in "12345"|slice:":rev.rating" %}<i class="fa-solid fa-star text-[10px]"></i>{% endfor %}
+                                </span>
+                            </div>
+                            <p class="text-[11px] italic bg-gray-50 p-2 rounded-lg leading-relaxed">"{{ rev.text|truncatechars:80 }}"</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="text-xs text-gray-400 py-6 text-center">You have not submitted any reviews yet.</p>
+                    {% endif %}
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+{% endblock %}

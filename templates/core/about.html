@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block title %}About Us - Cheremo NyumbaLink{% endblock %}
+
+{% block content %}
+<section class="bg-brandDark py-20 text-white relative">
+    <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-brandBlue filter blur-[120px] opacity-40"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-4xl font-extrabold font-poppins">Our Story & Mission</h1>
+        <p class="mt-4 text-gray-300 max-w-2xl mx-auto text-sm leading-relaxed">
+            Discover the narrative behind Cheremo NyumbaLink and how we are redefining real estate search in Kenya.
+        </p>
+    </div>
+</section>
+
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div class="flex flex-col gap-6">
+                <span class="text-xs font-bold text-brandBlue uppercase tracking-widest bg-brandBlue/5 px-3 py-1 rounded-full w-max">Who We Are</span>
+                <h2 class="text-3xl font-extrabold text-brandDark font-poppins">Connecting Tenants & Landlords Directly</h2>
+                <p class="text-sm text-gray-500 leading-relaxed">
+                    Cheremo NyumbaLink was founded with the singular vision of eliminating rental fraud, reducing search fatigue, and introducing transparent communication platforms. 
+                </p>
+                <p class="text-sm text-gray-500 leading-relaxed">
+                    We believe that finding a house shouldn't require paying ridiculous viewing fees or navigating scam groups. By enforcing strict landlord verification, providing video tours, and facilitating real-time chat, we restore trust to the house hunting process.
+                </p>
+                
+                <!-- Stats inside about -->
+                <div class="grid grid-cols-3 gap-6 pt-4 border-t border-gray-100 text-center">
+                    <div>
+                        <span class="block text-2xl font-bold text-brandBlue font-poppins">100%</span>
+                        <span class="text-[10px] text-gray-400 font-semibold uppercase tracking-wider block mt-1">Verified Lists</span>
+                    </div>
+                    <div class="border-l border-r border-gray-100">
+                        <span class="block text-2xl font-bold text-brandBlue font-poppins">Zero</span>
+                        <span class="text-[10px] text-gray-400 font-semibold uppercase tracking-wider block mt-1">Viewing Fees</span>
+                    </div>
+                    <div>
+                        <span class="block text-2xl font-bold text-brandBlue font-poppins">24/7</span>
+                        <span class="text-[10px] text-gray-400 font-semibold uppercase tracking-wider block mt-1">Agent Support</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="relative rounded-2xl overflow-hidden shadow-2xl h-[450px]">
+                <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80&w=800" alt="Modern Mansion" class="h-full w-full object-cover">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Mission, Vision, Values -->
+<section class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Mission -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 flex flex-col gap-4">
+                <span class="p-3 bg-brandBlue/5 text-brandBlue rounded-xl w-max"><i class="fa-solid fa-bullseye text-2xl"></i></span>
+                <h3 class="font-bold text-xl text-brandDark font-poppins">Our Mission</h3>
+                <p class="text-xs text-gray-500 leading-relaxed">
+                    To make rental hunting stress-free by building digital channels that promote direct landlord relations, transparent listings, and automated booking schedules.
+                </p>
+            </div>
+            
+            <!-- Vision -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 flex flex-col gap-4">
+                <span class="p-3 bg-brandBlue/5 text-brandBlue rounded-xl w-max"><i class="fa-solid fa-eye text-2xl"></i></span>
+                <h3 class="font-bold text-xl text-brandDark font-poppins">Our Vision</h3>
+                <p class="text-xs text-gray-500 leading-relaxed">
+                    To become East Africa's most trustworthy real estate tech provider, establishing the standard for verified rental transactions and security.
+                </p>
+            </div>
+            
+            <!-- Values -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 flex flex-col gap-4">
+                <span class="p-3 bg-brandBlue/5 text-brandBlue rounded-xl w-max"><i class="fa-solid fa-heart text-2xl"></i></span>
+                <h3 class="font-bold text-xl text-brandDark font-poppins">Core Values</h3>
+                <p class="text-xs text-gray-500 leading-relaxed">
+                    Transparency above all. Zero tolerance for listing fraud. Dedication to customer safety, ease-of-use, and community enrichment.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team Members -->
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+            <span class="text-xs font-bold text-brandBlue uppercase tracking-widest bg-brandBlue/5 px-3 py-1 rounded-full">Leadership</span>
+            <h2 class="text-3xl font-extrabold text-brandDark mt-3 font-poppins">Our Talented Team</h2>
+            <p class="text-sm text-gray-500 mt-2">The brilliant minds driving real estate tech innovation in East Africa.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Member -->
+            <div class="bg-gray-50 rounded-2xl overflow-hidden shadow-sm border border-gray-100 p-6 text-center flex flex-col items-center">
+                <div class="h-32 w-32 rounded-full overflow-hidden mb-4 border-4 border-brandGold/30">
+                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=300" alt="Japhet Cheremo" class="h-full w-full object-cover">
+                </div>
+                <h3 class="font-bold text-lg text-brandDark font-poppins">Japhet Cheremo</h3>
+                <p class="text-xs text-brandBlue font-semibold uppercase tracking-wider mb-2">Founder & Lead Developer</p>
+                <p class="text-xs text-gray-500 leading-relaxed max-w-xs">Software Engineer specialized in full-stack Python architectures, Web GIS, and real estate systems.</p>
+            </div>
+            
+            <div class="bg-gray-50 rounded-2xl overflow-hidden shadow-sm border border-gray-100 p-6 text-center flex flex-col items-center">
+                <div class="h-32 w-32 rounded-full overflow-hidden mb-4 border-4 border-brandGold/30">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=300" alt="Sarah Kamau" class="h-full w-full object-cover">
+                </div>
+                <h3 class="font-bold text-lg text-brandDark font-poppins">Sarah Kamau</h3>
+                <p class="text-xs text-brandBlue font-semibold uppercase tracking-wider mb-2">Head of Verification & Compliance</p>
+                <p class="text-xs text-gray-500 leading-relaxed max-w-xs">Over 6 years of legal compliance in property management. Lead manager validating landlord certificates.</p>
+            </div>
+            
+            <div class="bg-gray-50 rounded-2xl overflow-hidden shadow-sm border border-gray-100 p-6 text-center flex flex-col items-center">
+                <div class="h-32 w-32 rounded-full overflow-hidden mb-4 border-4 border-brandGold/30">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=300" alt="David Ochieng" class="h-full w-full object-cover">
+                </div>
+                <h3 class="font-bold text-lg text-brandDark font-poppins">David Ochieng</h3>
+                <p class="text-xs text-brandBlue font-semibold uppercase tracking-wider mb-2">Director of Customer Relations</p>
+                <p class="text-xs text-gray-500 leading-relaxed max-w-xs">Passionate communicator managing agent communications and tenant assistance lines.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

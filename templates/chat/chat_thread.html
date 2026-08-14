@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+
+{% block title %}Chat with {{ partner.username }} - Cheremo NyumbaLink{% endblock %}
+
+{% block content %}
+<section class="py-12 bg-gray-50 flex-grow">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6">
+        <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden flex flex-col h-[75vh]">
+            
+            <!-- Chat Header -->
+            <div class="border-b border-gray-100 p-4 md:p-6 bg-white flex items-center justify-between flex-shrink-0">
+                <div class="flex items-center gap-3">
+                    <a href="{% url 'inbox' %}" class="p-2 hover:bg-gray-100 rounded-lg text-gray-500 hover:text-brandBlue transition md:hidden">
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </a>
+                    
+                    {% if partner.profile_picture %}
+                    <img class="h-10 w-10 rounded-full object-cover border border-brandGold" src="{{ partner.profile_picture.url }}" alt="">
+                    {% else %}
+                    <div class="h-10 w-10 rounded-full bg-brandBlue text-white flex items-center justify-center font-bold border border-brandGold uppercase text-xs">
+                        {{ partner.username|slice:":2" }}
+                    </div>
+                    {% endif %}
+                    
+                    <div class="flex flex-col">
+                        <span class="font-bold text-sm text-brandDark">{{ partner.username }}</span>
+                        <span class="text-[9px] uppercase tracking-wider text-gray-400 font-semibold">{{ partner.get_role_display }}</span>
+                    </div>
+                </div>
+                
+                <a href="{% url 'inbox' %}" class="text-xs text-brandBlue font-bold hover:underline hidden md:block"><i class="fa-solid fa-arrow-left mr-1"></i> Back to Inbox</a>
+            </div>
+
+            <!-- Messages List Box -->
+            <div id="chat-messages-container" class="flex-grow p-6 overflow-y-auto space-y-4 bg-gray-50/50">
+                {% if chat_messages %}
+                    {% for msg in chat_messages %}
+                    <div class="flex {% if msg.sender == user %}justify-end{% else %}justify-start{% endif %}">
+                        <div class="flex flex-col max-w-[70%] gap-1">
+                            <div class="p-3.5 rounded-2xl text-xs leading-relaxed shadow-sm
+                                        {% if msg.sender == user %}
+                                        bg-brandBlue text-white rounded-tr-none
+                                        {% else %}
+                                        bg-white text-gray-800 border border-gray-100 rounded-tl-none
+                                        {% endif %}">
+                                {{ msg.content }}
+                            </div>
+                            <span class="text-[9px] text-gray-400 {% if msg.sender == user %}text-right{% endif %}">
+                                {{ msg.timestamp|date:"I:M A" }}
+                            </span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                <div id="no-messages-prompt" class="text-center py-20 flex flex-col items-center justify-center">
+                    <i class="fa-regular fa-comment-dots text-5xl text-gray-300 mb-4 animate-pulse"></i>
+                    <h3 class="font-bold text-brandDark text-sm">No Messages Yet</h3>
+                    <p class="text-xs text-gray-400 mt-1 max-w-[250px] mx-auto">Send an introductory message to start your tenancy communication.</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Chat Send Input Area -->
+            <div class="border-t border-gray-150 p-4 md:p-6 bg-white flex-shrink-0">
+                <form id="chat-send-form" class="flex gap-3">
+                    {% csrf_token %}
+                    <input type="hidden" name="recipient_id" value="{{ partner.id }}">
+                    <input type="hidden" name="ajax" value="true">
+                    
+                    <input type="text" name="content" id="chat-message-input" required placeholder="Type your message here..." autocomplete="off"
+                           class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-xs focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-800">
+                    
+                    <button type="submit" class="bg-brandBlue hover:bg-brandDark text-white font-bold px-6 py-3 rounded-xl transition text-xs shadow-md flex items-center justify-center">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const container = document.getElementById("chat-messages-container");
+        const form = document.getElementById("chat-send-form");
+        const input = document.getElementById("chat-message-input");
+        const noMsgPrompt = document.getElementById("no-messages-prompt");
+        
+        // Auto scroll to bottom
+        container.scrollTop = container.scrollHeight;
+        
+        // AJAX Form Submit
+        form.addEventListener("submit", function(e) {
+            e.preventDefault();
+            const contentVal = input.value.trim();
+            if (!contentVal) return;
+            
+            const formData = new FormData(form);
+            
+            fetch("{% url 'send_message' %}", {
+                method: "POST",
+                body: formData,
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === "success") {
+                    input.value = "";
+                    if (noMsgPrompt) noMsgPrompt.remove();
+                    
+                    // Append message bubble
+                    appendMessageBubble(data.message.content, data.message.timestamp, true);
+                }
+            })
+            .catch(err => console.error("Error sending message:", err));
+        });
+
+        // AJAX Long-polling / checking for new messages every 3 seconds
+        setInterval(function() {
+            fetch("{% url 'get_messages' partner.id %}", {
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === "success" && data.messages.length > 0) {
+                    if (noMsgPrompt) noMsgPrompt.remove();
+                    data.messages.forEach(msg => {
+                        appendMessageBubble(msg.content, msg.timestamp, false);
+                    });
+                }
+            })
+            .catch(err => console.error("Error loading messages:", err));
+        }, 3000);
+        
+        // Helper function to append message bubble to UI
+        function appendMessageBubble(content, timestamp, isCurrentUser) {
+            const flexDiv = document.createElement("div");
+            flexDiv.className = `flex ${isCurrentUser ? 'justify-end' : 'justify-start'}`;
+            
+            const outerCol = document.createElement("div");
+            outerCol.className = "flex flex-col max-w-[70%] gap-1";
+            
+            const bubble = document.createElement("div");
+            bubble.className = `p-3.5 rounded-2xl text-xs leading-relaxed shadow-sm ${
+                isCurrentUser 
+                    ? 'bg-brandBlue text-white rounded-tr-none' 
+                    : 'bg-white text-gray-800 border border-gray-100 rounded-tl-none'
+            }`;
+            bubble.innerText = content;
+            
+            const timeSpan = document.createElement("span");
+            timeSpan.className = `text-[9px] text-gray-400 ${isCurrentUser ? 'text-right' : ''}`;
+            timeSpan.innerText = timestamp;
+            
+            outerCol.appendChild(bubble);
+            outerCol.appendChild(timeSpan);
+            flexDiv.appendChild(outerCol);
+            container.appendChild(flexDiv);
+            
+            // scroll down
+            container.scrollTop = container.scrollHeight;
+        }
+    });
+</script>
+{% endblock %}

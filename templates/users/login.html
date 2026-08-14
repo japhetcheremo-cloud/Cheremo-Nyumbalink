@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - Cheremo NyumbaLink{% endblock %}
+
+{% block content %}
+<section class="min-h-[80vh] flex items-center justify-center bg-gray-50 py-16 relative overflow-hidden">
+    <!-- Decorative blobs -->
+    <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-brandBlue filter blur-[120px] opacity-25"></div>
+    <div class="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-brandGold filter blur-[120px] opacity-15"></div>
+
+    <div class="relative w-full max-w-md px-4 sm:px-6">
+        <div class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 sm:p-10 flex flex-col">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <span class="p-3 bg-brandBlue/5 text-brandBlue rounded-2xl inline-block mb-3">
+                    <i class="fa-solid fa-arrow-right-to-bracket text-2xl text-brandBlue"></i>
+                </span>
+                <h1 class="text-2xl font-extrabold text-brandDark font-poppins">Welcome Back</h1>
+                <p class="text-xs text-gray-500 mt-1.5">Sign in to manage your houses, bookings, and chats.</p>
+            </div>
+
+            <!-- Form -->
+            <form action="{% url 'login' %}" method="POST" class="space-y-5">
+                {% csrf_token %}
+                <div class="flex flex-col gap-1.5">
+                    <label for="id_username" class="text-xs font-semibold text-gray-700">Username</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400">
+                            <i class="fa-regular fa-user text-sm"></i>
+                        </span>
+                        <input type="text" name="username" id="id_username" required placeholder="Enter username"
+                               class="w-full bg-gray-50 border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-800">
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-1.5">
+                    <div class="flex justify-between items-center">
+                        <label for="id_password" class="text-xs font-semibold text-gray-700">Password</label>
+                        <a href="#" class="text-[11px] font-semibold text-brandBlue hover:underline">Forgot password?</a>
+                    </div>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400">
+                            <i class="fa-solid fa-lock text-sm"></i>
+                        </span>
+                        <input type="password" name="password" id="id_password" required placeholder="Enter password"
+                               class="w-full bg-gray-50 border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brandBlue text-gray-800">
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="w-full bg-brandBlue hover:bg-brandDark text-white font-bold py-3.5 rounded-xl transition shadow-md mt-2">
+                    Sign In
+                </button>
+            </form>
+
+            <!-- Bottom redirect -->
+            <div class="border-t border-gray-100 pt-6 mt-6 text-center text-xs text-gray-500">
+                Don't have an account yet? <a href="{% url 'register' %}" class="font-bold text-brandBlue hover:underline">Register here</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
