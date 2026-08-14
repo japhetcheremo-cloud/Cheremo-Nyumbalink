@@ -76,16 +76,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'nyumbalink.wsgi.application'
 
-# Database configuration (Vercel serverless writable /tmp handling)
-import shutil
-if os.environ.get('VERCEL') or os.environ.get('NOW_BUILDER'):
+# Database configuration for Vercel / serverless environment
+IS_VERCEL = bool(os.environ.get('VERCEL') or os.environ.get('VERCEL_ENV') or os.environ.get('AWS_LAMBDA_FUNCTION_NAME') or str(BASE_DIR).startswith('/var/task'))
+
+if IS_VERCEL:
     tmp_db = Path('/tmp/db.sqlite3')
-    if not tmp_db.exists() and (BASE_DIR / 'db.sqlite3').exists():
+    source_db = BASE_DIR / 'db.sqlite3'
+    if not tmp_db.exists() and source_db.exists():
         try:
-            shutil.copyfile(BASE_DIR / 'db.sqlite3', tmp_db)
-        except Exception:
-            pass
-    db_location = tmp_db if tmp_db.exists() else (BASE_DIR / 'db.sqlite3')
+            import shutil
+            shutil.copyfile(source_db, tmp_db)
+        except Exception as e:
+            print("Database copy error:", e)
+    db_location = tmp_db
 else:
     db_location = BASE_DIR / 'db.sqlite3'
 
