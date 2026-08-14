@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -74,14 +76,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'nyumbalink.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/6.0/ref/settings/#databases
+# Database configuration (Vercel serverless writable /tmp handling)
+import shutil
+if os.environ.get('VERCEL') or os.environ.get('NOW_BUILDER'):
+    tmp_db = Path('/tmp/db.sqlite3')
+    if not tmp_db.exists() and (BASE_DIR / 'db.sqlite3').exists():
+        try:
+            shutil.copyfile(BASE_DIR / 'db.sqlite3', tmp_db)
+        except Exception:
+            pass
+    db_location = tmp_db if tmp_db.exists() else (BASE_DIR / 'db.sqlite3')
+else:
+    db_location = BASE_DIR / 'db.sqlite3'
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': db_location,
     }
 }
 
