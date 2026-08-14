@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Q
-from .models import Property, Amenity, PropertyImage, Booking, Application, Favorite, Review
+from django.utils.crypto import get_random_string
+from .models import Property, Amenity, PropertyImage, Booking, Application, Favorite, Review, Payment
 from users.models import CustomUser
 
 def property_list(request):
@@ -383,3 +384,68 @@ def manage_application(request, pk, status):
         messages.success(request, f"Application status updated to {status}.")
         
     return redirect('landlord_dashboard')
+
+
+@login_required
+def payment_checkout(request, pk=None):
+    property_obj = None
+    if pk:
+        property_obj = get_object_or_404(Property, pk=pk)
+
+    payment_type = request.GET.get('type', 'rent_deposit')
+    amount = request.GET.get('amount')
+
+    if not amount:
+        if property_obj:
+            amount = property_obj.monthly_rent
+        elif payment_type == 'viewing_fee':
+            amount = 500.00
+        elif payment_type == 'landlord_verification':
+            amount = 1000.00
+        else:
+            amount = 1000.00
+
+    if request.method == 'POST':
+        phone_number = request.POST.get('phone_number')
+        pay_type = request.POST.get('payment_type', payment_type)
+        pay_amount = request.POST.get('amount', amount)
+        mpesa_code = request.POST.get('mpesa_code', '').strip().upper()
+
+        if not mpesa_code:
+            mpesa_code = 'Q' + get_random_string(9, allowed_chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
+
+        payment = Payment.objects.create(
+            user=request.user,
+            property=property_obj,
+            amount=pay_amount,
+            phone_number=phone_number,
+            mpesa_code=mpesa_code,
+            till_number='5927622',
+            payment_type=pay_type,
+            status='completed'
+        )
+
+        messages.success(
+            request, 
+            f"M-PESA Payment of KES {float(payment.amount):,.2f} to Till 5927622 successful! Code: {payment.mpesa_code}."
+        )
+        return redirect('my_payments')
+
+    context = {
+        'property': property_obj,
+        'till_number': '5927622',
+        'store_name': 'Cheremo NyumbaLink',
+        'amount': amount,
+        'payment_type': payment_type
+    }
+    return render(request, 'properties/payment_checkout.html', context)
+
+
+@login_required
+def my_payments(request):
+    payments = Payment.objects.filter(user=request.user)
+    context = {
+        'payments': payments
+    }
+    return render(request, 'properties/my_payments.html', context)
+

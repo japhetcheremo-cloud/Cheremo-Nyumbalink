@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Amenity, Property, PropertyImage, Booking, Application, Review, Favorite
+from .models import Amenity, Property, PropertyImage, Booking, Application, Review, Favorite, Payment
 
 
 class PropertyImageInline(admin.TabularInline):
@@ -86,3 +86,12 @@ class FavoriteAdmin(admin.ModelAdmin):
     list_display = ('user', 'property', 'created_at')
     search_fields = ('user__username', 'property__title')
     ordering = ('-created_at',)
+
+
+@admin.register(Payment)
+class PaymentAdmin(admin.ModelAdmin):
+    list_display = ('user', 'till_number', 'amount', 'mpesa_code', 'payment_type', 'status', 'created_at')
+    list_filter = ('status', 'payment_type', 'till_number', 'created_at')
+    search_fields = ('user__username', 'phone_number', 'mpesa_code', 'till_number')
+    ordering = ('-created_at',)
+

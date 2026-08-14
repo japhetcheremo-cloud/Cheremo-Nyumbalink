@@ -253,6 +253,30 @@
                     {% endif %}
                 </div>
 
+                <!-- M-PESA Payment Widget (Till 5927622) -->
+                <div class="bg-white rounded-2xl border border-emerald-200 p-6 shadow-sm flex flex-col gap-3">
+                    <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                        <h3 class="font-extrabold text-brandDark font-poppins flex items-center gap-1.5 text-sm">
+                            <i class="fa-solid fa-mobile-screen-button text-[#00A859]"></i> Lipa na M-PESA
+                        </h3>
+                        <span class="text-[10px] font-bold text-[#00A859] bg-[#00A859]/10 px-2.5 py-0.5 rounded-full border border-[#00A859]/20">Till: 5927622</span>
+                    </div>
+                    
+                    <p class="text-xs text-gray-500 leading-relaxed">Pay house deposit or viewing fee instantly using Buy Goods Till <strong>5927622</strong>.</p>
+                    
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'property_payment' property.id %}?type=rent_deposit" class="w-full bg-[#00A859] hover:bg-[#008f4c] text-white font-extrabold py-3 rounded-xl transition text-xs shadow-md flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-money-bill-wave"></i> Pay Deposit (KES {{ property.monthly_rent|floatformat:2 }})
+                    </a>
+                    
+                    <a href="{% url 'property_payment' property.id %}?type=viewing_fee&amount=500" class="w-full border border-[#00A859] text-[#00A859] hover:bg-[#00A859]/5 font-bold py-2.5 rounded-xl transition text-xs flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-ticket"></i> Pay Viewing Fee (KES 500)
+                    </a>
+                    {% else %}
+                    <p class="text-xs text-gray-400 py-2 text-center">Please <a href="{% url 'login' %}" class="text-brandBlue font-bold hover:underline">login</a> to make M-PESA payments.</p>
+                    {% endif %}
+                </div>
+
                 <!-- Landlord Support Card -->
                 <div class="bg-white rounded-2xl border border-gray-150 p-6 shadow-sm flex flex-col gap-4">
                     <h3 class="font-extrabold text-brandDark font-poppins border-b border-gray-50 pb-3 mb-1"><i class="fa-regular fa-id-badge text-brandBlue mr-1"></i> Landlord Contact</h3>

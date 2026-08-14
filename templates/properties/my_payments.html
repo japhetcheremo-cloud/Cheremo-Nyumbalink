@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My M-PESA Payments & Receipts | Cheremo NyumbaLink{% endblock %}
+
+{% block content %}
+<section class="min-h-[80vh] bg-gray-50 py-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+            <div>
+                <span class="text-xs font-bold text-[#00A859] uppercase tracking-widest bg-[#00A859]/10 px-3 py-1 rounded-full border border-[#00A859]/20">M-PESA Till 5927622</span>
+                <h1 class="text-3xl font-extrabold text-brandDark mt-2 font-poppins">Payment History & Receipts</h1>
+                <p class="text-xs text-gray-500 mt-1">View all completed M-PESA transactions for rentals, viewing fees, and service charges.</p>
+            </div>
+            
+            <a href="{% url 'payment_checkout' %}" class="bg-[#00A859] hover:bg-[#008f4c] text-white font-bold py-3 px-6 rounded-xl transition text-xs shadow-md gold-glow self-start sm:self-auto flex items-center gap-2">
+                <i class="fa-solid fa-plus text-xs"></i> Make New Payment
+            </a>
+        </div>
+
+        <!-- Payments Table Card -->
+        <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+            {% if payments %}
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs text-gray-600">
+                    <thead class="bg-gray-50 text-gray-700 uppercase tracking-wider text-[10px] border-b border-gray-100">
+                        <tr>
+                            <th class="py-4 px-6">Receipt Code</th>
+                            <th class="py-4 px-6">Payment Type</th>
+                            <th class="py-4 px-6">Property / Details</th>
+                            <th class="py-4 px-6">Phone Number</th>
+                            <th class="py-4 px-6">Till Number</th>
+                            <th class="py-4 px-6">Amount</th>
+                            <th class="py-4 px-6">Status</th>
+                            <th class="py-4 px-6">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 font-medium">
+                        {% for p in payments %}
+                        <tr class="hover:bg-gray-50/80 transition">
+                            <td class="py-4 px-6 font-bold text-brandDark">
+                                <span class="bg-gray-100 text-brandDark font-mono px-2.5 py-1 rounded-md border border-gray-200">{{ p.mpesa_code }}</span>
+                            </td>
+                            <td class="py-4 px-6">
+                                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-brandBlue/10 text-brandBlue">
+                                    {{ p.get_payment_type_display }}
+                                </span>
+                            </td>
+                            <td class="py-4 px-6 font-semibold text-gray-800">
+                                {% if p.property %}
+                                    <a href="{% url 'property_detail' p.property.id %}" class="hover:text-brandBlue underline">{{ p.property.title }}</a>
+                                {% else %}
+                                    General Payment
+                                {% endif %}
+                            </td>
+                            <td class="py-4 px-6 font-mono text-gray-500">{{ p.phone_number }}</td>
+                            <td class="py-4 px-6 font-mono font-bold text-[#00A859]">{{ p.till_number }}</td>
+                            <td class="py-4 px-6 font-extrabold text-brandDark font-poppins text-sm">KES {{ p.amount|floatformat:2 }}</td>
+                            <td class="py-4 px-6">
+                                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-green-100 text-green-700 flex items-center w-max gap-1">
+                                    <i class="fa-solid fa-circle-check"></i> {{ p.get_status_display }}
+                                </span>
+                            </td>
+                            <td class="py-4 px-6 text-gray-400 text-[11px]">{{ p.created_at|date:"M d, Y • H:i" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="p-12 text-center flex flex-col items-center justify-center gap-3">
+                <div class="h-16 w-16 rounded-full bg-[#00A859]/10 text-[#00A859] flex items-center justify-center text-3xl">
+                    <i class="fa-solid fa-receipt"></i>
+                </div>
+                <h3 class="text-base font-bold text-brandDark">No M-PESA Payments Yet</h3>
+                <p class="text-xs text-gray-400 max-w-sm">When you pay house deposits or viewing fees via Till 5927622, your receipts will appear here.</p>
+                <a href="{% url 'payment_checkout' %}" class="mt-2 bg-[#00A859] text-white text-xs font-bold py-2.5 px-5 rounded-xl shadow">
+                    Make a Payment
+                </a>
+            </div>
+            {% endif %}
+        </div>
+
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}M-PESA Payment Portal | Cheremo NyumbaLink{% endblock %}
+
+{% block content %}
+<section class="min-h-[85vh] bg-gray-50 py-12 relative overflow-hidden flex items-center justify-center">
+    <!-- Decorative background blobs -->
+    <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-[#00A859] filter blur-[140px] opacity-15"></div>
+    <div class="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-brandBlue filter blur-[140px] opacity-15"></div>
+
+    <div class="relative max-w-2xl w-full px-4 sm:px-6">
+        <div class="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 sm:p-8 flex flex-col gap-6">
+            
+            <!-- Safaricom M-PESA Header Badge -->
+            <div class="flex items-center justify-between border-b border-gray-100 pb-5">
+                <div class="flex items-center gap-3">
+                    <div class="h-12 w-12 rounded-2xl bg-[#00A859] text-white flex items-center justify-center font-extrabold text-xl shadow-md">
+                        <i class="fa-solid fa-mobile-screen-button"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <h1 class="text-xl font-extrabold text-brandDark font-poppins flex items-center gap-2">
+                            Lipa na <span class="text-[#00A859]">M-PESA</span>
+                        </h1>
+                        <span class="text-xs text-gray-500 font-medium">Buy Goods & Services Till Number: <strong class="text-brandDark">5927622</strong></span>
+                    </div>
+                </div>
+                <span class="px-3 py-1 bg-[#00A859]/10 text-[#00A859] rounded-full text-xs font-bold border border-[#00A859]/20 flex items-center gap-1">
+                    <i class="fa-solid fa-lock text-[10px]"></i> 100% Encrypted
+                </span>
+            </div>
+
+            <!-- Payment Target Details Card -->
+            <div class="bg-gray-50 rounded-2xl p-4 border border-gray-200 flex flex-col gap-2">
+                <span class="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Payment Details</span>
+                <div class="flex justify-between items-center text-sm font-bold text-brandDark">
+                    <span>
+                        {% if property %}
+                            {{ property.title }}
+                        {% elif payment_type == 'viewing_fee' %}
+                            House Inspection & Viewing Reservation Fee
+                        {% elif payment_type == 'landlord_verification' %}
+                            Landlord Verification Badge Fee
+                        {% else %}
+                            Cheremo NyumbaLink Platform Payment
+                        {% endif %}
+                    </span>
+                    <span class="text-lg text-[#00A859] font-poppins">KES {{ amount|floatformat:2 }}</span>
+                </div>
+                {% if property %}
+                <p class="text-xs text-gray-500"><i class="fa-solid fa-location-dot text-brandGold mr-1"></i> {{ property.estate }}, {{ property.town }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Step 1: STK Push Express Option -->
+            <div class="bg-gradient-to-r from-[#00A859]/5 to-emerald-50 rounded-2xl p-5 border border-[#00A859]/20 flex flex-col gap-4">
+                <div class="flex items-center gap-2">
+                    <span class="h-6 w-6 rounded-full bg-[#00A859] text-white flex items-center justify-center text-xs font-bold">1</span>
+                    <h3 class="font-bold text-sm text-brandDark">Option A: Instant M-PESA STK Push Prompt</h3>
+                </div>
+                <p class="text-xs text-gray-600">Enter your Safaricom phone number to receive an instant PIN prompt popup on your phone screen.</p>
+                
+                <form action="" method="POST" id="stk-form" class="flex flex-col gap-3">
+                    {% csrf_token %}
+                    <input type="hidden" name="payment_type" value="{{ payment_type }}">
+                    <input type="hidden" name="amount" value="{{ amount }}">
+                    
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <div class="relative flex-grow">
+                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400 font-semibold text-xs">+254</span>
+                            <input type="tel" name="phone_number" id="phone_number" required placeholder="719 678 760" value="{{ user.phone|default:'' }}"
+                                   class="w-full bg-white border border-gray-300 rounded-xl pl-14 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#00A859] font-semibold text-gray-800">
+                        </div>
+                        <button type="submit" id="stk-btn" class="bg-[#00A859] hover:bg-[#008f4c] text-white font-extrabold px-6 py-3 rounded-xl transition text-xs shadow-md flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-[#00A859] fa-paper-plane text-xs"></i> Prompt M-PESA
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Step 2: Manual Lipa na M-PESA Buy Goods Instructions -->
+            <div class="bg-white rounded-2xl p-5 border border-gray-200 flex flex-col gap-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="h-6 w-6 rounded-full bg-brandDark text-white flex items-center justify-center text-xs font-bold">2</span>
+                        <h3 class="font-bold text-sm text-brandDark">Option B: Manual Lipa na M-PESA (Till 5927622)</h3>
+                    </div>
+                    <button onclick="copyTill()" class="text-xs text-[#00A859] hover:underline font-bold flex items-center gap-1">
+                        <i class="fa-regular fa-copy"></i> Copy Till
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                    <div class="bg-gray-50 p-3 rounded-xl border border-gray-100">
+                        <span class="text-gray-400 block text-[10px] uppercase font-bold">Buy Goods Till Number</span>
+                        <span class="text-xl font-extrabold text-[#00A859] tracking-wider font-poppins" id="till-val">5927622</span>
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded-xl border border-gray-100">
+                        <span class="text-gray-400 block text-[10px] uppercase font-bold">Store / Business Name</span>
+                        <span class="text-sm font-bold text-brandDark">Cheremo NyumbaLink</span>
+                    </div>
+                </div>
+
+                <ol class="list-decimal list-inside text-xs text-gray-600 space-y-1.5 bg-gray-50/50 p-3.5 rounded-xl">
+                    <li>Open <strong>M-PESA</strong> menu on your phone</li>
+                    <li>Select <strong>Lipa na M-PESA</strong> &rarr; <strong>Buy Goods and Services</strong></li>
+                    <li>Enter Till Number: <strong class="text-brandDark">5927622</strong></li>
+                    <li>Enter Amount: <strong class="text-[#00A859]">KES {{ amount|floatformat:2 }}</strong> & enter PIN</li>
+                    <li>Enter the M-PESA receipt code below to confirm payment</li>
+                </ol>
+
+                <form action="" method="POST" class="flex flex-col sm:flex-row gap-3 pt-2">
+                    {% csrf_token %}
+                    <input type="hidden" name="payment_type" value="{{ payment_type }}">
+                    <input type="hidden" name="amount" value="{{ amount }}">
+                    <input type="hidden" name="phone_number" value="{{ user.phone|default:'0719678760' }}">
+
+                    <input type="text" name="mpesa_code" required placeholder="e.g. QKH829X10Z" uppercase
+                           class="flex-grow bg-gray-50 border border-gray-300 rounded-xl px-4 py-3 text-xs uppercase tracking-wider font-bold text-brandDark focus:ring-[#00A859]">
+                    <button type="submit" class="bg-brandDark hover:bg-brandBlue text-white font-bold px-6 py-3 rounded-xl transition text-xs shadow-md">
+                        Verify Code
+                    </button>
+                </form>
+            </div>
+
+            <!-- Footer note -->
+            <p class="text-[11px] text-gray-400 text-center">Need instant payment support? Call/WhatsApp <a href="tel:+254719678760" class="text-brandBlue font-bold">+254 719 678 760</a></p>
+
+        </div>
+    </div>
+</section>
+
+<script>
+    function copyTill() {
+        navigator.clipboard.writeText("5927622");
+        alert("M-PESA Till Number 5927622 copied to clipboard!");
+    }
+</script>
+{% endblock %}

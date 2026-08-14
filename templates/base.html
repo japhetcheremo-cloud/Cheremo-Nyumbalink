@@ -127,12 +127,17 @@
                 </div>
 
                 <!-- Desktop Menu -->
-                <nav class="hidden md:flex items-center space-x-7 font-medium text-sm text-gray-700">
+                <nav class="hidden md:flex items-center space-x-6 font-medium text-sm text-gray-700">
                     <a href="{% url 'home' %}" class="hover:text-brandBlue transition">Home</a>
                     <a href="{% url 'property_list' %}" class="hover:text-brandBlue transition">Properties</a>
                     <a href="{% url 'cheremo_gpt' %}" class="hover:text-brandBlue transition flex items-center gap-1.5 font-bold text-brandBlue bg-brandGold/10 px-3 py-1.5 rounded-xl border border-brandGold/30">
                         <i class="fa-solid fa-robot text-brandGold text-base"></i> Cheremo GPT <span class="px-1.5 py-0.5 rounded bg-brandGold text-brandDark text-[9px] font-extrabold uppercase">AI</span>
                     </a>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'my_payments' %}" class="hover:text-[#00A859] transition flex items-center gap-1 font-semibold text-[#00A859]">
+                        <i class="fa-solid fa-mobile-screen-button"></i> M-PESA Payments
+                    </a>
+                    {% endif %}
                     <a href="{% url 'about' %}" class="hover:text-brandBlue transition">About Us</a>
                     <a href="{% url 'faq' %}" class="hover:text-brandBlue transition">FAQ</a>
                     <a href="{% url 'blog_list' %}" class="hover:text-brandBlue transition">Blog</a>

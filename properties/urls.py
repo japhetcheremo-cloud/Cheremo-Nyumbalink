@@ -15,4 +15,7 @@ urlpatterns = [
     path('verify-user/<int:pk>/', views.verify_user, name='verify_user'),
     path('booking/<int:pk>/<str:status>/', views.manage_booking, name='manage_booking'),
     path('application/<int:pk>/<str:status>/', views.manage_application, name='manage_application'),
+    path('payments/', views.my_payments, name='my_payments'),
+    path('pay/', views.payment_checkout, name='payment_checkout'),
+    path('pay/<int:pk>/', views.payment_checkout, name='property_payment'),
 ]

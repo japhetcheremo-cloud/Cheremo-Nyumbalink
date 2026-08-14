@@ -167,3 +167,35 @@ class Favorite(models.Model):
     def __str__(self):
         return f"{self.user.username} saved {self.property.title}"
 
+
+class Payment(models.Model):
+    PAYMENT_TYPES = [
+        ('rent_deposit', 'Rent Deposit & Move-In'),
+        ('viewing_fee', 'House Viewing Fee'),
+        ('service_charge', 'Service Charge'),
+        ('landlord_verification', 'Landlord Verification Fee'),
+    ]
+
+    STATUS_CHOICES = [
+        ('pending', 'Pending M-PESA Confirmation'),
+        ('completed', 'Completed'),
+        ('failed', 'Failed'),
+    ]
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='payments')
+    property = models.ForeignKey(Property, on_delete=models.SET_NULL, null=True, blank=True, related_name='payments')
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    phone_number = models.CharField(max_length=20)
+    mpesa_code = models.CharField(max_length=20, blank=True, null=True)
+    till_number = models.CharField(max_length=20, default='5927622')
+    payment_type = models.CharField(max_length=50, choices=PAYMENT_TYPES, default='rent_deposit')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='completed')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"M-PESA KES {self.amount} by {self.user.username} (Till 5927622)"
+
+
