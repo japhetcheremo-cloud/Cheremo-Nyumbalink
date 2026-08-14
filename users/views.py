@@ -3,6 +3,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
+from django.utils.crypto import get_random_string
 from .models import CustomUser
 from properties.models import Property, Booking, Application, Favorite, Review
 from django.db.models import Sum
@@ -90,7 +91,7 @@ def google_login(request):
         user = CustomUser.objects.create_user(
             username=google_username,
             email=google_email,
-            password=CustomUser.objects.make_random_password(),
+            password=get_random_string(16),
             role=CustomUser.ROLE_TENANT,
             first_name='Google',
             last_name='Account',
