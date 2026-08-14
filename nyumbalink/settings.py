@@ -38,13 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+
     # Custom apps
     'users',
     'properties',
     'chat',
     'core',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -57,7 +58,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
 ROOT_URLCONF = 'nyumbalink.urls'
+
 
 TEMPLATES = [
     {
@@ -74,23 +77,36 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'nyumbalink.wsgi.application'
 
+
 # Database configuration for Vercel / serverless environment
-IS_VERCEL = bool(os.environ.get('VERCEL') or os.environ.get('VERCEL_ENV') or os.environ.get('AWS_LAMBDA_FUNCTION_NAME') or str(BASE_DIR).startswith('/var/task'))
+
+IS_VERCEL = bool(
+    os.environ.get('VERCEL')
+    or os.environ.get('VERCEL_ENV')
+    or os.environ.get('AWS_LAMBDA_FUNCTION_NAME')
+    or str(BASE_DIR).startswith('/var/task')
+)
+
 
 if IS_VERCEL:
     tmp_db = Path('/tmp/db.sqlite3')
     source_db = BASE_DIR / 'db.sqlite3'
+
     if not tmp_db.exists() and source_db.exists():
         try:
             import shutil
             shutil.copyfile(source_db, tmp_db)
         except Exception as e:
             print("Database copy error:", e)
+
     db_location = tmp_db
+
 else:
     db_location = BASE_DIR / 'db.sqlite3'
+
 
 DATABASES = {
     'default': {
@@ -101,7 +117,6 @@ DATABASES = {
 
 
 # Password validation
-# https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -120,7 +135,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/6.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
@@ -131,23 +145,40 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/6.0/howto/static-files/
+# Static files
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# Media files for user uploads (profile photos, property photos/videos)
-MEDIA_URL = 'media/'
+
+# WhiteNoise configuration
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
+# Media files
+
+MEDIA_URL = '/media/'
+
 MEDIA_ROOT = BASE_DIR / 'media'
 
+
 # Authentication configuration
+
 AUTH_USER_MODEL = 'users.CustomUser'
 
 LOGIN_URL = 'login'
+
 LOGIN_REDIRECT_URL = 'dashboard_redirect'
+
 LOGOUT_REDIRECT_URL = 'home'
 
+
 # Default primary key field type
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
