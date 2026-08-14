@@ -1,0 +1,194 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Cheremo GPT - AI Real Estate Assistant | Cheremo NyumbaLink{% endblock %}
+
+{% block content %}
+<section class="min-h-[85vh] bg-gradient-to-b from-brandDark via-slate-900 to-brandDark text-white py-10 relative overflow-hidden flex flex-col justify-center">
+    <!-- Glowing background decorative orbs -->
+    <div class="absolute top-1/4 -left-32 w-96 h-96 rounded-full bg-brandBlue filter blur-[140px] opacity-30 animate-pulse"></div>
+    <div class="absolute bottom-10 -right-32 w-96 h-96 rounded-full bg-brandGold filter blur-[140px] opacity-20"></div>
+
+    <div class="relative max-w-5xl mx-auto w-full px-4 sm:px-6 flex flex-col h-[78vh]">
+        
+        <!-- Header Bar -->
+        <div class="glassmorphism-dark rounded-t-3xl p-5 border-b border-white/10 flex items-center justify-between shadow-2xl">
+            <div class="flex items-center gap-3.5">
+                <div class="relative">
+                    <div class="h-12 w-12 rounded-2xl bg-gradient-to-tr from-brandGold to-amber-300 text-brandDark flex items-center justify-center font-bold shadow-lg text-xl gold-glow">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <span class="absolute -bottom-1 -right-1 flex h-3.5 w-3.5">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500 border-2 border-brandDark"></span>
+                    </span>
+                </div>
+                <div class="flex flex-col">
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-xl font-extrabold font-poppins tracking-tight text-white">Cheremo <span class="text-brandGold">GPT</span></h1>
+                        <span class="px-2 py-0.5 rounded-full bg-brandGold/20 text-brandGold text-[10px] font-bold uppercase tracking-wider border border-brandGold/40">AI Engine</span>
+                    </div>
+                    <p class="text-xs text-gray-300 font-medium">Smart House Hunting & Rental Intelligence Assistant</p>
+                </div>
+            </div>
+            
+            <div class="hidden sm:flex items-center gap-3">
+                <span class="text-xs text-gray-400 flex items-center gap-1.5"><i class="fa-solid fa-shield-halved text-brandGold"></i> Verified NyumbaLink Intelligence</span>
+            </div>
+        </div>
+
+        <!-- Chat Conversation Area -->
+        <div id="chat-messages" class="flex-grow glassmorphism-dark p-6 overflow-y-auto space-y-6 scrollbar-thin scrollbar-thumb-brandBlue flex flex-col">
+            
+            <!-- Welcome Message -->
+            <div class="flex gap-3 max-w-3xl animate-fadeInUp">
+                <div class="h-9 w-9 rounded-xl bg-brandGold text-brandDark flex items-center justify-center font-bold text-sm flex-shrink-0 shadow-md">
+                    <i class="fa-solid fa-robot"></i>
+                </div>
+                <div class="bg-white/10 border border-white/15 backdrop-blur-md rounded-2xl p-4 text-xs text-gray-100 leading-relaxed shadow-lg">
+                    <p class="font-semibold text-brandGold text-sm mb-1">Hello! I'm Cheremo GPT 🤖</p>
+                    <p>I can help you search rental listings across Kenya, calculate your move-in budget, explain tenancy laws, or give pre-inspection checklists before paying deposit.</p>
+                </div>
+            </div>
+
+            <!-- Quick Suggestion Chips -->
+            <div class="flex flex-wrap gap-2 my-2" id="quick-prompts">
+                <button onclick="sendPrompt('Show me 2 bedroom apartments in Westlands under 50k')" 
+                        class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-brandGold hover:text-brandDark border border-white/15 text-xs text-gray-200 transition font-medium flex items-center gap-1.5 shadow-sm">
+                    🔍 2 Bedroom in Westlands
+                </button>
+                <button onclick="sendPrompt('Calculate move in budget for 30k monthly rent')" 
+                        class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-brandGold hover:text-brandDark border border-white/15 text-xs text-gray-200 transition font-medium flex items-center gap-1.5 shadow-sm">
+                    📊 Move-In Budget Calculator
+                </button>
+                <button onclick="sendPrompt('What are tenant deposit refund rights in Kenya?')" 
+                        class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-brandGold hover:text-brandDark border border-white/15 text-xs text-gray-200 transition font-medium flex items-center gap-1.5 shadow-sm">
+                    ⚖️ Tenant Deposit Rights
+                </button>
+                <button onclick="sendPrompt('Checklist before paying house deposit')" 
+                        class="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-brandGold hover:text-brandDark border border-white/15 text-xs text-gray-200 transition font-medium flex items-center gap-1.5 shadow-sm">
+                    📝 Inspection Checklist
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Typing Indicator (Hidden by default) -->
+        <div id="typing-indicator" class="hidden glassmorphism-dark px-6 py-2 border-t border-white/5 flex items-center gap-2 text-xs text-brandGold font-semibold">
+            <i class="fa-solid fa-circle-notch fa-spin text-sm"></i> Cheremo GPT is analyzing listings & calculating response...
+        </div>
+
+        <!-- Input Bar -->
+        <div class="glassmorphism-dark rounded-b-3xl p-4 border-t border-white/10">
+            <form id="gpt-form" class="flex gap-3 items-center">
+                {% csrf_token %}
+                <input type="text" id="user-input" required placeholder="Ask Cheremo GPT anything about rentals, prices, laws, or listings..." 
+                       class="flex-grow bg-white/10 border border-white/20 rounded-2xl px-5 py-3.5 text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brandGold transition">
+                <button type="submit" id="send-btn" class="bg-brandGold hover:bg-yellow-500 text-brandDark font-extrabold px-6 py-3.5 rounded-2xl transition shadow-lg flex items-center gap-2 gold-glow">
+                    <span>Ask</span> <i class="fa-solid fa-paper-plane text-xs"></i>
+                </button>
+            </form>
+        </div>
+
+    </div>
+</section>
+
+<!-- Custom JS for AJAX Chat -->
+<script>
+    const chatContainer = document.getElementById('chat-messages');
+    const gptForm = document.getElementById('gpt-form');
+    const userInput = document.getElementById('user-input');
+    const typingIndicator = document.getElementById('typing-indicator');
+
+    function scrollToBottom() {
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    function sendPrompt(promptText) {
+        userInput.value = promptText;
+        gptForm.dispatchEvent(new Event('submit'));
+    }
+
+    gptForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const msg = userInput.value.trim();
+        if (!msg) return;
+
+        // Render User Message
+        const userBubble = `
+            <div class="flex justify-end gap-3 max-w-3xl ml-auto animate-fadeInUp">
+                <div class="bg-brandBlue/80 border border-brandBlue text-white rounded-2xl p-4 text-xs leading-relaxed shadow-lg">
+                    <p>${escapeHtml(msg)}</p>
+                </div>
+                <div class="h-9 w-9 rounded-xl bg-brandBlue text-white flex items-center justify-center font-bold text-xs flex-shrink-0 shadow-md border border-brandGold">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+            </div>
+        `;
+        chatContainer.insertAdjacentHTML('beforeend', userBubble);
+        userInput.value = '';
+        scrollToBottom();
+
+        // Show typing indicator
+        typingIndicator.classList.remove('hidden');
+
+        try {
+            const formData = new FormData();
+            formData.append('message', msg);
+            formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+
+            const response = await fetch("{% url 'cheremo_gpt_chat' %}", {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            typingIndicator.classList.add('hidden');
+
+            if (data.status === 'success') {
+                let formattedReply = data.reply.replace(/\n/g, '<br>');
+
+                // If matching properties returned, build property cards grid
+                let propsHtml = '';
+                if (data.properties && data.properties.length > 0) {
+                    propsHtml = '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">';
+                    data.properties.forEach(p => {
+                        propsHtml += `
+                            <a href="${p.url}" class="bg-white/10 hover:bg-white/20 border border-white/15 rounded-xl p-3 flex gap-3 transition group shadow-md">
+                                <img src="${p.image}" class="h-16 w-20 object-cover rounded-lg flex-shrink-0 border border-brandGold/40 group-hover:scale-105 transition" alt="${p.title}">
+                                <div class="flex flex-col min-w-0 justify-between text-xs">
+                                    <span class="font-bold text-white truncate group-hover:text-brandGold transition">${p.title}</span>
+                                    <span class="text-brandGold font-extrabold">KES ${p.rent.toLocaleString()} / mo</span>
+                                    <span class="text-[10px] text-gray-300"><i class="fa-solid fa-location-dot text-brandGold mr-1"></i>${p.location}</span>
+                                </div>
+                            </a>
+                        `;
+                    });
+                    propsHtml += '</div>';
+                }
+
+                const aiBubble = `
+                    <div class="flex gap-3 max-w-3xl animate-fadeInUp">
+                        <div class="h-9 w-9 rounded-xl bg-brandGold text-brandDark flex items-center justify-center font-bold text-sm flex-shrink-0 shadow-md">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                        <div class="bg-white/10 border border-white/15 backdrop-blur-md rounded-2xl p-4 text-xs text-gray-100 leading-relaxed shadow-lg">
+                            <div>${formattedReply}</div>
+                            ${propsHtml}
+                        </div>
+                    </div>
+                `;
+                chatContainer.insertAdjacentHTML('beforeend', aiBubble);
+                scrollToBottom();
+            }
+        } catch (err) {
+            typingIndicator.classList.add('hidden');
+            console.error(err);
+        }
+    });
+
+    function escapeHtml(text) {
+        return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+</script>
+{% endblock %}

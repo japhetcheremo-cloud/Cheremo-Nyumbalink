@@ -127,9 +127,12 @@
                 </div>
 
                 <!-- Desktop Menu -->
-                <nav class="hidden md:flex items-center space-x-8 font-medium text-sm text-gray-700">
+                <nav class="hidden md:flex items-center space-x-7 font-medium text-sm text-gray-700">
                     <a href="{% url 'home' %}" class="hover:text-brandBlue transition">Home</a>
                     <a href="{% url 'property_list' %}" class="hover:text-brandBlue transition">Properties</a>
+                    <a href="{% url 'cheremo_gpt' %}" class="hover:text-brandBlue transition flex items-center gap-1.5 font-bold text-brandBlue bg-brandGold/10 px-3 py-1.5 rounded-xl border border-brandGold/30">
+                        <i class="fa-solid fa-robot text-brandGold text-base"></i> Cheremo GPT <span class="px-1.5 py-0.5 rounded bg-brandGold text-brandDark text-[9px] font-extrabold uppercase">AI</span>
+                    </a>
                     <a href="{% url 'about' %}" class="hover:text-brandBlue transition">About Us</a>
                     <a href="{% url 'faq' %}" class="hover:text-brandBlue transition">FAQ</a>
                     <a href="{% url 'blog_list' %}" class="hover:text-brandBlue transition">Blog</a>
@@ -299,8 +302,18 @@
         </div>
     </footer>
 
-    <!-- Persistent Floating Contact Buttons -->
+    <!-- Persistent Floating Contact & AI Buttons -->
     <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
+        <!-- Cheremo GPT Floating Button -->
+        <a href="{% url 'cheremo_gpt' %}" 
+           class="h-14 w-14 rounded-full bg-gradient-to-tr from-brandDark to-brandBlue text-brandGold flex items-center justify-center shadow-2xl transition-transform hover:scale-110 floating-btn-shadow gold-glow border-2 border-brandGold focus:outline-none relative group"
+           title="Ask Cheremo GPT AI Assistant">
+            <i class="fa-solid fa-robot text-2xl"></i>
+            <span class="absolute -top-1 -right-1 flex h-4 w-4">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brandGold opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-4 w-4 bg-brandGold text-brandDark font-extrabold text-[8px] items-center justify-center">AI</span>
+            </span>
+        </a>
         <!-- WhatsApp -->
         <a href="https://wa.me/254719678760" target="_blank" rel="noopener noreferrer" 
            class="h-14 w-14 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-lg transition-transform hover:scale-110 floating-btn-shadow gold-glow focus:outline-none"

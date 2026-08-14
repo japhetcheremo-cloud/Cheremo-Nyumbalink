@@ -11,4 +11,6 @@ urlpatterns = [
     path('terms/', views.terms, name='terms'),
     path('privacy/', views.privacy, name='privacy'),
     path('cookies/', views.cookies, name='cookies'),
+    path('cheremo-gpt/', views.cheremo_gpt_page, name='cheremo_gpt'),
+    path('cheremo-gpt/chat/', views.cheremo_gpt_chat, name='cheremo_gpt_chat'),
 ]
