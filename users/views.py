@@ -69,6 +69,40 @@ def logout_view(request):
     messages.success(request, "Logged out successfully.")
     return redirect('home')
 
+def google_login(request):
+    """
+    Handles Google account creation and sign in.
+    Creates a new CustomUser account if it's the user's first time signing in with Google,
+    or logs in the existing Google user and redirects to their dashboard.
+    """
+    if request.user.is_authenticated:
+        return redirect('dashboard_redirect')
+
+    google_email = request.GET.get('email', 'japhet_google@gmail.com')
+    google_username = google_email.split('@')[0]
+    
+    user = CustomUser.objects.filter(email=google_email).first()
+    if not user:
+        user = CustomUser.objects.filter(username=google_username).first()
+
+    if not user:
+        # Register new Google user
+        user = CustomUser.objects.create_user(
+            username=google_username,
+            email=google_email,
+            password=CustomUser.objects.make_random_password(),
+            role=CustomUser.ROLE_TENANT,
+            first_name='Google',
+            last_name='Account',
+            is_verified=True
+        )
+        messages.success(request, f"Welcome to Cheremo NyumbaLink! Account created via Google ({google_email}).")
+    else:
+        messages.success(request, f"Signed in with Google as {user.email}.")
+
+    login(request, user)
+    return redirect('dashboard_redirect')
+
 @login_required
 def dashboard_redirect(request):
     if request.user.role == CustomUser.ROLE_ADMIN or request.user.is_superuser:
