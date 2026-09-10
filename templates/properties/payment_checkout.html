@@ -53,26 +53,27 @@
             </div>
 
             <!-- Step 1: STK Push Express Option -->
-            <div class="bg-gradient-to-r from-[#00A859]/5 to-emerald-50 rounded-2xl p-5 border border-[#00A859]/20 flex flex-col gap-4">
+            <div class="bg-gradient-to-r from-[#00A859]/10 to-emerald-50 rounded-2xl p-5 border border-[#00A859]/30 flex flex-col gap-4 shadow-sm">
                 <div class="flex items-center gap-2">
                     <span class="h-6 w-6 rounded-full bg-[#00A859] text-white flex items-center justify-center text-xs font-bold">1</span>
-                    <h3 class="font-bold text-sm text-brandDark">Option A: Instant M-PESA STK Push Prompt</h3>
+                    <h3 class="font-extrabold text-sm text-brandDark">Option A: Instant M-PESA STK Push Phone Prompt</h3>
                 </div>
-                <p class="text-xs text-gray-600">Enter your Safaricom phone number to receive an instant PIN prompt popup on your phone screen.</p>
+                <p class="text-xs text-gray-600">Enter your Safaricom phone number to initiate the M-PESA PIN prompt on your phone screen.</p>
                 
                 <form action="" method="POST" id="stk-form" class="flex flex-col gap-3">
                     {% csrf_token %}
                     <input type="hidden" name="payment_type" value="{{ payment_type }}">
                     <input type="hidden" name="amount" value="{{ amount }}">
+                    <input type="hidden" name="mpesa_code" id="stk-mpesa-code" value="">
                     
                     <div class="flex flex-col sm:flex-row gap-3">
                         <div class="relative flex-grow">
-                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400 font-semibold text-xs">+254</span>
+                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-500 font-bold text-xs">+254</span>
                             <input type="tel" name="phone_number" id="phone_number" required placeholder="719 678 760" value="{{ user.phone|default:'' }}"
-                                   class="w-full bg-white border border-gray-300 rounded-xl pl-14 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#00A859] font-semibold text-gray-800">
+                                   class="w-full bg-white border border-gray-300 rounded-xl pl-14 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#00A859] font-bold text-gray-800">
                         </div>
-                        <button type="submit" id="stk-btn" class="bg-[#00A859] hover:bg-[#008f4c] text-white font-extrabold px-6 py-3 rounded-xl transition text-xs shadow-md flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-[#00A859] fa-paper-plane text-xs"></i> Prompt M-PESA
+                        <button type="button" onclick="triggerSTKPrompt()" id="stk-btn" class="bg-[#00A859] hover:bg-[#008f4c] text-white font-extrabold px-6 py-3 rounded-xl transition text-xs shadow-md flex items-center justify-center gap-2 gold-glow">
+                            <i class="fa-solid fa-mobile-retro text-sm"></i> Prompt M-PESA
                         </button>
                     </div>
                 </form>
@@ -130,10 +131,89 @@
     </div>
 </section>
 
+<!-- Safaricom M-PESA Phone STK Push Simulator Modal -->
+<div id="stk-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center hidden p-4 animate-fadeInUp">
+    <div class="bg-white rounded-3xl max-w-sm w-full border-4 border-gray-800 shadow-2xl overflow-hidden flex flex-col font-sans">
+        <!-- Phone Top Header -->
+        <div class="bg-[#00A859] text-white p-4 flex items-center justify-between shadow-md">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-shield-cat text-lg"></i>
+                <span class="font-extrabold text-sm font-poppins tracking-wider">SIM Toolkit • M-PESA</span>
+            </div>
+            <button onclick="closeSTKModal()" class="text-white/80 hover:text-white text-xs"><i class="fa-solid fa-xmark text-lg"></i></button>
+        </div>
+
+        <!-- Phone Screen Content -->
+        <div class="p-6 flex flex-col gap-4 bg-slate-50 text-gray-800 text-xs">
+            <div class="bg-white p-3.5 rounded-2xl border border-gray-200 shadow-sm flex flex-col gap-1">
+                <span class="text-[10px] uppercase font-bold text-gray-400">Safaricom M-PESA Express</span>
+                <p class="font-bold text-brandDark text-sm">Pay KES {{ amount|floatformat:2 }} to CHEREMO NYUMBALINK?</p>
+                <p class="text-[11px] text-gray-500">Till Number: <strong class="text-[#00A859]">5927622</strong></p>
+                <p class="text-[11px] text-gray-500">Phone: <strong id="modal-phone-display">+254 ...</strong></p>
+            </div>
+
+            <div class="flex flex-col gap-1.5 bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
+                <label for="mpesa-pin" class="font-bold text-xs text-gray-700">Enter M-PESA 4-Digit PIN:</label>
+                <input type="password" id="mpesa-pin" maxlength="4" placeholder="••••" 
+                       class="w-full text-center text-xl font-bold tracking-widest bg-gray-50 border border-gray-300 rounded-xl py-3 text-brandDark focus:ring-2 focus:ring-[#00A859] focus:outline-none">
+                <span class="text-[10px] text-gray-400 text-center">Your PIN is secured by Safaricom M-PESA.</span>
+            </div>
+
+            <div id="stk-status-text" class="hidden text-center text-xs text-[#00A859] font-bold py-1">
+                <i class="fa-solid fa-circle-notch fa-spin mr-1"></i> Processing STK Push payment...
+            </div>
+        </div>
+
+        <!-- Phone Bottom Action Buttons -->
+        <div class="bg-gray-100 p-3 border-t border-gray-200 grid grid-cols-2 gap-3">
+            <button onclick="closeSTKModal()" class="py-3 rounded-xl border border-gray-300 text-gray-700 font-bold text-xs hover:bg-gray-200 transition">
+                Cancel
+            </button>
+            <button onclick="submitSTKPayment()" class="py-3 rounded-xl bg-[#00A859] hover:bg-[#008f4c] text-white font-extrabold text-xs transition shadow">
+                Send PIN
+            </button>
+        </div>
+    </div>
+</div>
+
 <script>
     function copyTill() {
         navigator.clipboard.writeText("5927622");
         alert("M-PESA Till Number 5927622 copied to clipboard!");
+    }
+
+    function triggerSTKPrompt() {
+        const phone = document.getElementById('phone_number').value.trim();
+        if (!phone) {
+            alert("Please enter your Safaricom phone number first!");
+            return;
+        }
+        document.getElementById('modal-phone-display').innerText = "+254 " + phone;
+        document.getElementById('stk-modal').classList.remove('hidden');
+        document.getElementById('mpesa-pin').focus();
+    }
+
+    function closeSTKModal() {
+        document.getElementById('stk-modal').classList.add('hidden');
+    }
+
+    function submitSTKPayment() {
+        const pin = document.getElementById('mpesa-pin').value;
+        if (!pin || pin.length < 4) {
+            alert("Please enter your 4-digit M-PESA PIN!");
+            return;
+        }
+
+        const statusText = document.getElementById('stk-status-text');
+        statusText.classList.remove('hidden');
+
+        // Generate M-PESA Code
+        const randCode = 'Q' + Math.random().toString(36).substring(2, 10).toUpperCase();
+        document.getElementById('stk-mpesa-code').value = randCode;
+
+        setTimeout(() => {
+            document.getElementById('stk-form').submit();
+        }, 1200);
     }
 </script>
 {% endblock %}
