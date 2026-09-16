@@ -23,10 +23,6 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Accept Android Licenses
-        run: |
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
-
       - name: Grant Execute Permission to Gradlew
         run: |
           cd android-app
@@ -35,7 +31,15 @@ jobs:
       - name: Build Android Release APK
         run: |
           cd android-app
-          ./gradlew assembleRelease --stacktrace --no-daemon
+          ./gradlew assembleRelease --info --stacktrace --no-daemon 2>&1 | tee ../build_output.txt
+
+      - name: Upload Build Log on Failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gradle-build-log
+          path: build_output.txt
+          retention-days: 7
 
       - name: Build Android App Bundle (AAB)
         run: |
