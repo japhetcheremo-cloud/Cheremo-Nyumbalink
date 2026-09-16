@@ -5,6 +5,9 @@ on:
     branches: [ "main" ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     name: Build Release APK & Bundle
@@ -21,36 +24,33 @@ jobs:
           java-version: '17'
           cache: 'gradle'
 
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
       - name: Grant Execute Permission to Gradlew
         run: |
           cd android-app
           chmod +x gradlew || true
 
-      - name: Generate Gradle Wrapper if needed
-        run: |
-          cd android-app
-          if [ ! -f gradlew ]; then
-            gradle wrapper --gradle-version 8.2
-          fi
-          chmod +x gradlew
-
       - name: Build Android Release APK
         run: |
           cd android-app
-          ./gradlew assembleRelease --stacktrace
+          ./gradlew assembleRelease --stacktrace --no-daemon
 
       - name: Build Android App Bundle (AAB)
         run: |
           cd android-app
-          ./gradlew bundleRelease --stacktrace || true
+          ./gradlew bundleRelease --stacktrace --no-daemon || true
 
-      - name: Rename Artifacts
+      - name: Prepare Artifacts
         run: |
           mkdir -p output_artifacts
-          cp android-app/app/build/outputs/apk/release/app-release.apk output_artifacts/Cheremo-NyumbaLink.apk || cp android-app/app/build/outputs/apk/release/app-release-unsigned.apk output_artifacts/Cheremo-NyumbaLink.apk
-          if [ -f android-app/app/build/outputs/bundle/release/app-release.aab ]; then
-            cp android-app/app/build/outputs/bundle/release/app-release.aab output_artifacts/Cheremo-NyumbaLink.aab
-          fi
+          find android-app/app/build/outputs/apk/ -name "*.apk" -exec cp {} output_artifacts/Cheremo-NyumbaLink.apk \;
+          find android-app/app/build/outputs/bundle/ -name "*.aab" -exec cp {} output_artifacts/Cheremo-NyumbaLink.aab \;
+          ls -la output_artifacts/
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
@@ -71,7 +71,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main'
         with:
-          tag_name: v1.0.0-${{ github.run_number }}
+          tag_name: v1.0.0-build${{ github.run_number }}
           name: Cheremo NyumbaLink Android App v1.0.0 (Build ${{ github.run_number }})
           body: |
             ## 📱 Cheremo NyumbaLink Mobile App
