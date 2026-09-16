@@ -31,26 +31,26 @@ jobs:
       - name: Build Android Release APK
         run: |
           cd android-app
-          ./gradlew assembleRelease --info --stacktrace --no-daemon 2>&1 | tee ../build_output.txt
-
-      - name: Upload Build Log on Failure
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: gradle-build-log
-          path: build_output.txt
-          retention-days: 7
+          ./gradlew assembleRelease --no-daemon
 
       - name: Build Android App Bundle (AAB)
         run: |
           cd android-app
-          ./gradlew bundleRelease --stacktrace --no-daemon || true
+          ./gradlew bundleRelease --no-daemon || true
 
       - name: Prepare Artifacts
         run: |
           mkdir -p output_artifacts
-          find android-app/app/build/outputs/apk/ -name "*.apk" -exec cp {} output_artifacts/Cheremo-NyumbaLink.apk \;
-          find android-app/app/build/outputs/bundle/ -name "*.aab" -exec cp {} output_artifacts/Cheremo-NyumbaLink.aab \;
+          APK_FILE=$(find android-app/app/build/outputs/apk/ -name "*.apk" | head -n 1)
+          if [ -n "$APK_FILE" ]; then
+            cp "$APK_FILE" output_artifacts/Cheremo-NyumbaLink.apk
+            echo "Copied APK: $APK_FILE"
+          fi
+          AAB_FILE=$(find android-app/app/build/outputs/bundle/ -name "*.aab" | head -n 1)
+          if [ -n "$AAB_FILE" ]; then
+            cp "$AAB_FILE" output_artifacts/Cheremo-NyumbaLink.aab
+            echo "Copied AAB: $AAB_FILE"
+          fi
           ls -la output_artifacts/
 
       - name: Upload APK Artifact
