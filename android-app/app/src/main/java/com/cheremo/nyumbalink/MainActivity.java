@@ -138,8 +138,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onPageFinished(WebView view, String url, Bitmap favicon) {
-                super.onPageFinished(view, url, favicon);
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
                 hideLoading();
                 swipeRefreshLayout.setRefreshing(false);
                 CookieManager.getInstance().flush();
@@ -152,14 +152,6 @@ public class MainActivity extends AppCompatActivity {
                     swipeRefreshLayout.setRefreshing(false);
                     showOffline();
                 }
-            }
-
-            // Override deprecated method for older APIs
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                hideLoading();
-                swipeRefreshLayout.setRefreshing(false);
             }
         });
 
