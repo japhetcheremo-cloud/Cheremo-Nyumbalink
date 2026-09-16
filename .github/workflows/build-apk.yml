@@ -22,18 +22,15 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-          cache: 'gradle'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
+      - name: Accept Android Licenses
+        run: |
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
       - name: Grant Execute Permission to Gradlew
         run: |
           cd android-app
-          chmod +x gradlew || true
+          chmod +x gradlew
 
       - name: Build Android Release APK
         run: |
