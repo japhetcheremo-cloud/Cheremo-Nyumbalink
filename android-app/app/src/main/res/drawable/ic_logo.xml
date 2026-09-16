@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Cheremo NyumbaLink App Icon - House with brand colors -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Background circle -->
+    <path
+        android:fillColor="#0B3D91"
+        android:pathData="M54,54m-54,0a54,54 0,1 1,108 0a54,54 0,1 1,-108 0" />
+
+    <!-- House body -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,22 L82,46 L76,46 L76,78 L32,78 L32,46 L26,46 Z" />
+
+    <!-- Door -->
+    <path
+        android:fillColor="#0B3D91"
+        android:pathData="M46,78 L46,58 Q46,55 49,55 L59,55 Q62,55 62,58 L62,78 Z" />
+
+    <!-- Window left -->
+    <path
+        android:fillColor="#F4B400"
+        android:pathData="M36,52 L44,52 L44,62 L36,62 Z" />
+
+    <!-- Window right -->
+    <path
+        android:fillColor="#F4B400"
+        android:pathData="M64,52 L72,52 L72,62 L64,62 Z" />
+
+    <!-- Roof peak accent -->
+    <path
+        android:fillColor="#F4B400"
+        android:pathData="M54,22 L82,46 L76,46 L54,27 L32,46 L26,46 Z" />
+
+</vector>

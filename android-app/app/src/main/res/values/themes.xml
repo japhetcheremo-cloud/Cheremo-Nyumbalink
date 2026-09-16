@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.CheremoNyumbaLink" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/brand_blue</item>
+        <item name="colorPrimaryDark">@color/brand_dark</item>
+        <item name="colorAccent">@color/brand_gold</item>
+        <item name="android:statusBarColor">@color/brand_blue</item>
+        <item name="android:navigationBarColor">@color/brand_dark</item>
+        <item name="android:windowBackground">@color/brand_light</item>
+    </style>
+
+    <style name="Theme.CheremoNyumbaLink.Splash" parent="Theme.CheremoNyumbaLink">
+        <item name="android:windowBackground">#0B3D91</item>
+        <item name="android:statusBarColor">#0B3D91</item>
+        <item name="android:navigationBarColor">#0B3D91</item>
+        <item name="android:windowFullscreen">false</item>
+    </style>
+</resources>

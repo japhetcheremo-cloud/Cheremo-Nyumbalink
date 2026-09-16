@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- House icon foreground for adaptive icon -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- House body -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,28 L80,50 L74,50 L74,80 L34,80 L34,50 L28,50 Z" />
+
+    <!-- Door -->
+    <path
+        android:fillColor="#0B3D91"
+        android:pathData="M46,80 L46,62 Q46,59 49,59 L59,59 Q62,59 62,62 L62,80 Z" />
+
+    <!-- Window left -->
+    <path
+        android:fillColor="#F4B400"
+        android:pathData="M37,55 L46,55 L46,65 L37,65 Z" />
+
+    <!-- Window right -->
+    <path
+        android:fillColor="#F4B400"
+        android:pathData="M62,55 L71,55 L71,65 L62,65 Z" />
+
+    <!-- Roof -->
+    <path
+        android:fillColor="#F4B400"
+        android:pathData="M54,28 L80,50 L74,50 L54,33 L34,50 L28,50 Z" />
+
+</vector>

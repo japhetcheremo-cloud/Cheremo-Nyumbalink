@@ -1,0 +1,97 @@
+name: Build and Release Android APK
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Release APK & Bundle
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Grant Execute Permission to Gradlew
+        run: |
+          cd android-app
+          chmod +x gradlew || true
+
+      - name: Generate Gradle Wrapper if needed
+        run: |
+          cd android-app
+          if [ ! -f gradlew ]; then
+            gradle wrapper --gradle-version 8.2
+          fi
+          chmod +x gradlew
+
+      - name: Build Android Release APK
+        run: |
+          cd android-app
+          ./gradlew assembleRelease --stacktrace
+
+      - name: Build Android App Bundle (AAB)
+        run: |
+          cd android-app
+          ./gradlew bundleRelease --stacktrace || true
+
+      - name: Rename Artifacts
+        run: |
+          mkdir -p output_artifacts
+          cp android-app/app/build/outputs/apk/release/app-release.apk output_artifacts/Cheremo-NyumbaLink.apk || cp android-app/app/build/outputs/apk/release/app-release-unsigned.apk output_artifacts/Cheremo-NyumbaLink.apk
+          if [ -f android-app/app/build/outputs/bundle/release/app-release.aab ]; then
+            cp android-app/app/build/outputs/bundle/release/app-release.aab output_artifacts/Cheremo-NyumbaLink.aab
+          fi
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Cheremo-NyumbaLink-APK
+          path: output_artifacts/Cheremo-NyumbaLink.apk
+          retention-days: 90
+
+      - name: Upload Bundle (AAB) Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Cheremo-NyumbaLink-AAB
+          path: output_artifacts/Cheremo-NyumbaLink.aab
+          retention-days: 90
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main'
+        with:
+          tag_name: v1.0.0-${{ github.run_number }}
+          name: Cheremo NyumbaLink Android App v1.0.0 (Build ${{ github.run_number }})
+          body: |
+            ## 📱 Cheremo NyumbaLink Mobile App
+            
+            Official Android Application release for **Cheremo NyumbaLink** - Kenya's Smart House Hunting Platform.
+            
+            ### 🚀 Features in this Release:
+            - **Native Splash Screen** with brand blue & gold animations
+            - **Full House Hunting & Search Engine**: Real-time filtering by county, price, amenities
+            - **Google Sign-In & Authentication**: Seamless login/registration
+            - **Interactive Safaricom M-PESA Portal**: Instant STK Push & Till Number 5927622 checkout
+            - **Cheremo GPT AI Assistant**: Built-in intelligent real-estate advisor
+            - **Camera & Gallery File Uploads**: Upload property images and ID verification docs
+            - **Swipe-to-Refresh & Offline Error Handling**: Polished native-grade experience
+            - **Android Back-Button Navigation**: Native stack traversal
+            
+            ### 📥 Download & Install
+            Download **`Cheremo-NyumbaLink.apk`** below directly onto your Android device to install!
+          files: |
+            output_artifacts/Cheremo-NyumbaLink.apk
+            output_artifacts/Cheremo-NyumbaLink.aab
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

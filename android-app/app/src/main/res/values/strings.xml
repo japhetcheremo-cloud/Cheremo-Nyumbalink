@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Cheremo NyumbaLink</string>
+    <string name="app_tagline">Find Your Perfect Home, Faster.</string>
+    <string name="offline_title">No Internet Connection</string>
+    <string name="offline_message">Please check your connection and try again.</string>
+    <string name="retry">Try Again</string>
+    <string name="loading">Loading...</string>
+</resources>
