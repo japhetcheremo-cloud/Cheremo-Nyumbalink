@@ -27,7 +27,9 @@ urlpatterns = [
     path('chat/', include('chat.urls')),
 ]
 
-if settings.DEBUG:
+# Serve media files in development (local filesystem only — not needed when Cloudinary is active)
+if settings.DEBUG and hasattr(settings, 'MEDIA_ROOT'):
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

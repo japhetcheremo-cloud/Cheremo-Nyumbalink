@@ -21,10 +21,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-j-lwe-1_kh(x28wk_yi@lyxr-=9l^$ic5bp9(hi&(@=i5i&kv9'
+SECRET_KEY = os.environ.get(
+    'DJANGO_SECRET_KEY',
+    'django-insecure-j-lwe-1_kh(x28wk_yi@lyxr-=9l^$ic5bp9(hi&(@=i5i&kv9'
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'True').lower() not in ('false', '0', 'no')
 
 ALLOWED_HOSTS = ['*']
 
@@ -81,7 +84,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'nyumbalink.wsgi.application'
 
 
-# Database configuration for Vercel / serverless environment
+# ─────────────────────────────────────────────────────────────────────────────
+# Detect serverless / Vercel environment
+# ─────────────────────────────────────────────────────────────────────────────
 
 IS_VERCEL = bool(
     os.environ.get('VERCEL')
@@ -90,6 +95,10 @@ IS_VERCEL = bool(
     or str(BASE_DIR).startswith('/var/task')
 )
 
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Database
+# ─────────────────────────────────────────────────────────────────────────────
 
 if IS_VERCEL:
     tmp_db = Path('/tmp/db.sqlite3')
@@ -116,7 +125,9 @@ DATABASES = {
 }
 
 
+# ─────────────────────────────────────────────────────────────────────────────
 # Password validation
+# ─────────────────────────────────────────────────────────────────────────────
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -134,7 +145,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# ─────────────────────────────────────────────────────────────────────────────
 # Internationalization
+# ─────────────────────────────────────────────────────────────────────────────
 
 LANGUAGE_CODE = 'en-us'
 
@@ -145,7 +158,9 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files
+# ─────────────────────────────────────────────────────────────────────────────
+# Static files (CSS, JavaScript, Images)
+# ─────────────────────────────────────────────────────────────────────────────
 
 STATIC_URL = '/static/'
 
@@ -155,20 +170,67 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-
-# WhiteNoise configuration
-
+# WhiteNoise – compressed static serving
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
-# Media files
+# ─────────────────────────────────────────────────────────────────────────────
+# Media / File Storage
+#
+# On Vercel (ephemeral filesystem) uploaded files are lost between requests
+# unless a persistent cloud storage backend is used.
+#
+# If CLOUDINARY_URL or all three individual Cloudinary vars are set we enable
+# django-cloudinary-storage for both images and raw files.
+# On local dev the ordinary filesystem is used (MEDIA_ROOT / MEDIA_URL).
+# ─────────────────────────────────────────────────────────────────────────────
 
-MEDIA_URL = '/media/'
+_CLOUDINARY_URL = os.environ.get('CLOUDINARY_URL', '')
+_CLOUD_NAME = os.environ.get('CLOUDINARY_CLOUD_NAME', '')
+_API_KEY = os.environ.get('CLOUDINARY_API_KEY', '')
+_API_SECRET = os.environ.get('CLOUDINARY_API_SECRET', '')
 
-MEDIA_ROOT = BASE_DIR / 'media'
+USE_CLOUDINARY = bool(
+    _CLOUDINARY_URL
+    or (_CLOUD_NAME and _API_KEY and _API_SECRET)
+)
+
+if USE_CLOUDINARY:
+    # Add cloudinary apps only when credentials are present
+    INSTALLED_APPS += ['cloudinary', 'cloudinary_storage']
+
+    if _CLOUDINARY_URL:
+        # cloudinary://api_key:api_secret@cloud_name  ─ let the SDK parse it
+        import cloudinary
+        cloudinary.config(cloudinary_url=_CLOUDINARY_URL)
+        _parts = _CLOUDINARY_URL.replace('cloudinary://', '').split('@')
+        if len(_parts) == 2:
+            _key_secret, _cloud = _parts
+            _k, _s = _key_secret.split(':', 1) if ':' in _key_secret else (_key_secret, '')
+            CLOUDINARY_STORAGE = {
+                'CLOUD_NAME': _cloud,
+                'API_KEY': _k,
+                'API_SECRET': _s,
+            }
+    else:
+        CLOUDINARY_STORAGE = {
+            'CLOUD_NAME': _CLOUD_NAME,
+            'API_KEY': _API_KEY,
+            'API_SECRET': _API_SECRET,
+        }
+
+    MEDIA_URL = '/media/'
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+else:
+    # Local filesystem – works perfectly with runserver and DEBUG=True
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = BASE_DIR / 'media'
 
 
-# Authentication configuration
+# ─────────────────────────────────────────────────────────────────────────────
+# Authentication
+# ─────────────────────────────────────────────────────────────────────────────
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
@@ -178,7 +240,30 @@ LOGIN_REDIRECT_URL = 'dashboard_redirect'
 
 LOGOUT_REDIRECT_URL = 'home'
 
+# Session cookies are scoped to the browser session by default.
+SESSION_COOKIE_AGE = 86400 * 7  # 7 days
+SESSION_SAVE_EVERY_REQUEST = True
 
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Security (basic hardening for production)
+# ─────────────────────────────────────────────────────────────────────────────
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://cheremo-nyumbalink.vercel.app',
+    'https://*.vercel.app',
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+]
+
+if not DEBUG:
+    SECURE_BROWSER_XSS_FILTER = True
+    X_FRAME_OPTIONS = 'DENY'
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Default primary key field type
+# ─────────────────────────────────────────────────────────────────────────────
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

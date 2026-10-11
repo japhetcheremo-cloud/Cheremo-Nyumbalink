@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.utils.crypto import get_random_string
 from .models import CustomUser
+from .forms import CustomUserRegistrationForm, ProfileSettingsForm, validate_doc_file
 from properties.models import Property, Booking, Application, Favorite, Review
 from django.db.models import Sum
 
@@ -13,37 +14,25 @@ def register(request):
         return redirect('dashboard_redirect')
         
     if request.method == 'POST':
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        phone = request.POST.get('phone')
-        password = request.POST.get('password')
-        role = request.POST.get('role', 'tenant')
-        first_name = request.POST.get('first_name', '')
-        last_name = request.POST.get('last_name', '')
+        form = CustomUserRegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            messages.success(request, f"Welcome {user.username}! Your account has been created successfully.")
+            login(request, user)
+            return redirect('dashboard_redirect')
+        else:
+            # Add form validation errors to messages
+            for field, errors in form.errors.items():
+                for error in errors:
+                    field_label = field.replace('_', ' ').capitalize() if field != '__all__' else ''
+                    if field_label:
+                        messages.error(request, f"{field_label}: {error}")
+                    else:
+                        messages.error(request, str(error))
+    else:
+        form = CustomUserRegistrationForm()
         
-        if CustomUser.objects.filter(username=username).exists():
-            messages.error(request, "Username is already taken.")
-            return render(request, 'users/register.html')
-            
-        if CustomUser.objects.filter(email=email).exists():
-            messages.error(request, "Email is already registered.")
-            return render(request, 'users/register.html')
-            
-        user = CustomUser.objects.create_user(
-            username=username,
-            email=email,
-            password=password,
-            role=role,
-            phone=phone,
-            first_name=first_name,
-            last_name=last_name
-        )
-        
-        messages.success(request, f"Welcome {user.username}! Your account has been created successfully.")
-        login(request, user)
-        return redirect('dashboard_redirect')
-        
-    return render(request, 'users/register.html')
+    return render(request, 'users/register.html', {'form': form})
 
 def login_view(request):
     if request.user.is_authenticated:
@@ -52,17 +41,19 @@ def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
+            user = form.get_user()
             if user is not None:
                 login(request, user)
                 messages.success(request, f"Welcome back, {user.username}!")
+                next_url = request.GET.get('next') or request.POST.get('next')
+                if next_url and next_url.startswith('/'):
+                    return redirect(next_url)
                 return redirect('dashboard_redirect')
         else:
-            messages.error(request, "Invalid username or password.")
-            
-    form = AuthenticationForm()
+            messages.error(request, "Invalid username or password. Please try again.")
+    else:
+        form = AuthenticationForm()
+        
     return render(request, 'users/login.html', {'form': form})
 
 def logout_view(request):
@@ -201,20 +192,19 @@ def admin_dashboard(request):
 def profile_settings(request):
     user = request.user
     if request.method == 'POST':
-        user.first_name = request.POST.get('first_name', '')
-        user.last_name = request.POST.get('last_name', '')
-        user.email = request.POST.get('email', '')
-        user.phone = request.POST.get('phone', '')
-        user.bio = request.POST.get('bio', '')
+        form = ProfileSettingsForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Profile updated successfully.")
+            return redirect('profile_settings')
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field.replace('_', ' ').capitalize()}: {error}")
+    else:
+        form = ProfileSettingsForm(instance=user)
         
-        if 'profile_picture' in request.FILES:
-            user.profile_picture = request.FILES['profile_picture']
-            
-        user.save()
-        messages.success(request, "Profile updated successfully.")
-        return redirect('profile_settings')
-        
-    return render(request, 'users/profile_settings.html')
+    return render(request, 'users/profile_settings.html', {'form': form})
 
 @login_required
 def upload_verification(request):
@@ -225,12 +215,16 @@ def upload_verification(request):
         
     if request.method == 'POST':
         if 'verification_document' in request.FILES:
-            user.verification_document = request.FILES['verification_document']
-            user.save()
-            messages.success(request, "Verification document uploaded successfully. Our administration team will review it.")
+            doc_file = request.FILES['verification_document']
+            try:
+                validate_doc_file(doc_file)
+                user.verification_document = doc_file
+                user.save()
+                messages.success(request, "Verification document uploaded successfully. Our administration team will review it.")
+                return redirect('dashboard_redirect')
+            except Exception as e:
+                messages.error(request, str(e))
         else:
             messages.error(request, "Please select a file to upload.")
             
-        return redirect('dashboard_redirect')
-        
     return render(request, 'users/upload_verification.html')
