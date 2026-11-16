@@ -1,101 +1,134 @@
+
+import os
+import re
+import base64
+from datetime import datetime
+from decimal import Decimal, InvalidOperation
+
+import requests
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Q
-from django.utils.crypto import get_random_string
-from .models import Property, Amenity, PropertyImage, Booking, Application, Favorite, Review, Payment
+
+from .models import (
+    Property,
+    Amenity,
+    PropertyImage,
+    Booking,
+    Application,
+    Favorite,
+    Review,
+    Payment,
+)
 from users.models import CustomUser
+
 
 def property_list(request):
     properties = Property.objects.filter(status='available')
-    
+
     # Text search
     q = request.GET.get('q')
     if q:
         properties = properties.filter(
-            Q(title__icontains=q) | 
-            Q(description__icontains=q) |
-            Q(town__icontains=q) |
-            Q(estate__icontains=q)
+            Q(title__icontains=q)
+            | Q(description__icontains=q)
+            | Q(town__icontains=q)
+            | Q(estate__icontains=q)
         )
-        
+
     # Filters
     county = request.GET.get('county')
     if county:
         properties = properties.filter(county__iexact=county)
-        
+
     town = request.GET.get('town')
     if town:
         properties = properties.filter(town__icontains=town)
-        
+
     estate = request.GET.get('estate')
     if estate:
         properties = properties.filter(estate__icontains=estate)
-        
+
     category = request.GET.get('category')
     if category:
         properties = properties.filter(category=category)
-        
+
     min_price = request.GET.get('min_price')
     if min_price:
         properties = properties.filter(monthly_rent__gte=min_price)
-        
+
     max_price = request.GET.get('max_price')
     if max_price:
         properties = properties.filter(monthly_rent__lte=max_price)
-        
+
     bedrooms = request.GET.get('bedrooms')
     if bedrooms and bedrooms != 'any':
         properties = properties.filter(bedrooms=bedrooms)
-        
+
     bathrooms = request.GET.get('bathrooms')
     if bathrooms and bathrooms != 'any':
         properties = properties.filter(bathrooms=bathrooms)
 
-    # Filtering by multiple amenities
+    # Filter by multiple amenities
     selected_amenities = request.GET.getlist('amenities')
     for amenity_id in selected_amenities:
         properties = properties.filter(amenities__id=amenity_id)
 
     amenities = Amenity.objects.all()
-    
+
     context = {
-        'properties': properties,
+        'properties': properties.distinct(),
         'amenities': amenities,
         'categories': Property.CATEGORY_CHOICES,
-        'params': request.GET
+        'params': request.GET,
     }
+
     return render(request, 'properties/property_list.html', context)
+
 
 def property_detail(request, pk):
     property_obj = get_object_or_404(Property, pk=pk)
-    
+
     # Check favorite status
     is_favorite = False
     if request.user.is_authenticated:
-        is_favorite = Favorite.objects.filter(user=request.user, property=property_obj).exists()
-        
+        is_favorite = Favorite.objects.filter(
+            user=request.user,
+            property=property_obj
+        ).exists()
+
     reviews = Review.objects.filter(property=property_obj)
-    
+
     # Calculate average rating
     rating_avg = 0
     if reviews.exists():
-        rating_avg = sum([r.rating for r in reviews]) / reviews.count()
-        
+        rating_avg = sum(review.rating for review in reviews) / reviews.count()
+
     context = {
         'property': property_obj,
         'is_favorite': is_favorite,
         'reviews': reviews,
-        'rating_avg': round(rating_avg, 1)
+        'rating_avg': round(rating_avg, 1),
     }
+
     return render(request, 'properties/property_detail.html', context)
+
 
 @login_required
 def property_create(request):
-    if request.user.role not in [CustomUser.ROLE_LANDLORD, CustomUser.ROLE_AGENT, CustomUser.ROLE_ADMIN]:
-        messages.error(request, "Only landlords and agents can list properties.")
+    if request.user.role not in [
+        CustomUser.ROLE_LANDLORD,
+        CustomUser.ROLE_AGENT,
+        CustomUser.ROLE_ADMIN,
+    ]:
+        messages.error(
+            request,
+            "Only landlords and agents can list properties."
+        )
         return redirect('dashboard_redirect')
-        
+
     if request.method == 'POST':
         title = request.POST.get('title')
         description = request.POST.get('description')
@@ -117,11 +150,11 @@ def property_create(request):
         nearby_hospitals = request.POST.get('nearby_hospitals', '')
         nearby_shopping = request.POST.get('nearby_shopping', '')
         nearby_bus_stops = request.POST.get('nearby_bus_stops', '')
-        
-        # Latitude and longitude mocks
+
+        # Default coordinates if none are supplied
         latitude = request.POST.get('latitude') or -1.2921
         longitude = request.POST.get('longitude') or 36.8219
-        
+
         property_obj = Property.objects.create(
             title=title,
             description=description,
@@ -146,52 +179,74 @@ def property_create(request):
             latitude=latitude,
             longitude=longitude,
             created_by=request.user,
-            status='pending' # needs admin approval first
+            status='pending',
         )
-        
-        # Amenities
+
+        # Save selected amenities
         amenity_ids = request.POST.getlist('amenities')
         property_obj.amenities.set(amenity_ids)
-        
-        # Multi-image uploads
+
+        # Save uploaded property images
+        # The HTML form must use enctype="multipart/form-data"
+        # and the file input must have name="images".
         images = request.FILES.getlist('images')
-        for index, img in enumerate(images):
+
+        for index, image in enumerate(images):
             PropertyImage.objects.create(
                 property=property_obj,
-                image=img,
-                is_featured=(index == 0) # set first image as featured
+                image=image,
+                is_featured=(index == 0),
             )
-            
-        messages.success(request, "Property listed successfully! It will appear on search results after admin approval.")
+
+        messages.success(
+            request,
+            "Property listed successfully! It will appear on search "
+            "results after admin approval."
+        )
         return redirect('landlord_dashboard')
-        
+
     amenities = Amenity.objects.all()
+
     context = {
         'amenities': amenities,
-        'categories': Property.CATEGORY_CHOICES
+        'categories': Property.CATEGORY_CHOICES,
     }
+
     return render(request, 'properties/property_form.html', context)
+
 
 @login_required
 def property_update(request, pk):
     property_obj = get_object_or_404(Property, pk=pk)
-    if property_obj.created_by != request.user and not request.user.is_superuser:
-        messages.error(request, "You are not authorized to edit this property.")
+
+    if (
+        property_obj.created_by != request.user
+        and not request.user.is_superuser
+    ):
+        messages.error(
+            request,
+            "You are not authorized to edit this property."
+        )
         return redirect('dashboard_redirect')
-        
+
     if request.method == 'POST':
         property_obj.title = request.POST.get('title')
         property_obj.description = request.POST.get('description')
         property_obj.category = request.POST.get('category')
         property_obj.monthly_rent = request.POST.get('monthly_rent')
         property_obj.deposit = request.POST.get('deposit')
-        property_obj.service_charge = request.POST.get('service_charge', 0.00)
+        property_obj.service_charge = request.POST.get(
+            'service_charge',
+            0.00
+        )
         property_obj.bedrooms = request.POST.get('bedrooms', 0)
         property_obj.bathrooms = request.POST.get('bathrooms', 0)
-        
+
         square_footage = request.POST.get('square_footage')
-        property_obj.square_footage = square_footage if square_footage else None
-        
+        property_obj.square_footage = (
+            square_footage if square_footage else None
+        )
+
         property_obj.floor_number = request.POST.get('floor_number', 0)
         property_obj.county = request.POST.get('county')
         property_obj.town = request.POST.get('town')
@@ -199,196 +254,307 @@ def property_update(request, pk):
         property_obj.address = request.POST.get('address')
         property_obj.video_url = request.POST.get('video_url', '')
         property_obj.house_rules = request.POST.get('house_rules', '')
-        property_obj.nearby_schools = request.POST.get('nearby_schools', '')
-        property_obj.nearby_hospitals = request.POST.get('nearby_hospitals', '')
-        property_obj.nearby_shopping = request.POST.get('nearby_shopping', '')
-        property_obj.nearby_bus_stops = request.POST.get('nearby_bus_stops', '')
-        
-        # update status if landlord toggled availability
+        property_obj.nearby_schools = request.POST.get(
+            'nearby_schools',
+            ''
+        )
+        property_obj.nearby_hospitals = request.POST.get(
+            'nearby_hospitals',
+            ''
+        )
+        property_obj.nearby_shopping = request.POST.get(
+            'nearby_shopping',
+            ''
+        )
+        property_obj.nearby_bus_stops = request.POST.get(
+            'nearby_bus_stops',
+            ''
+        )
+
+        # Update status if the landlord changed availability
         status = request.POST.get('status')
         if status:
             property_obj.status = status
-            
+
         property_obj.save()
-        
-        # update amenities
+
+        # Update amenities
         amenity_ids = request.POST.getlist('amenities')
         property_obj.amenities.set(amenity_ids)
-        
-        # optional new images
+
+        # Add any newly uploaded images without deleting existing images
         images = request.FILES.getlist('images')
+
         if images:
-            # clear existing featured flag if new images uploaded
-            for img in images:
+            has_featured_image = property_obj.images.filter(
+                is_featured=True
+            ).exists()
+
+            for index, image in enumerate(images):
                 PropertyImage.objects.create(
                     property=property_obj,
-                    image=img,
-                    is_featured=False
+                    image=image,
+                    is_featured=(
+                        not has_featured_image and index == 0
+                    ),
                 )
-                
-        messages.success(request, "Property updated successfully.")
+
+        messages.success(
+            request,
+            "Property updated successfully."
+        )
         return redirect('landlord_dashboard')
-        
+
     amenities = Amenity.objects.all()
+
     context = {
         'property': property_obj,
         'amenities': amenities,
-        'categories': Property.CATEGORY_CHOICES
+        'categories': Property.CATEGORY_CHOICES,
     }
+
     return render(request, 'properties/property_form.html', context)
+
 
 @login_required
 def property_delete(request, pk):
     property_obj = get_object_or_404(Property, pk=pk)
-    if property_obj.created_by != request.user and not request.user.is_superuser:
-        messages.error(request, "You are not authorized to delete this property.")
+
+    if (
+        property_obj.created_by != request.user
+        and not request.user.is_superuser
+    ):
+        messages.error(
+            request,
+            "You are not authorized to delete this property."
+        )
         return redirect('dashboard_redirect')
-        
+
     if request.method == 'POST':
         property_obj.delete()
-        messages.success(request, "Property deleted successfully.")
+        messages.success(
+            request,
+            "Property deleted successfully."
+        )
         return redirect('landlord_dashboard')
-        
-    return render(request, 'properties/property_confirm_delete.html', {'property': property_obj})
+
+    return render(
+        request,
+        'properties/property_confirm_delete.html',
+        {'property': property_obj}
+    )
+
 
 @login_required
 def book_viewing(request, pk):
     property_obj = get_object_or_404(Property, pk=pk)
+
     if request.method == 'POST':
         date = request.POST.get('date')
         time = request.POST.get('time')
         message = request.POST.get('message')
-        
+
         Booking.objects.create(
             tenant=request.user,
             property=property_obj,
             date=date,
             time=time,
-            message=message
+            message=message,
         )
-        
-        messages.success(request, "Viewing booked successfully! Awaiting landlord confirmation.")
+
+        messages.success(
+            request,
+            "Viewing booked successfully! Awaiting landlord confirmation."
+        )
         return redirect('tenant_dashboard')
-        
+
     return redirect('property_detail', pk=pk)
+
 
 @login_required
 def apply_rental(request, pk):
     property_obj = get_object_or_404(Property, pk=pk)
+
     if request.method == 'POST':
         message = request.POST.get('message')
-        
-        # Check if already applied
-        if Application.objects.filter(tenant=request.user, property=property_obj).exists():
-            messages.warning(request, "You have already applied for this property.")
+
+        # Check whether the user has already applied
+        already_applied = Application.objects.filter(
+            tenant=request.user,
+            property=property_obj
+        ).exists()
+
+        if already_applied:
+            messages.warning(
+                request,
+                "You have already applied for this property."
+            )
         else:
             Application.objects.create(
                 tenant=request.user,
                 property=property_obj,
-                message=message
+                message=message,
             )
-            messages.success(request, "Application submitted successfully! Landlord will review your application.")
-            
+
+            messages.success(
+                request,
+                "Application submitted successfully! "
+                "Landlord will review your application."
+            )
+
         return redirect('tenant_dashboard')
-        
+
     return redirect('property_detail', pk=pk)
+
 
 @login_required
 def toggle_favorite(request, pk):
     property_obj = get_object_or_404(Property, pk=pk)
-    favorite, created = Favorite.objects.get_or_create(user=request.user, property=property_obj)
+
+    favorite, created = Favorite.objects.get_or_create(
+        user=request.user,
+        property=property_obj
+    )
+
     if not created:
         favorite.delete()
-        messages.success(request, f"{property_obj.title} removed from favorites.")
+        messages.success(
+            request,
+            f"{property_obj.title} removed from favorites."
+        )
     else:
-        messages.success(request, f"{property_obj.title} added to favorites.")
-        
+        messages.success(
+            request,
+            f"{property_obj.title} added to favorites."
+        )
+
     referer = request.META.get('HTTP_REFERER')
     if referer:
         return redirect(referer)
+
     return redirect('property_detail', pk=pk)
+
 
 @login_required
 def add_review(request, pk):
     property_obj = get_object_or_404(Property, pk=pk)
+
     if request.method == 'POST':
         rating = request.POST.get('rating')
-        text = request.POST.get('text')
-        
+        review_text = request.POST.get('text')
+
         Review.objects.create(
             tenant=request.user,
             property=property_obj,
             rating=rating,
-            text=text
+            text=review_text,
         )
-        messages.success(request, "Review submitted successfully.")
-        
+
+        messages.success(
+            request,
+            "Review submitted successfully."
+        )
+
     return redirect('property_detail', pk=pk)
+
 
 @login_required
 def approve_property(request, pk):
-    if not request.user.is_superuser and request.user.role != CustomUser.ROLE_ADMIN:
+    if (
+        not request.user.is_superuser
+        and request.user.role != CustomUser.ROLE_ADMIN
+    ):
         messages.error(request, "Unauthorized operation.")
         return redirect('dashboard_redirect')
-        
+
     property_obj = get_object_or_404(Property, pk=pk)
     property_obj.status = 'available'
     property_obj.save()
-    
-    messages.success(request, f"Property '{property_obj.title}' approved successfully.")
+
+    messages.success(
+        request,
+        f"Property '{property_obj.title}' approved successfully."
+    )
+
     return redirect('admin_dashboard')
+
 
 @login_required
 def verify_user(request, pk):
-    if not request.user.is_superuser and request.user.role != CustomUser.ROLE_ADMIN:
+    if (
+        not request.user.is_superuser
+        and request.user.role != CustomUser.ROLE_ADMIN
+    ):
         messages.error(request, "Unauthorized operation.")
         return redirect('dashboard_redirect')
-        
+
     user = get_object_or_404(CustomUser, pk=pk)
     user.is_verified = True
     user.save()
-    
-    messages.success(request, f"User '{user.username}' verified successfully.")
+
+    messages.success(
+        request,
+        f"User '{user.username}' verified successfully."
+    )
+
     return redirect('admin_dashboard')
+
 
 @login_required
 def manage_booking(request, pk, status):
     booking = get_object_or_404(Booking, pk=pk)
-    if booking.property.created_by != request.user and not request.user.is_superuser:
+
+    if (
+        booking.property.created_by != request.user
+        and not request.user.is_superuser
+    ):
         messages.error(request, "Unauthorized operation.")
         return redirect('dashboard_redirect')
-        
+
     if status in ['confirmed', 'declined', 'cancelled']:
         booking.status = status
         booking.save()
-        messages.success(request, f"Booking status updated to {status}.")
-        
+
+        messages.success(
+            request,
+            f"Booking status updated to {status}."
+        )
+
     return redirect('landlord_dashboard')
+
 
 @login_required
 def manage_application(request, pk, status):
     application = get_object_or_404(Application, pk=pk)
-    if application.property.created_by != request.user and not request.user.is_superuser:
+
+    if (
+        application.property.created_by != request.user
+        and not request.user.is_superuser
+    ):
         messages.error(request, "Unauthorized operation.")
         return redirect('dashboard_redirect')
-        
+
     if status in ['accepted', 'rejected']:
         application.status = status
         application.save()
-        
-        # update property status if accepted
+
+        # Update property status if the application is accepted
         if status == 'accepted':
             application.property.status = 'occupied'
             application.property.save()
-            
-        messages.success(request, f"Application status updated to {status}.")
-        
+
+        messages.success(
+            request,
+            f"Application status updated to {status}."
+        )
+
     return redirect('landlord_dashboard')
 
 
 @login_required
 def payment_checkout(request, pk=None):
     property_obj = None
+
     if pk:
         property_obj = get_object_or_404(Property, pk=pk)
 
@@ -399,11 +565,11 @@ def payment_checkout(request, pk=None):
         if property_obj:
             amount = property_obj.monthly_rent
         elif payment_type == 'viewing_fee':
-            amount = 500.00
+            amount = Decimal('500.00')
         elif payment_type == 'landlord_verification':
-            amount = 1000.00
+            amount = Decimal('1000.00')
         else:
-            amount = 1000.00
+            amount = Decimal('1000.00')
 
     if request.method == 'POST':
         phone_number = request.POST.get('phone_number', '').strip()
@@ -411,62 +577,32 @@ def payment_checkout(request, pk=None):
         pay_amount = request.POST.get('amount', amount)
         mpesa_code = request.POST.get('mpesa_code', '').strip().upper()
 
-        # Sanitize phone number to standard Safaricom 254 format
+        # Normalize the Kenyan phone number
         clean_phone = re.sub(r'\D', '', phone_number)
+
         if clean_phone.startswith('0'):
             clean_phone = '254' + clean_phone[1:]
         elif clean_phone.startswith('7') or clean_phone.startswith('1'):
             clean_phone = '254' + clean_phone
-        elif not clean_phone.startswith('254'):
-            clean_phone = '254719678760'
 
-        if not mpesa_code:
-            mpesa_code = 'Q' + get_random_string(9, allowed_chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
+        if not re.fullmatch(r'254[17]\d{8}', clean_phone):
+            messages.error(
+                request,
+                "Enter a valid Kenyan mobile number, e.g. 0712345678."
+            )
+            return redirect(request.path)
 
-        # Optional Safaricom Daraja Live STK Push trigger if credentials exist
-        daraja_key = os.environ.get('DARAJA_CONSUMER_KEY')
-        daraja_secret = os.environ.get('DARAJA_CONSUMER_SECRET')
-        if daraja_key and daraja_secret:
-            try:
-                import requests as req
-                import base64
-                from datetime import datetime
-                # Fetch Daraja Token & Send STK Push
-                auth_str = f"{daraja_key}:{daraja_secret}"
-                b64_auth = base64.b64encode(auth_str.encode()).decode()
-                token_res = req.get(
-                    'https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials',
-                    headers={'Authorization': f'Basic {b64_auth}'},
-                    timeout=5
-                )
-                if token_res.status_code == 200:
-                    access_token = token_res.json().get('access_token')
-                    timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
-                    passkey = os.environ.get('DARAJA_PASSKEY', '')
-                    password = base64.b64encode(f"5927622{passkey}{timestamp}".encode()).decode()
-                    
-                    stk_payload = {
-                        "BusinessShortCode": "5927622",
-                        "Password": password,
-                        "Timestamp": timestamp,
-                        "TransactionType": "CustomerBuyGoodsOnline",
-                        "Amount": int(float(pay_amount)),
-                        "PartyA": clean_phone,
-                        "PartyB": "5927622",
-                        "PhoneNumber": clean_phone,
-                        "CallBackURL": "https://cheremo-nyumbalink.vercel.app/properties/payments/",
-                        "AccountReference": f"NL-{property_obj.id if property_obj else '5927622'}",
-                        "TransactionDesc": "Cheremo NyumbaLink Payment"
-                    }
-                    req.post(
-                        'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest',
-                        json=stk_payload,
-                        headers={'Authorization': f'Bearer {access_token}'},
-                        timeout=5
-                    )
-            except Exception as e:
-                print("Daraja STK push fallback:", e)
+        # Validate payment amount
+        try:
+            pay_amount = Decimal(str(pay_amount))
+            if pay_amount <= 0:
+                raise InvalidOperation
+        except (InvalidOperation, TypeError, ValueError):
+            messages.error(request, "Enter a valid payment amount.")
+            return redirect(request.path)
 
+        # Do not generate fake M-Pesa receipt codes.
+        # A payment remains pending until it is verified.
         payment = Payment.objects.create(
             user=request.user,
             property=property_obj,
@@ -475,13 +611,97 @@ def payment_checkout(request, pk=None):
             mpesa_code=mpesa_code,
             till_number='5927622',
             payment_type=pay_type,
-            status='completed'
+            status='pending',
         )
 
-        messages.success(
-            request, 
-            f"M-PESA Express STK Push Sent & Confirmed for +{clean_phone}! Payment of KES {float(payment.amount):,.2f} to Till 5927622 recorded under Code: {payment.mpesa_code}."
-        )
+        # Optional Daraja STK Push.
+        # A successful API response only means the request was accepted;
+        # it does not prove that the customer completed the payment.
+        daraja_key = os.environ.get('DARAJA_CONSUMER_KEY')
+        daraja_secret = os.environ.get('DARAJA_CONSUMER_SECRET')
+        passkey = os.environ.get('DARAJA_PASSKEY')
+
+        if daraja_key and daraja_secret and passkey:
+            try:
+                auth_response = requests.get(
+                    'https://api.safaricom.co.ke/oauth/v1/generate'
+                    '?grant_type=client_credentials',
+                    auth=(daraja_key, daraja_secret),
+                    timeout=15,
+                )
+
+                auth_response.raise_for_status()
+                access_token = auth_response.json().get('access_token')
+
+                if not access_token:
+                    raise ValueError("Daraja did not return an access token.")
+
+                timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+
+                password = base64.b64encode(
+                    f"5927622{passkey}{timestamp}".encode()
+                ).decode()
+
+                stk_payload = {
+                    "BusinessShortCode": "5927622",
+                    "Password": password,
+                    "Timestamp": timestamp,
+                    "TransactionType": "CustomerBuyGoodsOnline",
+                    "Amount": int(pay_amount),
+                    "PartyA": clean_phone,
+                    "PartyB": "5927622",
+                    "PhoneNumber": clean_phone,
+                    "CallBackURL": (
+                        "https://cheremo-nyumbalink.vercel.app/"
+                        "properties/payments/"
+                    ),
+                    "AccountReference": (
+                        f"NL-{property_obj.id if property_obj else payment.id}"
+                    ),
+                    "TransactionDesc": "Cheremo NyumbaLink Payment",
+                }
+
+                stk_response = requests.post(
+                    'https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest',
+                    json=stk_payload,
+                    headers={
+                        'Authorization': f'Bearer {access_token}',
+                        'Content-Type': 'application/json',
+                    },
+                    timeout=20,
+                )
+
+                stk_data = stk_response.json()
+
+                if stk_response.status_code == 200:
+                    messages.info(
+                        request,
+                        "Your M-Pesa payment request has been submitted. "
+                        "Complete the prompt on your phone. "
+                        "The payment will remain pending until verified."
+                    )
+                else:
+                    messages.warning(
+                        request,
+                        "The payment request could not be confirmed by "
+                        "Safaricom. Your payment record is pending review."
+                    )
+
+            except (requests.RequestException, ValueError, KeyError) as error:
+                print("Daraja STK Push error:", error)
+
+                messages.warning(
+                    request,
+                    "We could not confirm the STK Push request. "
+                    "Your payment record is pending review."
+                )
+        else:
+            messages.info(
+                request,
+                "Your payment details have been recorded as pending. "
+                "They must be verified before the payment is marked complete."
+            )
+
         return redirect('my_payments')
 
     context = {
@@ -489,16 +709,26 @@ def payment_checkout(request, pk=None):
         'till_number': '5927622',
         'store_name': 'Cheremo NyumbaLink',
         'amount': amount,
-        'payment_type': payment_type
+        'payment_type': payment_type,
     }
-    return render(request, 'properties/payment_checkout.html', context)
+
+    return render(
+        request,
+        'properties/payment_checkout.html',
+        context
+    )
 
 
 @login_required
 def my_payments(request):
     payments = Payment.objects.filter(user=request.user)
-    context = {
-        'payments': payments
-    }
-    return render(request, 'properties/my_payments.html', context)
 
+    context = {
+        'payments': payments,
+    }
+
+    return render(
+        request,
+        'properties/my_payments.html',
+        context
+    )
