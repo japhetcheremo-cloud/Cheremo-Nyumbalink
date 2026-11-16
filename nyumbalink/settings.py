@@ -1,28 +1,39 @@
 
 """
 Django settings for Cheremo NyumbaLink.
-Django 6.0 | Local Development | Vercel | PostgreSQL | WhiteNoise
+Django 6 | Local Development | Vercel | Neon PostgreSQL | WhiteNoise
 """
 
 import os
 from pathlib import Path
 
 import dj_database_url
+from dotenv import load_dotenv
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load local environment variables from .env if available.
+# Existing system environment variables take priority.
+load_dotenv(BASE_DIR / ".env", override=False)
 
 
 # ==========================================================
 # ENVIRONMENT DETECTION
 # ==========================================================
 
-IS_VERCEL = bool(
-    os.environ.get("VERCEL")
-    or os.environ.get("VERCEL_ENV")
-    or os.environ.get("AWS_LAMBDA_FUNCTION_NAME")
-    or str(BASE_DIR).startswith("/var/task")
-)
+def env_is_true(value):
+    return str(value).strip().lower() in ("1", "true", "yes", "on")
+
+
+IS_VERCEL = any(
+    env_is_true(os.environ.get(name, ""))
+    for name in (
+        "VERCEL",
+        "VERCEL_ENV",
+        "AWS_LAMBDA_FUNCTION_NAME",
+    )
+) or str(BASE_DIR).startswith("/var/task")
 
 
 # ==========================================================
@@ -33,19 +44,25 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 
 if not SECRET_KEY:
     if IS_VERCEL:
-        raise ValueError("SECRET_KEY is required on Vercel.")
+        raise ValueError("SECRET_KEY is required in production.")
 
     SECRET_KEY = "django-insecure-local-development-only-key"
 
+# Never enable Django debug mode on Vercel.
+DEBUG = (
+    not IS_VERCEL
+    and env_is_true(os.environ.get("DEBUG", "True"))
+)
 
-DEBUG = os.environ.get("DEBUG", "True").lower() == "true"
 
+# ==========================================================
+# ALLOWED HOSTS
+# ==========================================================
 
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     ".vercel.app",
-    "cheremo-nyumbalink.vercel.app",
 ]
 
 extra_hosts = os.environ.get("ALLOWED_HOSTS", "")
@@ -201,7 +218,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 
 # ==========================================================
-# FILE STORAGE - DJANGO 6
+# FILE STORAGE
 # ==========================================================
 
 STORAGES = {
@@ -264,28 +281,6 @@ CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:8000",
 ]
 
-if IS_VERCEL:
-    SECURE_PROXY_SSL_HEADER = (
-        "HTTP_X_FORWARDED_PROTO",
-        "https",
-    )
-
-    SESSION_COOKIE_SECURE = True
-
-    CSRF_COOKIE_SECURE = True
-
-    SECURE_SSL_REDIRECT = True
-
-    SECURE_CONTENT_TYPE_NOSNIFF = True
-
-    X_FRAME_OPTIONS = "DENY"
-
-else:
-    SESSION_COOKIE_SECURE = False
-
-    CSRF_COOKIE_SECURE = False
-
-
 extra_origins = os.environ.get("CSRF_TRUSTED_ORIGINS", "")
 
 if extra_origins:
@@ -294,6 +289,29 @@ if extra_origins:
         for origin in extra_origins.split(",")
         if origin.strip()
     )
+
+if IS_VERCEL:
+    SECURE_PROXY_SSL_HEADER = (
+        "HTTP_X_FORWARDED_PROTO",
+        "https",
+    )
+
+    SECURE_SSL_REDIRECT = True
+
+    SESSION_COOKIE_SECURE = True
+
+    CSRF_COOKIE_SECURE = True
+
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+
+    X_FRAME_OPTIONS = "DENY"
+
+else:
+    SECURE_SSL_REDIRECT = False
+
+    SESSION_COOKIE_SECURE = False
+
+    CSRF_COOKIE_SECURE = False
 
 
 # ==========================================================
