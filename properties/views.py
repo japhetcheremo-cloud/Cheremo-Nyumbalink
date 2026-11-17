@@ -588,7 +588,7 @@ def payment_checkout(request, pk=None):
         if not re.fullmatch(r'254[17]\d{8}', clean_phone):
             messages.error(
                 request,
-                "Enter a valid Kenyan mobile number, e.g. 0712345678."
+                "Enter a valid Kenyan mobile number, e.g. 0719678760."
             )
             return redirect(request.path)
 
