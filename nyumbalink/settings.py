@@ -142,10 +142,7 @@ WSGI_APPLICATION = "nyumbalink.wsgi.application"
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
-if IS_VERCEL:
-    if not DATABASE_URL:
-        raise ValueError("DATABASE_URL is required on Vercel.")
-
+if DATABASE_URL:
     DATABASES = {
         "default": dj_database_url.config(
             default=DATABASE_URL,
@@ -154,12 +151,22 @@ if IS_VERCEL:
         )
     }
 
-elif DATABASE_URL:
+elif IS_VERCEL:
+    tmp_db = Path("/tmp/db.sqlite3")
+    source_db = BASE_DIR / "db.sqlite3"
+
+    if not tmp_db.exists() and source_db.exists():
+        try:
+            import shutil
+            shutil.copyfile(source_db, tmp_db)
+        except Exception as e:
+            print("Database copy error:", e)
+
     DATABASES = {
-        "default": dj_database_url.config(
-            default=DATABASE_URL,
-            conn_max_age=0,
-        )
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": tmp_db if tmp_db.exists() else source_db,
+        }
     }
 
 else:
