@@ -1,1477 +1,1477 @@
 [
-{
-  "model": "sessions.session",
-  "pk": "0d1adx0rxdajzu34xokkz2kzt37xoumy",
-  "fields": {
-    "session_data": ".eJxVjDsOwjAQBe_iGlnr7zqU9JzB8vqDA8iW4qRC3B0ipYD2zcx7MR-2tfpt5MXPiZ2ZYaffjUJ85LaDdA_t1nnsbV1m4rvCDzr4taf8vBzu30ENo35rAK1dLGCVQ5kUCaMmEXECjLk4WUgarbJwRUTtSlI2IEppAaAQSczs_QG7zTcQ:1wvZu5:zatUYSp6M6f_djiLGUh_JxSPCyYL_6O2A7F13xLAqX0",
-    "expire_date": "2026-08-30T12:23:53.627Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "8cnmsqo5yqpp6cejehmdq04qtiuu32on",
-  "fields": {
-    "session_data": ".eJxVjDsOwjAQBe_iGlne1cYfSnrOYK3XDg4gR4qTCnF3iJQC2jcz76Uib2uNWy9LnLI6K1Kn3y2xPErbQb5zu81a5rYuU9K7og_a9XXO5Xk53L-Dyr1-a8ghiwlonSFGcEAjsoNkEcJAaNExsvGmsJAtI1MG74IvfggiHpN6fwC5sTcR:1xTJIk:oc2pSR-ekkWbJEiMZSzY4525UKZn62__MZI5k4NwNUU",
-    "expire_date": "2026-12-01T13:32:46.120Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "l0e9lg0yiuj1ephh6ks2xdmv17a2r28i",
-  "fields": {
-    "session_data": ".eJxVjEEOwiAQRe_C2hBgRkCX7nsGMgxUqgaS0q6Md7dNutDtf-_9twi0LiWsPc9hSuIqQJx-t0j8zHUH6UH13iS3usxTlLsiD9rl0FJ-3Q7376BQL1ut7eguBpXfEgbyrGJkMmQBWDtkb_CsVY4aCG1UQM4RjggmJcfMKD5f5J84CQ:1wuset:G0-KpRY0ycbPYJ9A90tS5_eeeihmYUX4P07bl56ht5A",
-    "expire_date": "2026-08-28T14:13:19.392Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "sw9a7mec0nqdq4ilzexkx9t5zwp6x952",
-  "fields": {
-    "session_data": ".eJxVjDsOwjAQBe_iGlnr7zqU9JzB8vqDA8iW4qRC3B0ipYD2zcx7MR-2tfpt5MXPiZ2ZYaffjUJ85LaDdA_t1nnsbV1m4rvCDzr4taf8vBzu30ENo35rAK1dLGCVQ5kUCaMmEXECjLk4WUgarbJwRUTtSlI2IEppAaAQSczs_QG7zTcQ:1wwE38:6QYo0RwRd48cpYC9eu8_Ji7icOVub_AJFxrkflkQNWU",
-    "expire_date": "2026-09-01T07:15:54.959Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "xt5glhtxp3x2gk84euo5a4ti4wxvpus5",
-  "fields": {
-    "session_data": ".eJxVjDsOwjAQBe_iGlne-LdQ0ucMlndt4wBypDipEHeHSCmgfTPzXiLEba1h63kJUxIXAeL0u1HkR247SPfYbrPkua3LRHJX5EG7HOeUn9fD_TuosddvTTZb4OijQm-AlXdYUiKnSRUkNt7qwhnRgHcMOJA-M0Jh0mDQDUW8P-qBN9k:1wuskE:B9Sqj-OfPvlU8c0-fg2HSqWBB9WVoBpxBZ8v2InR4uc",
-    "expire_date": "2026-08-28T14:18:50.185Z"
-  }
-},
-{
-  "model": "users.customuser",
-  "fields": {
-    "password": "pbkdf2_sha256$1200000$Ed7MALkwoMKeUIXR30HVkD$Y0nJPK2jRtb523H2L9K2sXTVKFFYX8E+dmuXSNszaxU=",
-    "last_login": "2026-08-14T14:18:50.165Z",
-    "is_superuser": true,
-    "username": "admin",
-    "first_name": "System",
-    "last_name": "Administrator",
-    "email": "admin@nyumbalink.com",
-    "is_staff": true,
-    "is_active": true,
-    "date_joined": "2026-06-26T17:47:41.321Z",
-    "role": "admin",
-    "phone": null,
-    "profile_picture": "profile_pics/japhet_landlord.jpg",
-    "bio": null,
-    "is_verified": true,
-    "verification_document": "",
-    "groups": [],
-    "user_permissions": []
-  }
-},
-{
-  "model": "users.customuser",
-  "fields": {
-    "password": "pbkdf2_sha256$1200000$fzsvXNcCLO974QVgWLTfSH$p2I4BYOfzfhRKOtc4blbzpWREEd/PFdmkkvifhLcVAQ=",
-    "last_login": null,
-    "is_superuser": false,
-    "username": "japhet_landlord",
-    "first_name": "Japhet",
-    "last_name": "Cheremo",
-    "email": "japhetcheremo@gmail.com",
-    "is_staff": false,
-    "is_active": true,
-    "date_joined": "2026-06-26T17:47:56.683Z",
-    "role": "landlord",
-    "phone": "+254 719 678 760",
-    "profile_picture": "profile_pics/japhet_landlord.jpg",
-    "bio": "Professional landlord offering high-end premium housing experiences in Nairobi, Mombasa, and Kisumu.",
-    "is_verified": true,
-    "verification_document": "",
-    "groups": [],
-    "user_permissions": []
-  }
-},
-{
-  "model": "users.customuser",
-  "fields": {
-    "password": "pbkdf2_sha256$1200000$s9E8dO8oJYDvYbsNmMgWfq$XP4KcujX94OSYwuHimAhq0roskBG+GvmfNUTQvocpus=",
-    "last_login": "2026-08-14T14:13:19.369Z",
-    "is_superuser": false,
-    "username": "tenant_john",
-    "first_name": "John",
-    "last_name": "Doe",
-    "email": "john@gmail.com",
-    "is_staff": false,
-    "is_active": true,
-    "date_joined": "2026-06-26T17:48:11.278Z",
-    "role": "tenant",
-    "phone": "+254 712 345 678",
-    "profile_picture": "",
-    "bio": "Moving to Nairobi Westlands for work. Looking for a neat 1 or 2 bedroom apartment.",
-    "is_verified": false,
-    "verification_document": "",
-    "groups": [],
-    "user_permissions": []
-  }
-},
-{
-  "model": "users.customuser",
-  "fields": {
-    "password": "pbkdf2_sha256$1200000$u7liB5AonY2vPULWSr86yk$1jXR2tX6clnwCjWiKkwehmLgjpGjuhtwEt/4F4YLUPk=",
-    "last_login": "2026-11-16T06:57:00.619Z",
-    "is_superuser": true,
-    "username": "japhet",
-    "first_name": "",
-    "last_name": "",
-    "email": "japhetcheremo@gmail.com",
-    "is_staff": true,
-    "is_active": true,
-    "date_joined": "2026-08-15T07:22:01.708Z",
-    "role": "tenant",
-    "phone": null,
-    "profile_picture": "",
-    "bio": null,
-    "is_verified": false,
-    "verification_document": "",
-    "groups": [],
-    "user_permissions": []
-  }
-},
-{
-  "model": "users.customuser",
-  "fields": {
-    "password": "pbkdf2_sha256$1200000$BWBpNYQAriS5UDxsCzPNR4$ENJAn4qrIjq/D9kMUq4K2+wNEjSGAYHYf0aZw6kDLvY=",
-    "last_login": "2026-11-16T06:38:07Z",
-    "is_superuser": false,
-    "username": "cheremo",
-    "first_name": "",
-    "last_name": "",
-    "email": "",
-    "is_staff": true,
-    "is_active": true,
-    "date_joined": "2026-08-15T07:24:19Z",
-    "role": "landlord",
-    "phone": "0719678760",
-    "profile_picture": "profile_pics/bd3ba0dd-db98-47fe-84f9-52a0eaba4b4f.png",
-    "bio": "",
-    "is_verified": true,
-    "verification_document": "verification_docs/bd3ba0dd-db98-47fe-84f9-52a0eaba4b4f.png",
-    "groups": [],
-    "user_permissions": [
-      [
-        "add_logentry",
-        "admin",
-        "logentry"
-      ],
-      [
-        "change_logentry",
-        "admin",
-        "logentry"
-      ],
-      [
-        "delete_logentry",
-        "admin",
-        "logentry"
-      ],
-      [
-        "view_logentry",
-        "admin",
-        "logentry"
-      ],
-      [
-        "add_group",
-        "auth",
-        "group"
-      ],
-      [
-        "change_group",
-        "auth",
-        "group"
-      ],
-      [
-        "delete_group",
-        "auth",
-        "group"
-      ],
-      [
-        "view_group",
-        "auth",
-        "group"
-      ],
-      [
-        "add_permission",
-        "auth",
-        "permission"
-      ],
-      [
-        "change_permission",
-        "auth",
-        "permission"
-      ],
-      [
-        "delete_permission",
-        "auth",
-        "permission"
-      ],
-      [
-        "view_permission",
-        "auth",
-        "permission"
-      ],
-      [
-        "add_message",
-        "chat",
-        "message"
-      ],
-      [
-        "change_message",
-        "chat",
-        "message"
-      ],
-      [
-        "delete_message",
-        "chat",
-        "message"
-      ],
-      [
-        "view_message",
-        "chat",
-        "message"
-      ],
-      [
-        "add_contenttype",
-        "contenttypes",
-        "contenttype"
-      ],
-      [
-        "change_contenttype",
-        "contenttypes",
-        "contenttype"
-      ],
-      [
-        "delete_contenttype",
-        "contenttypes",
-        "contenttype"
-      ],
-      [
-        "view_contenttype",
-        "contenttypes",
-        "contenttype"
-      ],
-      [
-        "add_blogpost",
-        "core",
-        "blogpost"
-      ],
-      [
-        "change_blogpost",
-        "core",
-        "blogpost"
-      ],
-      [
-        "delete_blogpost",
-        "core",
-        "blogpost"
-      ],
-      [
-        "view_blogpost",
-        "core",
-        "blogpost"
-      ],
-      [
-        "add_amenity",
-        "properties",
-        "amenity"
-      ],
-      [
-        "change_amenity",
-        "properties",
-        "amenity"
-      ],
-      [
-        "delete_amenity",
-        "properties",
-        "amenity"
-      ],
-      [
-        "view_amenity",
-        "properties",
-        "amenity"
-      ],
-      [
-        "add_application",
-        "properties",
-        "application"
-      ],
-      [
-        "change_application",
-        "properties",
-        "application"
-      ],
-      [
-        "delete_application",
-        "properties",
-        "application"
-      ],
-      [
-        "view_application",
-        "properties",
-        "application"
-      ],
-      [
-        "add_booking",
-        "properties",
-        "booking"
-      ],
-      [
-        "change_booking",
-        "properties",
-        "booking"
-      ],
-      [
-        "delete_booking",
-        "properties",
-        "booking"
-      ],
-      [
-        "view_booking",
-        "properties",
-        "booking"
-      ],
-      [
-        "add_favorite",
-        "properties",
-        "favorite"
-      ],
-      [
-        "change_favorite",
-        "properties",
-        "favorite"
-      ],
-      [
-        "delete_favorite",
-        "properties",
-        "favorite"
-      ],
-      [
-        "view_favorite",
-        "properties",
-        "favorite"
-      ],
-      [
-        "add_payment",
-        "properties",
-        "payment"
-      ],
-      [
-        "change_payment",
-        "properties",
-        "payment"
-      ],
-      [
-        "delete_payment",
-        "properties",
-        "payment"
-      ],
-      [
-        "view_payment",
-        "properties",
-        "payment"
-      ],
-      [
-        "add_property",
-        "properties",
-        "property"
-      ],
-      [
-        "change_property",
-        "properties",
-        "property"
-      ],
-      [
-        "delete_property",
-        "properties",
-        "property"
-      ],
-      [
-        "view_property",
-        "properties",
-        "property"
-      ],
-      [
-        "add_propertyimage",
-        "properties",
-        "propertyimage"
-      ],
-      [
-        "change_propertyimage",
-        "properties",
-        "propertyimage"
-      ],
-      [
-        "delete_propertyimage",
-        "properties",
-        "propertyimage"
-      ],
-      [
-        "view_propertyimage",
-        "properties",
-        "propertyimage"
-      ],
-      [
-        "add_review",
-        "properties",
-        "review"
-      ],
-      [
-        "change_review",
-        "properties",
-        "review"
-      ],
-      [
-        "delete_review",
-        "properties",
-        "review"
-      ],
-      [
-        "view_review",
-        "properties",
-        "review"
-      ],
-      [
-        "add_session",
-        "sessions",
-        "session"
-      ],
-      [
-        "change_session",
-        "sessions",
-        "session"
-      ],
-      [
-        "delete_session",
-        "sessions",
-        "session"
-      ],
-      [
-        "view_session",
-        "sessions",
-        "session"
-      ],
-      [
-        "add_customuser",
-        "users",
-        "customuser"
-      ],
-      [
-        "change_customuser",
-        "users",
-        "customuser"
-      ],
-      [
-        "delete_customuser",
-        "users",
-        "customuser"
-      ],
-      [
-        "view_customuser",
-        "users",
-        "customuser"
+  {
+    "model": "sessions.session",
+    "pk": "0d1adx0rxdajzu34xokkz2kzt37xoumy",
+    "fields": {
+      "session_data": ".eJxVjDsOwjAQBe_iGlnr7zqU9JzB8vqDA8iW4qRC3B0ipYD2zcx7MR-2tfpt5MXPiZ2ZYaffjUJ85LaDdA_t1nnsbV1m4rvCDzr4taf8vBzu30ENo35rAK1dLGCVQ5kUCaMmEXECjLk4WUgarbJwRUTtSlI2IEppAaAQSczs_QG7zTcQ:1wvZu5:zatUYSp6M6f_djiLGUh_JxSPCyYL_6O2A7F13xLAqX0",
+      "expire_date": "2026-08-30T12:23:53.627Z"
+    }
+  },
+  {
+    "model": "sessions.session",
+    "pk": "8cnmsqo5yqpp6cejehmdq04qtiuu32on",
+    "fields": {
+      "session_data": ".eJxVjDsOwjAQBe_iGlne1cYfSnrOYK3XDg4gR4qTCnF3iJQC2jcz76Uib2uNWy9LnLI6K1Kn3y2xPErbQb5zu81a5rYuU9K7og_a9XXO5Xk53L-Dyr1-a8ghiwlonSFGcEAjsoNkEcJAaNExsvGmsJAtI1MG74IvfggiHpN6fwC5sTcR:1xTJIk:oc2pSR-ekkWbJEiMZSzY4525UKZn62__MZI5k4NwNUU",
+      "expire_date": "2026-12-01T13:32:46.120Z"
+    }
+  },
+  {
+    "model": "sessions.session",
+    "pk": "l0e9lg0yiuj1ephh6ks2xdmv17a2r28i",
+    "fields": {
+      "session_data": ".eJxVjEEOwiAQRe_C2hBgRkCX7nsGMgxUqgaS0q6Md7dNutDtf-_9twi0LiWsPc9hSuIqQJx-t0j8zHUH6UH13iS3usxTlLsiD9rl0FJ-3Q7376BQL1ut7eguBpXfEgbyrGJkMmQBWDtkb_CsVY4aCG1UQM4RjggmJcfMKD5f5J84CQ:1wuset:G0-KpRY0ycbPYJ9A90tS5_eeeihmYUX4P07bl56ht5A",
+      "expire_date": "2026-08-28T14:13:19.392Z"
+    }
+  },
+  {
+    "model": "sessions.session",
+    "pk": "sw9a7mec0nqdq4ilzexkx9t5zwp6x952",
+    "fields": {
+      "session_data": ".eJxVjDsOwjAQBe_iGlnr7zqU9JzB8vqDA8iW4qRC3B0ipYD2zcx7MR-2tfpt5MXPiZ2ZYaffjUJ85LaDdA_t1nnsbV1m4rvCDzr4taf8vBzu30ENo35rAK1dLGCVQ5kUCaMmEXECjLk4WUgarbJwRUTtSlI2IEppAaAQSczs_QG7zTcQ:1wwE38:6QYo0RwRd48cpYC9eu8_Ji7icOVub_AJFxrkflkQNWU",
+      "expire_date": "2026-09-01T07:15:54.959Z"
+    }
+  },
+  {
+    "model": "sessions.session",
+    "pk": "xt5glhtxp3x2gk84euo5a4ti4wxvpus5",
+    "fields": {
+      "session_data": ".eJxVjDsOwjAQBe_iGlne-LdQ0ucMlndt4wBypDipEHeHSCmgfTPzXiLEba1h63kJUxIXAeL0u1HkR247SPfYbrPkua3LRHJX5EG7HOeUn9fD_TuosddvTTZb4OijQm-AlXdYUiKnSRUkNt7qwhnRgHcMOJA-M0Jh0mDQDUW8P-qBN9k:1wuskE:B9Sqj-OfPvlU8c0-fg2HSqWBB9WVoBpxBZ8v2InR4uc",
+      "expire_date": "2026-08-28T14:18:50.185Z"
+    }
+  },
+  {
+    "model": "users.customuser",
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$Ed7MALkwoMKeUIXR30HVkD$Y0nJPK2jRtb523H2L9K2sXTVKFFYX8E+dmuXSNszaxU=",
+      "last_login": "2026-08-14T14:18:50.165Z",
+      "is_superuser": true,
+      "username": "admin",
+      "first_name": "System",
+      "last_name": "Administrator",
+      "email": "admin@nyumbalink.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2026-06-26T17:47:41.321Z",
+      "role": "admin",
+      "phone": null,
+      "profile_picture": "profile_pics/japhet_landlord.jpg",
+      "bio": null,
+      "is_verified": true,
+      "verification_document": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$fzsvXNcCLO974QVgWLTfSH$p2I4BYOfzfhRKOtc4blbzpWREEd/PFdmkkvifhLcVAQ=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "japhet_landlord",
+      "first_name": "Japhet",
+      "last_name": "Cheremo",
+      "email": "japhetcheremo@gmail.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-06-26T17:47:56.683Z",
+      "role": "landlord",
+      "phone": "+254 719 678 760",
+      "profile_picture": "profile_pics/japhet_landlord.jpg",
+      "bio": "Professional landlord offering high-end premium housing experiences in Nairobi, Mombasa, and Kisumu.",
+      "is_verified": true,
+      "verification_document": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$s9E8dO8oJYDvYbsNmMgWfq$XP4KcujX94OSYwuHimAhq0roskBG+GvmfNUTQvocpus=",
+      "last_login": "2026-08-14T14:13:19.369Z",
+      "is_superuser": false,
+      "username": "tenant_john",
+      "first_name": "John",
+      "last_name": "Doe",
+      "email": "john@gmail.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-06-26T17:48:11.278Z",
+      "role": "tenant",
+      "phone": "+254 712 345 678",
+      "profile_picture": "",
+      "bio": "Moving to Nairobi Westlands for work. Looking for a neat 1 or 2 bedroom apartment.",
+      "is_verified": false,
+      "verification_document": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$u7liB5AonY2vPULWSr86yk$1jXR2tX6clnwCjWiKkwehmLgjpGjuhtwEt/4F4YLUPk=",
+      "last_login": "2026-11-16T06:57:00.619Z",
+      "is_superuser": true,
+      "username": "japhet",
+      "first_name": "",
+      "last_name": "",
+      "email": "japhetcheremo@gmail.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2026-08-15T07:22:01.708Z",
+      "role": "tenant",
+      "phone": null,
+      "profile_picture": "",
+      "bio": null,
+      "is_verified": false,
+      "verification_document": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$BWBpNYQAriS5UDxsCzPNR4$ENJAn4qrIjq/D9kMUq4K2+wNEjSGAYHYf0aZw6kDLvY=",
+      "last_login": "2026-11-16T06:38:07Z",
+      "is_superuser": false,
+      "username": "cheremo",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2026-08-15T07:24:19Z",
+      "role": "landlord",
+      "phone": "0719678760",
+      "profile_picture": "profile_pics/bd3ba0dd-db98-47fe-84f9-52a0eaba4b4f.png",
+      "bio": "",
+      "is_verified": true,
+      "verification_document": "verification_docs/bd3ba0dd-db98-47fe-84f9-52a0eaba4b4f.png",
+      "groups": [],
+      "user_permissions": [
+        [
+          "add_logentry",
+          "admin",
+          "logentry"
+        ],
+        [
+          "change_logentry",
+          "admin",
+          "logentry"
+        ],
+        [
+          "delete_logentry",
+          "admin",
+          "logentry"
+        ],
+        [
+          "view_logentry",
+          "admin",
+          "logentry"
+        ],
+        [
+          "add_group",
+          "auth",
+          "group"
+        ],
+        [
+          "change_group",
+          "auth",
+          "group"
+        ],
+        [
+          "delete_group",
+          "auth",
+          "group"
+        ],
+        [
+          "view_group",
+          "auth",
+          "group"
+        ],
+        [
+          "add_permission",
+          "auth",
+          "permission"
+        ],
+        [
+          "change_permission",
+          "auth",
+          "permission"
+        ],
+        [
+          "delete_permission",
+          "auth",
+          "permission"
+        ],
+        [
+          "view_permission",
+          "auth",
+          "permission"
+        ],
+        [
+          "add_message",
+          "chat",
+          "message"
+        ],
+        [
+          "change_message",
+          "chat",
+          "message"
+        ],
+        [
+          "delete_message",
+          "chat",
+          "message"
+        ],
+        [
+          "view_message",
+          "chat",
+          "message"
+        ],
+        [
+          "add_contenttype",
+          "contenttypes",
+          "contenttype"
+        ],
+        [
+          "change_contenttype",
+          "contenttypes",
+          "contenttype"
+        ],
+        [
+          "delete_contenttype",
+          "contenttypes",
+          "contenttype"
+        ],
+        [
+          "view_contenttype",
+          "contenttypes",
+          "contenttype"
+        ],
+        [
+          "add_blogpost",
+          "core",
+          "blogpost"
+        ],
+        [
+          "change_blogpost",
+          "core",
+          "blogpost"
+        ],
+        [
+          "delete_blogpost",
+          "core",
+          "blogpost"
+        ],
+        [
+          "view_blogpost",
+          "core",
+          "blogpost"
+        ],
+        [
+          "add_amenity",
+          "properties",
+          "amenity"
+        ],
+        [
+          "change_amenity",
+          "properties",
+          "amenity"
+        ],
+        [
+          "delete_amenity",
+          "properties",
+          "amenity"
+        ],
+        [
+          "view_amenity",
+          "properties",
+          "amenity"
+        ],
+        [
+          "add_application",
+          "properties",
+          "application"
+        ],
+        [
+          "change_application",
+          "properties",
+          "application"
+        ],
+        [
+          "delete_application",
+          "properties",
+          "application"
+        ],
+        [
+          "view_application",
+          "properties",
+          "application"
+        ],
+        [
+          "add_booking",
+          "properties",
+          "booking"
+        ],
+        [
+          "change_booking",
+          "properties",
+          "booking"
+        ],
+        [
+          "delete_booking",
+          "properties",
+          "booking"
+        ],
+        [
+          "view_booking",
+          "properties",
+          "booking"
+        ],
+        [
+          "add_favorite",
+          "properties",
+          "favorite"
+        ],
+        [
+          "change_favorite",
+          "properties",
+          "favorite"
+        ],
+        [
+          "delete_favorite",
+          "properties",
+          "favorite"
+        ],
+        [
+          "view_favorite",
+          "properties",
+          "favorite"
+        ],
+        [
+          "add_payment",
+          "properties",
+          "payment"
+        ],
+        [
+          "change_payment",
+          "properties",
+          "payment"
+        ],
+        [
+          "delete_payment",
+          "properties",
+          "payment"
+        ],
+        [
+          "view_payment",
+          "properties",
+          "payment"
+        ],
+        [
+          "add_property",
+          "properties",
+          "property"
+        ],
+        [
+          "change_property",
+          "properties",
+          "property"
+        ],
+        [
+          "delete_property",
+          "properties",
+          "property"
+        ],
+        [
+          "view_property",
+          "properties",
+          "property"
+        ],
+        [
+          "add_propertyimage",
+          "properties",
+          "propertyimage"
+        ],
+        [
+          "change_propertyimage",
+          "properties",
+          "propertyimage"
+        ],
+        [
+          "delete_propertyimage",
+          "properties",
+          "propertyimage"
+        ],
+        [
+          "view_propertyimage",
+          "properties",
+          "propertyimage"
+        ],
+        [
+          "add_review",
+          "properties",
+          "review"
+        ],
+        [
+          "change_review",
+          "properties",
+          "review"
+        ],
+        [
+          "delete_review",
+          "properties",
+          "review"
+        ],
+        [
+          "view_review",
+          "properties",
+          "review"
+        ],
+        [
+          "add_session",
+          "sessions",
+          "session"
+        ],
+        [
+          "change_session",
+          "sessions",
+          "session"
+        ],
+        [
+          "delete_session",
+          "sessions",
+          "session"
+        ],
+        [
+          "view_session",
+          "sessions",
+          "session"
+        ],
+        [
+          "add_customuser",
+          "users",
+          "customuser"
+        ],
+        [
+          "change_customuser",
+          "users",
+          "customuser"
+        ],
+        [
+          "delete_customuser",
+          "users",
+          "customuser"
+        ],
+        [
+          "view_customuser",
+          "users",
+          "customuser"
+        ]
       ]
-    ]
+    }
+  },
+  {
+    "model": "users.customuser",
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$FQRvgNedNBiv9MGUsTSRrs$NvPRVcJKebNjDO9XTTfbMvfkNom3ZWdbJgIZC+mEOmU=",
+      "last_login": "2026-08-15T07:46:01Z",
+      "is_superuser": false,
+      "username": "ken",
+      "first_name": "ken",
+      "last_name": "home",
+      "email": "homes@gmail.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-08-15T07:45:59Z",
+      "role": "landlord",
+      "phone": "0719678760",
+      "profile_picture": "",
+      "bio": "",
+      "is_verified": true,
+      "verification_document": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$hQWtX4WYVY1Qu2r20hsw4v$UcJ+RBypa/9PRaf++tkr0a1zIg07YHk/Jt7AR6lq0c4=",
+      "last_login": "2026-08-16T07:47:55.850Z",
+      "is_superuser": false,
+      "username": "lord",
+      "first_name": "land",
+      "last_name": "lord",
+      "email": "kenya@gmai.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-08-16T07:47:53.598Z",
+      "role": "landlord",
+      "phone": "0719678760",
+      "profile_picture": "",
+      "bio": null,
+      "is_verified": true,
+      "verification_document": "verification_docs/cheremo.png",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.customuser",
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$JmF3y29lAEe4eznfWJwPwT$XWV7yUQbnINPu+owhBIiK0MdpokJc7efMhhOUwQjBbY=",
+      "last_login": "2026-08-16T12:21:43.237Z",
+      "is_superuser": false,
+      "username": "us",
+      "first_name": "fg",
+      "last_name": "df",
+      "email": "chrem@gmail.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-08-16T12:21:39.221Z",
+      "role": "landlord",
+      "phone": "0719678760",
+      "profile_picture": "",
+      "bio": null,
+      "is_verified": true,
+      "verification_document": "verification_docs/1a7eaeb3-6ef6-4f6f-a039-38d951eb5175.png",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "properties.amenity",
+    "pk": 1,
+    "fields": {
+      "name": "Parking",
+      "icon": "fa-solid fa-square-parking"
+    }
+  },
+  {
+    "model": "properties.amenity",
+    "pk": 2,
+    "fields": {
+      "name": "Water Availability",
+      "icon": "fa-solid fa-faucet-drip"
+    }
+  },
+  {
+    "model": "properties.amenity",
+    "pk": 3,
+    "fields": {
+      "name": "Electricity",
+      "icon": "fa-solid fa-bolt"
+    }
+  },
+  {
+    "model": "properties.amenity",
+    "pk": 4,
+    "fields": {
+      "name": "WiFi",
+      "icon": "fa-solid fa-wifi"
+    }
+  },
+  {
+    "model": "properties.amenity",
+    "pk": 5,
+    "fields": {
+      "name": "Swimming Pool",
+      "icon": "fa-solid fa-person-swimming"
+    }
+  },
+  {
+    "model": "properties.amenity",
+    "pk": 6,
+    "fields": {
+      "name": "Gym",
+      "icon": "fa-solid fa-dumbbell"
+    }
+  },
+  {
+    "model": "properties.amenity",
+    "pk": 7,
+    "fields": {
+      "name": "CCTV",
+      "icon": "fa-solid fa-video"
+    }
+  },
+  {
+    "model": "properties.amenity",
+    "pk": 8,
+    "fields": {
+      "name": "Security Guard",
+      "icon": "fa-solid fa-user-shield"
+    }
+  },
+  {
+    "model": "properties.amenity",
+    "pk": 9,
+    "fields": {
+      "name": "Lift",
+      "icon": "fa-solid fa-elevator"
+    }
+  },
+  {
+    "model": "properties.amenity",
+    "pk": 10,
+    "fields": {
+      "name": "Balcony",
+      "icon": "fa-solid fa-door-open"
+    }
+  },
+  {
+    "model": "properties.amenity",
+    "pk": 11,
+    "fields": {
+      "name": "Garden",
+      "icon": "fa-solid fa-tree"
+    }
+  },
+  {
+    "model": "properties.amenity",
+    "pk": 12,
+    "fields": {
+      "name": "Borehole",
+      "icon": "fa-solid fa-bore-hole"
+    }
+  },
+  {
+    "model": "properties.amenity",
+    "pk": 13,
+    "fields": {
+      "name": "Backup Generator",
+      "icon": "fa-solid fa-charging-station"
+    }
+  },
+  {
+    "model": "properties.amenity",
+    "pk": 14,
+    "fields": {
+      "name": "Wardrobes",
+      "icon": "fa-solid fa-boxes-packing"
+    }
+  },
+  {
+    "model": "properties.amenity",
+    "pk": 15,
+    "fields": {
+      "name": "Kitchen Cabinets",
+      "icon": "fa-solid fa-kitchen-set"
+    }
+  },
+  {
+    "model": "properties.amenity",
+    "pk": 16,
+    "fields": {
+      "name": "Hot Shower",
+      "icon": "fa-solid fa-shower"
+    }
+  },
+  {
+    "model": "properties.amenity",
+    "pk": 17,
+    "fields": {
+      "name": "Pet Friendly",
+      "icon": "fa-solid fa-paw"
+    }
+  },
+  {
+    "model": "properties.amenity",
+    "pk": 18,
+    "fields": {
+      "name": "Garbage Collection",
+      "icon": "fa-solid fa-trash-can"
+    }
+  },
+  {
+    "model": "properties.property",
+    "pk": 1,
+    "fields": {
+      "title": "Sleek 2 Bedroom Executive Apartment",
+      "description": "A premium executive 2-bedroom rental apartment located in the secure heart of Westlands. Features high ceilings, dynamic open plan kitchen, and uninterrupted borehole water supply.",
+      "category": "two_bedroom",
+      "property_type": "Rental",
+      "monthly_rent": "45000.00",
+      "deposit": "45000.00",
+      "service_charge": "2500.00",
+      "bedrooms": 2,
+      "bathrooms": 2,
+      "square_footage": 950,
+      "floor_number": 3,
+      "county": "Nairobi",
+      "town": "Westlands",
+      "estate": "Raphta Road",
+      "address": "Westlands Heights, Block B, Flat 3B",
+      "latitude": "-1.261200",
+      "longitude": "36.802100",
+      "created_by": [
+        "japhet_landlord"
+      ],
+      "status": "available",
+      "video_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "house_rules": "No loud music after 10 PM.\nPets allowed upon notification.",
+      "nearby_schools": "Westlands Primary, St. Marys School",
+      "nearby_hospitals": "Aga Khan Hospital, MP Shah Hospital",
+      "nearby_shopping": "Sarit Centre, Westgate Mall",
+      "nearby_bus_stops": "Sarit Centre Stage",
+      "date_posted": "2026-06-26T17:48:23.255Z",
+      "amenities": [
+        7,
+        3,
+        18,
+        16,
+        15,
+        1,
+        8,
+        2,
+        4
+      ]
+    }
+  },
+  {
+    "model": "properties.property",
+    "pk": 2,
+    "fields": {
+      "title": "Luxurious Coastal Villa with Ocean View",
+      "description": "Stunning modern 4-bedroom villa in Nyali Mombasa. Complete with a private swimming pool, landscaped gardens, direct beach access, and state of the art CCTV installations.",
+      "category": "villa",
+      "property_type": "Rental",
+      "monthly_rent": "120000.00",
+      "deposit": "120000.00",
+      "service_charge": "5000.00",
+      "bedrooms": 4,
+      "bathrooms": 4,
+      "square_footage": 3200,
+      "floor_number": 1,
+      "county": "Mombasa",
+      "town": "Nyali",
+      "estate": "Links Road",
+      "address": "Ocean Crest Court, Villa 4",
+      "latitude": "-4.029800",
+      "longitude": "39.712100",
+      "created_by": [
+        "japhet_landlord"
+      ],
+      "status": "available",
+      "video_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "house_rules": "Quiet hours: 11 PM - 7 AM.\nPets allowed.",
+      "nearby_schools": "Mombasa Academy, Light Academy",
+      "nearby_hospitals": "The Mombasa Hospital Nyali Branch",
+      "nearby_shopping": "City Mall Nyali, Naivas Centre",
+      "nearby_bus_stops": "Nyali Bridge Stage",
+      "date_posted": "2026-06-26T17:48:29.057Z",
+      "amenities": [
+        13,
+        7,
+        3,
+        11,
+        6,
+        1,
+        17,
+        8,
+        5,
+        2
+      ]
+    }
+  },
+  {
+    "model": "properties.property",
+    "pk": 3,
+    "fields": {
+      "title": "Cozy Glassmorphic Studio Apartment",
+      "description": "A fully furnished minimalist studio apartment in Kilimani. Perfect for young professionals. High-speed fibre internet included, featuring modern glass dividers.",
+      "category": "studio",
+      "property_type": "Rental",
+      "monthly_rent": "22000.00",
+      "deposit": "22000.00",
+      "service_charge": "1500.00",
+      "bedrooms": 0,
+      "bathrooms": 1,
+      "square_footage": 420,
+      "floor_number": 5,
+      "county": "Nairobi",
+      "town": "Kilimani",
+      "estate": "Lenana Road",
+      "address": "Lenana View Apartments, Room 502",
+      "latitude": "-1.291200",
+      "longitude": "36.792500",
+      "created_by": [
+        "japhet_landlord"
+      ],
+      "status": "available",
+      "video_url": "",
+      "house_rules": "No subletting.\nQuiet tenancy preferred.",
+      "nearby_schools": "Cavina School, French School",
+      "nearby_hospitals": "Coptic Hospital, Nairobi Hospital",
+      "nearby_shopping": "Yaya Centre, Prestige Plaza",
+      "nearby_bus_stops": "Yaya Stage",
+      "date_posted": "2026-06-26T17:48:35.393Z",
+      "amenities": [
+        10,
+        7,
+        3,
+        18,
+        16,
+        15,
+        9,
+        2,
+        4
+      ]
+    }
+  },
+  {
+    "model": "properties.property",
+    "pk": 4,
+    "fields": {
+      "title": "Elegant 3 Bedroom Family Home",
+      "description": "Family-oriented 3-bedroom house in the peaceful leafy suburb of Milimani, Kisumu. Features a spacious private garden, secure fencing, and a separate laundry area.",
+      "category": "three_bedroom",
+      "property_type": "Rental",
+      "monthly_rent": "35000.00",
+      "deposit": "35000.00",
+      "service_charge": "0.00",
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "square_footage": 1500,
+      "floor_number": 1,
+      "county": "Kisumu",
+      "town": "Kisumu",
+      "estate": "Milimani",
+      "address": "Lake Breeze Court, House 12",
+      "latitude": "-0.108200",
+      "longitude": "34.756200",
+      "created_by": [
+        "japhet_landlord"
+      ],
+      "status": "available",
+      "video_url": "",
+      "house_rules": "Take care of the garden lawn.\nPet friendly.",
+      "nearby_schools": "Kisumu International School",
+      "nearby_hospitals": "Aga Khan Kisumu Hospital",
+      "nearby_shopping": "West End Mall, United Mall",
+      "nearby_bus_stops": "Milimani Stage",
+      "date_posted": "2026-06-26T17:48:41.897Z",
+      "amenities": [
+        10,
+        3,
+        11,
+        16,
+        1,
+        17,
+        8,
+        2
+      ]
+    }
+  },
+  {
+    "model": "properties.property",
+    "pk": 5,
+    "fields": {
+      "title": "Modern 2 Bedroom House for Rent in Kisii",
+      "description": "Spacious and well-maintained 2-bedroom rental house located in a convenient and accessible area near Mwembe Junction, Kisii. The property offers comfortable bedrooms, a spacious living area, a kitchen, bathroom facilities, reliable water access and a secure residential environment. It is suitable for a small family, couple or working professionals. The property is close to shops, transport services, schools and other essential amenities.",
+      "category": "two_bedroom",
+      "property_type": "Rental",
+      "monthly_rent": "14000.00",
+      "deposit": "6000.00",
+      "service_charge": "500.00",
+      "bedrooms": 2,
+      "bathrooms": 1,
+      "square_footage": 300,
+      "floor_number": 3,
+      "county": "Kisii County",
+      "town": "Kisii",
+      "estate": "Mwembe Junction",
+      "address": "Mwembe Junction, Kisii, Kisii County, Kenya",
+      "latitude": "-0.681700",
+      "longitude": "34.766700",
+      "created_by": [
+        "cheremo"
+      ],
+      "status": "available",
+      "video_url": null,
+      "house_rules": "",
+      "nearby_schools": null,
+      "nearby_hospitals": null,
+      "nearby_shopping": null,
+      "nearby_bus_stops": null,
+      "date_posted": "2026-08-15T07:35:20.927Z",
+      "amenities": []
+    }
+  },
+  {
+    "model": "properties.property",
+    "pk": 6,
+    "fields": {
+      "title": "spacious bedisitter",
+      "description": "coool",
+      "category": "bedsitter",
+      "property_type": "Rental",
+      "monthly_rent": "4500.00",
+      "deposit": "4500.00",
+      "service_charge": "500.00",
+      "bedrooms": 0,
+      "bathrooms": 1,
+      "square_footage": 4500,
+      "floor_number": 1,
+      "county": "Kisii County",
+      "town": "Kisii",
+      "estate": "Mwembe Junction",
+      "address": "room 12",
+      "latitude": "-1.292100",
+      "longitude": "36.821900",
+      "created_by": [
+        "cheremo"
+      ],
+      "status": "available",
+      "video_url": null,
+      "house_rules": "no noise",
+      "nearby_schools": "kisii university",
+      "nearby_hospitals": "kisii hospital",
+      "nearby_shopping": "kensom super market",
+      "nearby_bus_stops": "kisii bus stage",
+      "date_posted": "2026-08-15T07:53:41.882Z",
+      "amenities": [
+        10,
+        12,
+        3,
+        2,
+        4
+      ]
+    }
+  },
+  {
+    "model": "properties.property",
+    "pk": 9,
+    "fields": {
+      "title": "Modern 2 Bedroom Apartment in Kilimani, Nairobi",
+      "description": "This modern two-bedroom apartment is located in the desirable Kilimani neighbourhood of Nairobi. The property features a spacious living room, a well-designed kitchen, two comfortable bedrooms, built-in wardrobes, and modern bathroom facilities. It offers convenient access to shopping centres, schools, hospitals, public transport and major roads. Ideal for families, working professionals and anyone looking for comfortable urban living. The apartment is in a secure residential environment with reliable access to essential amenities",
+      "category": "apartment",
+      "property_type": "Rental",
+      "monthly_rent": "25000.00",
+      "deposit": "10000.00",
+      "service_charge": "500.00",
+      "bedrooms": 2,
+      "bathrooms": 1,
+      "square_footage": 850,
+      "floor_number": 1,
+      "county": "Nairobi",
+      "town": "Nairobi",
+      "estate": "kilimani",
+      "address": "Wood Avenue, Kilimani Heights Apartments, Block A, House 12",
+      "latitude": "-1.292100",
+      "longitude": "36.821900",
+      "created_by": [
+        "cheremo"
+      ],
+      "status": "available",
+      "video_url": "https://youtu.be/6T_TGGcI3XI?si=L08qiqK9vv27IyZ8",
+      "house_rules": "1. No loud music or unnecessary noise, especially at night.\r\n2. No pets without prior approval from management.\r\n3. Tenants must keep the apartment and shared spaces clean.\r\n4. No illegal activities are permitted on the premises.\r\n5. Visitors must observe the building's security procedures.\r\n6. Rent must be paid on or before the agreed due date.\r\n7. Any damage to the property must be reported immediately.\r\n8. Respect neighbours and observe building management regulations.",
+      "nearby_schools": "Kilimani Primary School, Cavina School, Kiota School, St. George's Girls' Secondary School",
+      "nearby_hospitals": "The Nairobi Hospital, Nairobi Women's Hospital \u2013 Adams, Menelik Medical Centre, Coptic Hospital",
+      "nearby_shopping": "Yaya Centre, Prestige Plaza, Adams Arcade, Greenhouse Mall, Adlife Plaza",
+      "nearby_bus_stops": "Adams Arcade Stage, Kirichwa Stage, Kilimani Primary School Stage, Ngong Road Bus Stops",
+      "date_posted": "2026-11-16T06:56:09.913Z",
+      "amenities": [
+        13,
+        10,
+        12,
+        7,
+        3,
+        18,
+        11,
+        6,
+        16,
+        15,
+        9,
+        1,
+        17,
+        8,
+        5,
+        14,
+        2,
+        4
+      ]
+    }
+  },
+  {
+    "model": "properties.propertyimage",
+    "pk": 1,
+    "fields": {
+      "property": 5,
+      "image": "property_images/00e5470f-49d8-4f20-b804-3aae2246256f.png",
+      "is_featured": true
+    }
+  },
+  {
+    "model": "properties.propertyimage",
+    "pk": 2,
+    "fields": {
+      "property": 5,
+      "image": "property_images/00e5470f-49d8-4f20-b804-3aae2246256f_MpuMYWG.png",
+      "is_featured": true
+    }
+  },
+  {
+    "model": "properties.propertyimage",
+    "pk": 3,
+    "fields": {
+      "property": 6,
+      "image": "property_images/8b1ca065-67e1-424c-954f-87e684ef72f6.png",
+      "is_featured": true
+    }
+  },
+  {
+    "model": "properties.propertyimage",
+    "pk": 6,
+    "fields": {
+      "property": 9,
+      "image": "property_images/WhatsApp_Image_2026-11-15_at_15_XBuBQB6.49.02.jpeg",
+      "is_featured": true
+    }
+  },
+  {
+    "model": "properties.booking",
+    "pk": 1,
+    "fields": {
+      "tenant": [
+        "tenant_john"
+      ],
+      "property": 4,
+      "date": "2026-07-02",
+      "time": "14:00:00",
+      "message": "Hi Japhet, I would like to schedule a physical viewing inspect this room on Thursday afternoon.",
+      "status": "pending",
+      "created_at": "2026-06-26T17:48:51.004Z"
+    }
+  },
+  {
+    "model": "properties.application",
+    "pk": 1,
+    "fields": {
+      "tenant": [
+        "tenant_john"
+      ],
+      "property": 4,
+      "message": "I work in Westlands and am ready to pay deposit and move in by July 15th.",
+      "status": "pending",
+      "created_at": "2026-06-26T17:48:51.058Z"
+    }
+  },
+  {
+    "model": "properties.review",
+    "pk": 1,
+    "fields": {
+      "tenant": [
+        "tenant_john"
+      ],
+      "property": 4,
+      "rating": 5,
+      "text": "Absolutely gorgeous apartment! The water is constant, the security guard is extremely polite, and the location close to Sarit Centre is highly convenient.",
+      "date": "2026-06-26T17:48:50.882Z"
+    }
+  },
+  {
+    "model": "properties.review",
+    "pk": 2,
+    "fields": {
+      "tenant": [
+        "tenant_john"
+      ],
+      "property": 4,
+      "rating": 4,
+      "text": "Great house and very clean rooms. The landlord, Japhet, is highly responsive to maintenance calls.",
+      "date": "2026-06-26T17:48:50.941Z"
+    }
+  },
+  {
+    "model": "properties.review",
+    "pk": 3,
+    "fields": {
+      "tenant": [
+        "japhet"
+      ],
+      "property": 5,
+      "rating": 4,
+      "text": "too prettty",
+      "date": "2026-08-15T07:41:08.571Z"
+    }
+  },
+  {
+    "model": "properties.favorite",
+    "pk": 1,
+    "fields": {
+      "user": [
+        "cheremo"
+      ],
+      "property": 6,
+      "created_at": "2026-08-15T07:55:05.765Z"
+    }
+  },
+  {
+    "model": "properties.payment",
+    "pk": 1,
+    "fields": {
+      "user": [
+        "japhet"
+      ],
+      "property": 9,
+      "amount": "500.00",
+      "phone_number": "254719678760",
+      "mpesa_code": "Q3DJX7PTS",
+      "till_number": "5927622",
+      "payment_type": "viewing_fee",
+      "status": "pending",
+      "created_at": "2026-11-17T10:39:09.952Z"
+    }
+  },
+  {
+    "model": "chat.message",
+    "pk": 1,
+    "fields": {
+      "sender": [
+        "tenant_john"
+      ],
+      "recipient": [
+        "japhet_landlord"
+      ],
+      "content": "hi",
+      "timestamp": "2026-08-14T14:13:59.020Z",
+      "is_read": false
+    }
+  },
+  {
+    "model": "chat.message",
+    "pk": 2,
+    "fields": {
+      "sender": [
+        "japhet"
+      ],
+      "recipient": [
+        "cheremo"
+      ],
+      "content": "hello is this available",
+      "timestamp": "2026-08-16T08:36:19.575Z",
+      "is_read": true
+    }
+  },
+  {
+    "model": "chat.message",
+    "pk": 3,
+    "fields": {
+      "sender": [
+        "cheremo"
+      ],
+      "recipient": [
+        "japhet"
+      ],
+      "content": "yes we offer it",
+      "timestamp": "2026-08-16T08:38:21.808Z",
+      "is_read": true
+    }
+  },
+  {
+    "model": "core.blogpost",
+    "pk": 1,
+    "fields": {
+      "title": "5 Critical Things to Inspect Before Renting a House in Nairobi",
+      "slug": "5-critical-things-inspect-renting-nairobi",
+      "content": "Moving to a new rental apartment in Nairobi can be exciting but full of hidden traps. Always check these five elements:\n\n1. Water consistency: Ask neighbors if borehole water runs daily or if water rationing is active.\n2. Token meter readings: Verify the electric token meter is not carrying debt from past tenants.\n3. Security guards: Walk by at night to check security staffing levels.\n4. Mobile network signal: Thick concrete walls in some estates block signals.\n5. Distance to transport links: Avoid long rough roads if you rely on public transport.",
+      "category": "rental_tips",
+      "author": [
+        "admin"
+      ],
+      "image": "",
+      "created_at": "2026-06-26T17:48:50.670Z",
+      "updated_at": "2026-06-26T17:48:50.670Z"
+    }
+  },
+  {
+    "model": "core.blogpost",
+    "pk": 2,
+    "fields": {
+      "title": "Smart Space-Saving Hacks for Studio Apartments & Bedsitters",
+      "slug": "smart-space-saving-hacks-studio-apartments",
+      "content": "Studio apartments (commonly bedsitters) are pocket-friendly but require smart organizing. Use folding multi-purpose desks, floating shelves to keep floor spaces clear, and vertical storage boxes. Introduce partition divider screens or decorative bookshelves to separate your bed zone from the living and kitchen spaces, giving the room a multi-room aesthetic layout.",
+      "category": "interior_design",
+      "author": [
+        "admin"
+      ],
+      "image": "",
+      "created_at": "2026-06-26T17:48:50.751Z",
+      "updated_at": "2026-06-26T17:48:50.752Z"
+    }
+  },
+  {
+    "model": "core.blogpost",
+    "pk": 3,
+    "fields": {
+      "title": "Understanding Service Charges & Security Deposit Refund Policies",
+      "slug": "service-charges-deposit-refund-policies",
+      "content": "Service charges cover communal tasks like garbage collection, security guard wages, elevator maintenance, and cleaning. Always ask what your monthly charge covers. Additionally, document the initial state of the walls, plumbing, and fixtures with photos upon move-in to protect your deposit refund when moving out.",
+      "category": "moving_guides",
+      "author": [
+        "admin"
+      ],
+      "image": "",
+      "created_at": "2026-06-26T17:48:50.805Z",
+      "updated_at": "2026-06-26T17:48:50.806Z"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 1,
+    "fields": {
+      "action_time": "2026-08-15T07:24:20.570Z",
+      "user": [
+        "japhet"
+      ],
+      "content_type": [
+        "users",
+        "customuser"
+      ],
+      "object_id": "5",
+      "object_repr": "cheremo (Landlord)",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 2,
+    "fields": {
+      "action_time": "2026-08-15T07:26:06.086Z",
+      "user": [
+        "japhet"
+      ],
+      "content_type": [
+        "users",
+        "customuser"
+      ],
+      "object_id": "5",
+      "object_repr": "cheremo (Landlord)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Staff status\", \"Superuser status\", \"User permissions\", \"Last login\", \"Profile picture\", \"Is verified\", \"Verification document\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 3,
+    "fields": {
+      "action_time": "2026-08-15T07:35:20.951Z",
+      "user": [
+        "japhet"
+      ],
+      "content_type": [
+        "properties",
+        "property"
+      ],
+      "object_id": "5",
+      "object_repr": "Modern 2 Bedroom House for Rent in Kisii - Kisii (Pending Approval)",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}, {\"added\": {\"name\": \"property image\", \"object\": \"Image for Modern 2 Bedroom House for Rent in Kisii\"}}, {\"added\": {\"name\": \"property image\", \"object\": \"Image for Modern 2 Bedroom House for Rent in Kisii\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 4,
+    "fields": {
+      "action_time": "2026-08-15T07:38:58.124Z",
+      "user": [
+        "japhet"
+      ],
+      "content_type": [
+        "properties",
+        "property"
+      ],
+      "object_id": "5",
+      "object_repr": "Modern 2 Bedroom House for Rent in Kisii - Kisii (Available)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 5,
+    "fields": {
+      "action_time": "2026-08-15T07:48:49.301Z",
+      "user": [
+        "japhet"
+      ],
+      "content_type": [
+        "users",
+        "customuser"
+      ],
+      "object_id": "6",
+      "object_repr": "ken (Landlord)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Is verified\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 6,
+    "fields": {
+      "action_time": "2026-08-15T07:54:36.817Z",
+      "user": [
+        "cheremo"
+      ],
+      "content_type": [
+        "properties",
+        "property"
+      ],
+      "object_id": "6",
+      "object_repr": "spacious bedisitter - Kisii (Available)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 7,
+    "fields": {
+      "action_time": "2026-08-15T07:57:45.640Z",
+      "user": [
+        "cheremo"
+      ],
+      "content_type": [
+        "properties",
+        "property"
+      ],
+      "object_id": "6",
+      "object_repr": "spacious bedisitter - Kisii (Available)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"name\": \"property image\", \"object\": \"Image for spacious bedisitter\", \"fields\": [\"Image\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 8,
+    "fields": {
+      "action_time": "2026-08-16T11:02:17.001Z",
+      "user": [
+        "cheremo"
+      ],
+      "content_type": [
+        "properties",
+        "property"
+      ],
+      "object_id": "7",
+      "object_repr": "spacious bedisitter - Kisii (Pending Approval)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 9,
+    "fields": {
+      "action_time": "2026-11-15T15:58:34.657Z",
+      "user": [
+        "japhet"
+      ],
+      "content_type": [
+        "properties",
+        "property"
+      ],
+      "object_id": "8",
+      "object_repr": "kekekek - Kisii (Available)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 10,
+    "fields": {
+      "action_time": "2026-11-15T15:58:34.661Z",
+      "user": [
+        "japhet"
+      ],
+      "content_type": [
+        "properties",
+        "property"
+      ],
+      "object_id": "7",
+      "object_repr": "spacious bedisitter - Kisii (Available)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 11,
+    "fields": {
+      "action_time": "2026-11-16T05:22:39.126Z",
+      "user": [
+        "japhet"
+      ],
+      "content_type": [
+        "properties",
+        "property"
+      ],
+      "object_id": "8",
+      "object_repr": "kekekek - Kisii (Available)",
+      "action_flag": 3,
+      "change_message": ""
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 12,
+    "fields": {
+      "action_time": "2026-11-16T05:22:39.126Z",
+      "user": [
+        "japhet"
+      ],
+      "content_type": [
+        "properties",
+        "property"
+      ],
+      "object_id": "7",
+      "object_repr": "spacious bedisitter - Kisii (Available)",
+      "action_flag": 3,
+      "change_message": ""
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 13,
+    "fields": {
+      "action_time": "2026-11-16T06:36:22.763Z",
+      "user": [
+        "japhet"
+      ],
+      "content_type": [
+        "users",
+        "customuser"
+      ],
+      "object_id": "5",
+      "object_repr": "cheremo (Landlord)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"password\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 14,
+    "fields": {
+      "action_time": "2026-11-16T06:42:39.686Z",
+      "user": [
+        "cheremo"
+      ],
+      "content_type": [
+        "users",
+        "customuser"
+      ],
+      "object_id": "5",
+      "object_repr": "cheremo (Landlord)",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"Superuser status\"]}}]"
+    }
   }
-},
-{
-  "model": "users.customuser",
-  "fields": {
-    "password": "pbkdf2_sha256$1200000$FQRvgNedNBiv9MGUsTSRrs$NvPRVcJKebNjDO9XTTfbMvfkNom3ZWdbJgIZC+mEOmU=",
-    "last_login": "2026-08-15T07:46:01Z",
-    "is_superuser": false,
-    "username": "ken",
-    "first_name": "ken",
-    "last_name": "home",
-    "email": "homes@gmail.com",
-    "is_staff": false,
-    "is_active": true,
-    "date_joined": "2026-08-15T07:45:59Z",
-    "role": "landlord",
-    "phone": "0719678760",
-    "profile_picture": "",
-    "bio": "",
-    "is_verified": true,
-    "verification_document": "",
-    "groups": [],
-    "user_permissions": []
-  }
-},
-{
-  "model": "users.customuser",
-  "fields": {
-    "password": "pbkdf2_sha256$1200000$hQWtX4WYVY1Qu2r20hsw4v$UcJ+RBypa/9PRaf++tkr0a1zIg07YHk/Jt7AR6lq0c4=",
-    "last_login": "2026-08-16T07:47:55.850Z",
-    "is_superuser": false,
-    "username": "lord",
-    "first_name": "land",
-    "last_name": "lord",
-    "email": "kenya@gmai.com",
-    "is_staff": false,
-    "is_active": true,
-    "date_joined": "2026-08-16T07:47:53.598Z",
-    "role": "landlord",
-    "phone": "0719678760",
-    "profile_picture": "",
-    "bio": null,
-    "is_verified": true,
-    "verification_document": "verification_docs/cheremo.png",
-    "groups": [],
-    "user_permissions": []
-  }
-},
-{
-  "model": "users.customuser",
-  "fields": {
-    "password": "pbkdf2_sha256$1200000$JmF3y29lAEe4eznfWJwPwT$XWV7yUQbnINPu+owhBIiK0MdpokJc7efMhhOUwQjBbY=",
-    "last_login": "2026-08-16T12:21:43.237Z",
-    "is_superuser": false,
-    "username": "us",
-    "first_name": "fg",
-    "last_name": "df",
-    "email": "chrem@gmail.com",
-    "is_staff": false,
-    "is_active": true,
-    "date_joined": "2026-08-16T12:21:39.221Z",
-    "role": "landlord",
-    "phone": "0719678760",
-    "profile_picture": "",
-    "bio": null,
-    "is_verified": true,
-    "verification_document": "verification_docs/1a7eaeb3-6ef6-4f6f-a039-38d951eb5175.png",
-    "groups": [],
-    "user_permissions": []
-  }
-},
-{
-  "model": "properties.amenity",
-  "pk": 1,
-  "fields": {
-    "name": "Parking",
-    "icon": "fa-solid fa-square-parking"
-  }
-},
-{
-  "model": "properties.amenity",
-  "pk": 2,
-  "fields": {
-    "name": "Water Availability",
-    "icon": "fa-solid fa-faucet-drip"
-  }
-},
-{
-  "model": "properties.amenity",
-  "pk": 3,
-  "fields": {
-    "name": "Electricity",
-    "icon": "fa-solid fa-bolt"
-  }
-},
-{
-  "model": "properties.amenity",
-  "pk": 4,
-  "fields": {
-    "name": "WiFi",
-    "icon": "fa-solid fa-wifi"
-  }
-},
-{
-  "model": "properties.amenity",
-  "pk": 5,
-  "fields": {
-    "name": "Swimming Pool",
-    "icon": "fa-solid fa-person-swimming"
-  }
-},
-{
-  "model": "properties.amenity",
-  "pk": 6,
-  "fields": {
-    "name": "Gym",
-    "icon": "fa-solid fa-dumbbell"
-  }
-},
-{
-  "model": "properties.amenity",
-  "pk": 7,
-  "fields": {
-    "name": "CCTV",
-    "icon": "fa-solid fa-video"
-  }
-},
-{
-  "model": "properties.amenity",
-  "pk": 8,
-  "fields": {
-    "name": "Security Guard",
-    "icon": "fa-solid fa-user-shield"
-  }
-},
-{
-  "model": "properties.amenity",
-  "pk": 9,
-  "fields": {
-    "name": "Lift",
-    "icon": "fa-solid fa-elevator"
-  }
-},
-{
-  "model": "properties.amenity",
-  "pk": 10,
-  "fields": {
-    "name": "Balcony",
-    "icon": "fa-solid fa-door-open"
-  }
-},
-{
-  "model": "properties.amenity",
-  "pk": 11,
-  "fields": {
-    "name": "Garden",
-    "icon": "fa-solid fa-tree"
-  }
-},
-{
-  "model": "properties.amenity",
-  "pk": 12,
-  "fields": {
-    "name": "Borehole",
-    "icon": "fa-solid fa-bore-hole"
-  }
-},
-{
-  "model": "properties.amenity",
-  "pk": 13,
-  "fields": {
-    "name": "Backup Generator",
-    "icon": "fa-solid fa-charging-station"
-  }
-},
-{
-  "model": "properties.amenity",
-  "pk": 14,
-  "fields": {
-    "name": "Wardrobes",
-    "icon": "fa-solid fa-boxes-packing"
-  }
-},
-{
-  "model": "properties.amenity",
-  "pk": 15,
-  "fields": {
-    "name": "Kitchen Cabinets",
-    "icon": "fa-solid fa-kitchen-set"
-  }
-},
-{
-  "model": "properties.amenity",
-  "pk": 16,
-  "fields": {
-    "name": "Hot Shower",
-    "icon": "fa-solid fa-shower"
-  }
-},
-{
-  "model": "properties.amenity",
-  "pk": 17,
-  "fields": {
-    "name": "Pet Friendly",
-    "icon": "fa-solid fa-paw"
-  }
-},
-{
-  "model": "properties.amenity",
-  "pk": 18,
-  "fields": {
-    "name": "Garbage Collection",
-    "icon": "fa-solid fa-trash-can"
-  }
-},
-{
-  "model": "properties.property",
-  "pk": 1,
-  "fields": {
-    "title": "Sleek 2 Bedroom Executive Apartment",
-    "description": "A premium executive 2-bedroom rental apartment located in the secure heart of Westlands. Features high ceilings, dynamic open plan kitchen, and uninterrupted borehole water supply.",
-    "category": "two_bedroom",
-    "property_type": "Rental",
-    "monthly_rent": "45000.00",
-    "deposit": "45000.00",
-    "service_charge": "2500.00",
-    "bedrooms": 2,
-    "bathrooms": 2,
-    "square_footage": 950,
-    "floor_number": 3,
-    "county": "Nairobi",
-    "town": "Westlands",
-    "estate": "Raphta Road",
-    "address": "Westlands Heights, Block B, Flat 3B",
-    "latitude": "-1.261200",
-    "longitude": "36.802100",
-    "created_by": [
-      "japhet_landlord"
-    ],
-    "status": "available",
-    "video_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    "house_rules": "No loud music after 10 PM.\nPets allowed upon notification.",
-    "nearby_schools": "Westlands Primary, St. Marys School",
-    "nearby_hospitals": "Aga Khan Hospital, MP Shah Hospital",
-    "nearby_shopping": "Sarit Centre, Westgate Mall",
-    "nearby_bus_stops": "Sarit Centre Stage",
-    "date_posted": "2026-06-26T17:48:23.255Z",
-    "amenities": [
-      7,
-      3,
-      18,
-      16,
-      15,
-      1,
-      8,
-      2,
-      4
-    ]
-  }
-},
-{
-  "model": "properties.property",
-  "pk": 2,
-  "fields": {
-    "title": "Luxurious Coastal Villa with Ocean View",
-    "description": "Stunning modern 4-bedroom villa in Nyali Mombasa. Complete with a private swimming pool, landscaped gardens, direct beach access, and state of the art CCTV installations.",
-    "category": "villa",
-    "property_type": "Rental",
-    "monthly_rent": "120000.00",
-    "deposit": "120000.00",
-    "service_charge": "5000.00",
-    "bedrooms": 4,
-    "bathrooms": 4,
-    "square_footage": 3200,
-    "floor_number": 1,
-    "county": "Mombasa",
-    "town": "Nyali",
-    "estate": "Links Road",
-    "address": "Ocean Crest Court, Villa 4",
-    "latitude": "-4.029800",
-    "longitude": "39.712100",
-    "created_by": [
-      "japhet_landlord"
-    ],
-    "status": "available",
-    "video_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    "house_rules": "Quiet hours: 11 PM - 7 AM.\nPets allowed.",
-    "nearby_schools": "Mombasa Academy, Light Academy",
-    "nearby_hospitals": "The Mombasa Hospital Nyali Branch",
-    "nearby_shopping": "City Mall Nyali, Naivas Centre",
-    "nearby_bus_stops": "Nyali Bridge Stage",
-    "date_posted": "2026-06-26T17:48:29.057Z",
-    "amenities": [
-      13,
-      7,
-      3,
-      11,
-      6,
-      1,
-      17,
-      8,
-      5,
-      2
-    ]
-  }
-},
-{
-  "model": "properties.property",
-  "pk": 3,
-  "fields": {
-    "title": "Cozy Glassmorphic Studio Apartment",
-    "description": "A fully furnished minimalist studio apartment in Kilimani. Perfect for young professionals. High-speed fibre internet included, featuring modern glass dividers.",
-    "category": "studio",
-    "property_type": "Rental",
-    "monthly_rent": "22000.00",
-    "deposit": "22000.00",
-    "service_charge": "1500.00",
-    "bedrooms": 0,
-    "bathrooms": 1,
-    "square_footage": 420,
-    "floor_number": 5,
-    "county": "Nairobi",
-    "town": "Kilimani",
-    "estate": "Lenana Road",
-    "address": "Lenana View Apartments, Room 502",
-    "latitude": "-1.291200",
-    "longitude": "36.792500",
-    "created_by": [
-      "japhet_landlord"
-    ],
-    "status": "available",
-    "video_url": "",
-    "house_rules": "No subletting.\nQuiet tenancy preferred.",
-    "nearby_schools": "Cavina School, French School",
-    "nearby_hospitals": "Coptic Hospital, Nairobi Hospital",
-    "nearby_shopping": "Yaya Centre, Prestige Plaza",
-    "nearby_bus_stops": "Yaya Stage",
-    "date_posted": "2026-06-26T17:48:35.393Z",
-    "amenities": [
-      10,
-      7,
-      3,
-      18,
-      16,
-      15,
-      9,
-      2,
-      4
-    ]
-  }
-},
-{
-  "model": "properties.property",
-  "pk": 4,
-  "fields": {
-    "title": "Elegant 3 Bedroom Family Home",
-    "description": "Family-oriented 3-bedroom house in the peaceful leafy suburb of Milimani, Kisumu. Features a spacious private garden, secure fencing, and a separate laundry area.",
-    "category": "three_bedroom",
-    "property_type": "Rental",
-    "monthly_rent": "35000.00",
-    "deposit": "35000.00",
-    "service_charge": "0.00",
-    "bedrooms": 3,
-    "bathrooms": 2,
-    "square_footage": 1500,
-    "floor_number": 1,
-    "county": "Kisumu",
-    "town": "Kisumu",
-    "estate": "Milimani",
-    "address": "Lake Breeze Court, House 12",
-    "latitude": "-0.108200",
-    "longitude": "34.756200",
-    "created_by": [
-      "japhet_landlord"
-    ],
-    "status": "available",
-    "video_url": "",
-    "house_rules": "Take care of the garden lawn.\nPet friendly.",
-    "nearby_schools": "Kisumu International School",
-    "nearby_hospitals": "Aga Khan Kisumu Hospital",
-    "nearby_shopping": "West End Mall, United Mall",
-    "nearby_bus_stops": "Milimani Stage",
-    "date_posted": "2026-06-26T17:48:41.897Z",
-    "amenities": [
-      10,
-      3,
-      11,
-      16,
-      1,
-      17,
-      8,
-      2
-    ]
-  }
-},
-{
-  "model": "properties.property",
-  "pk": 5,
-  "fields": {
-    "title": "Modern 2 Bedroom House for Rent in Kisii",
-    "description": "Spacious and well-maintained 2-bedroom rental house located in a convenient and accessible area near Mwembe Junction, Kisii. The property offers comfortable bedrooms, a spacious living area, a kitchen, bathroom facilities, reliable water access and a secure residential environment. It is suitable for a small family, couple or working professionals. The property is close to shops, transport services, schools and other essential amenities.",
-    "category": "two_bedroom",
-    "property_type": "Rental",
-    "monthly_rent": "14000.00",
-    "deposit": "6000.00",
-    "service_charge": "500.00",
-    "bedrooms": 2,
-    "bathrooms": 1,
-    "square_footage": 300,
-    "floor_number": 3,
-    "county": "Kisii County",
-    "town": "Kisii",
-    "estate": "Mwembe Junction",
-    "address": "Mwembe Junction, Kisii, Kisii County, Kenya",
-    "latitude": "-0.681700",
-    "longitude": "34.766700",
-    "created_by": [
-      "cheremo"
-    ],
-    "status": "available",
-    "video_url": null,
-    "house_rules": "",
-    "nearby_schools": null,
-    "nearby_hospitals": null,
-    "nearby_shopping": null,
-    "nearby_bus_stops": null,
-    "date_posted": "2026-08-15T07:35:20.927Z",
-    "amenities": []
-  }
-},
-{
-  "model": "properties.property",
-  "pk": 6,
-  "fields": {
-    "title": "spacious bedisitter",
-    "description": "coool",
-    "category": "bedsitter",
-    "property_type": "Rental",
-    "monthly_rent": "4500.00",
-    "deposit": "4500.00",
-    "service_charge": "500.00",
-    "bedrooms": 0,
-    "bathrooms": 1,
-    "square_footage": 4500,
-    "floor_number": 1,
-    "county": "Kisii County",
-    "town": "Kisii",
-    "estate": "Mwembe Junction",
-    "address": "room 12",
-    "latitude": "-1.292100",
-    "longitude": "36.821900",
-    "created_by": [
-      "cheremo"
-    ],
-    "status": "available",
-    "video_url": null,
-    "house_rules": "no noise",
-    "nearby_schools": "kisii university",
-    "nearby_hospitals": "kisii hospital",
-    "nearby_shopping": "kensom super market",
-    "nearby_bus_stops": "kisii bus stage",
-    "date_posted": "2026-08-15T07:53:41.882Z",
-    "amenities": [
-      10,
-      12,
-      3,
-      2,
-      4
-    ]
-  }
-},
-{
-  "model": "properties.property",
-  "pk": 9,
-  "fields": {
-    "title": "Modern 2 Bedroom Apartment in Kilimani, Nairobi",
-    "description": "This modern two-bedroom apartment is located in the desirable Kilimani neighbourhood of Nairobi. The property features a spacious living room, a well-designed kitchen, two comfortable bedrooms, built-in wardrobes, and modern bathroom facilities. It offers convenient access to shopping centres, schools, hospitals, public transport and major roads. Ideal for families, working professionals and anyone looking for comfortable urban living. The apartment is in a secure residential environment with reliable access to essential amenities",
-    "category": "apartment",
-    "property_type": "Rental",
-    "monthly_rent": "25000.00",
-    "deposit": "10000.00",
-    "service_charge": "500.00",
-    "bedrooms": 2,
-    "bathrooms": 1,
-    "square_footage": 850,
-    "floor_number": 1,
-    "county": "Nairobi",
-    "town": "Nairobi",
-    "estate": "kilimani",
-    "address": "Wood Avenue, Kilimani Heights Apartments, Block A, House 12",
-    "latitude": "-1.292100",
-    "longitude": "36.821900",
-    "created_by": [
-      "cheremo"
-    ],
-    "status": "available",
-    "video_url": "https://youtu.be/6T_TGGcI3XI?si=L08qiqK9vv27IyZ8",
-    "house_rules": "1. No loud music or unnecessary noise, especially at night.\r\n2. No pets without prior approval from management.\r\n3. Tenants must keep the apartment and shared spaces clean.\r\n4. No illegal activities are permitted on the premises.\r\n5. Visitors must observe the building's security procedures.\r\n6. Rent must be paid on or before the agreed due date.\r\n7. Any damage to the property must be reported immediately.\r\n8. Respect neighbours and observe building management regulations.",
-    "nearby_schools": "Kilimani Primary School, Cavina School, Kiota School, St. George's Girls' Secondary School",
-    "nearby_hospitals": "The Nairobi Hospital, Nairobi Women's Hospital – Adams, Menelik Medical Centre, Coptic Hospital",
-    "nearby_shopping": "Yaya Centre, Prestige Plaza, Adams Arcade, Greenhouse Mall, Adlife Plaza",
-    "nearby_bus_stops": "Adams Arcade Stage, Kirichwa Stage, Kilimani Primary School Stage, Ngong Road Bus Stops",
-    "date_posted": "2026-11-16T06:56:09.913Z",
-    "amenities": [
-      13,
-      10,
-      12,
-      7,
-      3,
-      18,
-      11,
-      6,
-      16,
-      15,
-      9,
-      1,
-      17,
-      8,
-      5,
-      14,
-      2,
-      4
-    ]
-  }
-},
-{
-  "model": "properties.propertyimage",
-  "pk": 1,
-  "fields": {
-    "property": 5,
-    "image": "property_images/00e5470f-49d8-4f20-b804-3aae2246256f.png",
-    "is_featured": true
-  }
-},
-{
-  "model": "properties.propertyimage",
-  "pk": 2,
-  "fields": {
-    "property": 5,
-    "image": "property_images/00e5470f-49d8-4f20-b804-3aae2246256f_MpuMYWG.png",
-    "is_featured": true
-  }
-},
-{
-  "model": "properties.propertyimage",
-  "pk": 3,
-  "fields": {
-    "property": 6,
-    "image": "property_images/8b1ca065-67e1-424c-954f-87e684ef72f6.png",
-    "is_featured": true
-  }
-},
-{
-  "model": "properties.propertyimage",
-  "pk": 6,
-  "fields": {
-    "property": 9,
-    "image": "property_images/WhatsApp_Image_2026-11-15_at_15_XBuBQB6.49.02.jpeg",
-    "is_featured": true
-  }
-},
-{
-  "model": "properties.booking",
-  "pk": 1,
-  "fields": {
-    "tenant": [
-      "tenant_john"
-    ],
-    "property": 4,
-    "date": "2026-07-02",
-    "time": "14:00:00",
-    "message": "Hi Japhet, I would like to schedule a physical viewing inspect this room on Thursday afternoon.",
-    "status": "pending",
-    "created_at": "2026-06-26T17:48:51.004Z"
-  }
-},
-{
-  "model": "properties.application",
-  "pk": 1,
-  "fields": {
-    "tenant": [
-      "tenant_john"
-    ],
-    "property": 4,
-    "message": "I work in Westlands and am ready to pay deposit and move in by July 15th.",
-    "status": "pending",
-    "created_at": "2026-06-26T17:48:51.058Z"
-  }
-},
-{
-  "model": "properties.review",
-  "pk": 1,
-  "fields": {
-    "tenant": [
-      "tenant_john"
-    ],
-    "property": 4,
-    "rating": 5,
-    "text": "Absolutely gorgeous apartment! The water is constant, the security guard is extremely polite, and the location close to Sarit Centre is highly convenient.",
-    "date": "2026-06-26T17:48:50.882Z"
-  }
-},
-{
-  "model": "properties.review",
-  "pk": 2,
-  "fields": {
-    "tenant": [
-      "tenant_john"
-    ],
-    "property": 4,
-    "rating": 4,
-    "text": "Great house and very clean rooms. The landlord, Japhet, is highly responsive to maintenance calls.",
-    "date": "2026-06-26T17:48:50.941Z"
-  }
-},
-{
-  "model": "properties.review",
-  "pk": 3,
-  "fields": {
-    "tenant": [
-      "japhet"
-    ],
-    "property": 5,
-    "rating": 4,
-    "text": "too prettty",
-    "date": "2026-08-15T07:41:08.571Z"
-  }
-},
-{
-  "model": "properties.favorite",
-  "pk": 1,
-  "fields": {
-    "user": [
-      "cheremo"
-    ],
-    "property": 6,
-    "created_at": "2026-08-15T07:55:05.765Z"
-  }
-},
-{
-  "model": "properties.payment",
-  "pk": 1,
-  "fields": {
-    "user": [
-      "japhet"
-    ],
-    "property": 9,
-    "amount": "500.00",
-    "phone_number": "254719678760",
-    "mpesa_code": "Q3DJX7PTS",
-    "till_number": "5927622",
-    "payment_type": "viewing_fee",
-    "status": "pending",
-    "created_at": "2026-11-17T10:39:09.952Z"
-  }
-},
-{
-  "model": "chat.message",
-  "pk": 1,
-  "fields": {
-    "sender": [
-      "tenant_john"
-    ],
-    "recipient": [
-      "japhet_landlord"
-    ],
-    "content": "hi",
-    "timestamp": "2026-08-14T14:13:59.020Z",
-    "is_read": false
-  }
-},
-{
-  "model": "chat.message",
-  "pk": 2,
-  "fields": {
-    "sender": [
-      "japhet"
-    ],
-    "recipient": [
-      "cheremo"
-    ],
-    "content": "hello is this available",
-    "timestamp": "2026-08-16T08:36:19.575Z",
-    "is_read": true
-  }
-},
-{
-  "model": "chat.message",
-  "pk": 3,
-  "fields": {
-    "sender": [
-      "cheremo"
-    ],
-    "recipient": [
-      "japhet"
-    ],
-    "content": "yes we offer it",
-    "timestamp": "2026-08-16T08:38:21.808Z",
-    "is_read": true
-  }
-},
-{
-  "model": "core.blogpost",
-  "pk": 1,
-  "fields": {
-    "title": "5 Critical Things to Inspect Before Renting a House in Nairobi",
-    "slug": "5-critical-things-to-inspect-before-renting-a-house-in-nairobi",
-    "content": "Moving to a new rental apartment in Nairobi can be exciting but full of hidden traps. Always check these five elements:\n\n1. Water consistency: Ask neighbors if borehole water runs daily or if water rationing is active.\n2. Token meter readings: Verify the electric token meter is not carrying debt from past tenants.\n3. Security guards: Walk by at night to check security staffing levels.\n4. Mobile network signal: Thick concrete walls in some estates block signals.\n5. Distance to transport links: Avoid long rough roads if you rely on public transport.",
-    "category": "rental_tips",
-    "author": [
-      "admin"
-    ],
-    "image": "",
-    "created_at": "2026-06-26T17:48:50.670Z",
-    "updated_at": "2026-06-26T17:48:50.670Z"
-  }
-},
-{
-  "model": "core.blogpost",
-  "pk": 2,
-  "fields": {
-    "title": "Smart Space-Saving Hacks for Studio Apartments & Bedsitters",
-    "slug": "smart-space-saving-hacks-for-studio-apartments-bedsitters",
-    "content": "Studio apartments (commonly bedsitters) are pocket-friendly but require smart organizing. Use folding multi-purpose desks, floating shelves to keep floor spaces clear, and vertical storage boxes. Introduce partition divider screens or decorative bookshelves to separate your bed zone from the living and kitchen spaces, giving the room a multi-room aesthetic layout.",
-    "category": "interior_design",
-    "author": [
-      "admin"
-    ],
-    "image": "",
-    "created_at": "2026-06-26T17:48:50.751Z",
-    "updated_at": "2026-06-26T17:48:50.752Z"
-  }
-},
-{
-  "model": "core.blogpost",
-  "pk": 3,
-  "fields": {
-    "title": "Understanding Service Charges & Security Deposit Refund Policies",
-    "slug": "understanding-service-charges-security-deposit-refund-policies",
-    "content": "Service charges cover communal tasks like garbage collection, security guard wages, elevator maintenance, and cleaning. Always ask what your monthly charge covers. Additionally, document the initial state of the walls, plumbing, and fixtures with photos upon move-in to protect your deposit refund when moving out.",
-    "category": "moving_guides",
-    "author": [
-      "admin"
-    ],
-    "image": "",
-    "created_at": "2026-06-26T17:48:50.805Z",
-    "updated_at": "2026-06-26T17:48:50.806Z"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 1,
-  "fields": {
-    "action_time": "2026-08-15T07:24:20.570Z",
-    "user": [
-      "japhet"
-    ],
-    "content_type": [
-      "users",
-      "customuser"
-    ],
-    "object_id": "5",
-    "object_repr": "cheremo (Landlord)",
-    "action_flag": 1,
-    "change_message": "[{\"added\": {}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 2,
-  "fields": {
-    "action_time": "2026-08-15T07:26:06.086Z",
-    "user": [
-      "japhet"
-    ],
-    "content_type": [
-      "users",
-      "customuser"
-    ],
-    "object_id": "5",
-    "object_repr": "cheremo (Landlord)",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Staff status\", \"Superuser status\", \"User permissions\", \"Last login\", \"Profile picture\", \"Is verified\", \"Verification document\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 3,
-  "fields": {
-    "action_time": "2026-08-15T07:35:20.951Z",
-    "user": [
-      "japhet"
-    ],
-    "content_type": [
-      "properties",
-      "property"
-    ],
-    "object_id": "5",
-    "object_repr": "Modern 2 Bedroom House for Rent in Kisii - Kisii (Pending Approval)",
-    "action_flag": 1,
-    "change_message": "[{\"added\": {}}, {\"added\": {\"name\": \"property image\", \"object\": \"Image for Modern 2 Bedroom House for Rent in Kisii\"}}, {\"added\": {\"name\": \"property image\", \"object\": \"Image for Modern 2 Bedroom House for Rent in Kisii\"}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 4,
-  "fields": {
-    "action_time": "2026-08-15T07:38:58.124Z",
-    "user": [
-      "japhet"
-    ],
-    "content_type": [
-      "properties",
-      "property"
-    ],
-    "object_id": "5",
-    "object_repr": "Modern 2 Bedroom House for Rent in Kisii - Kisii (Available)",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 5,
-  "fields": {
-    "action_time": "2026-08-15T07:48:49.301Z",
-    "user": [
-      "japhet"
-    ],
-    "content_type": [
-      "users",
-      "customuser"
-    ],
-    "object_id": "6",
-    "object_repr": "ken (Landlord)",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Is verified\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 6,
-  "fields": {
-    "action_time": "2026-08-15T07:54:36.817Z",
-    "user": [
-      "cheremo"
-    ],
-    "content_type": [
-      "properties",
-      "property"
-    ],
-    "object_id": "6",
-    "object_repr": "spacious bedisitter - Kisii (Available)",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 7,
-  "fields": {
-    "action_time": "2026-08-15T07:57:45.640Z",
-    "user": [
-      "cheremo"
-    ],
-    "content_type": [
-      "properties",
-      "property"
-    ],
-    "object_id": "6",
-    "object_repr": "spacious bedisitter - Kisii (Available)",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"name\": \"property image\", \"object\": \"Image for spacious bedisitter\", \"fields\": [\"Image\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 8,
-  "fields": {
-    "action_time": "2026-08-16T11:02:17.001Z",
-    "user": [
-      "cheremo"
-    ],
-    "content_type": [
-      "properties",
-      "property"
-    ],
-    "object_id": "7",
-    "object_repr": "spacious bedisitter - Kisii (Pending Approval)",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 9,
-  "fields": {
-    "action_time": "2026-11-15T15:58:34.657Z",
-    "user": [
-      "japhet"
-    ],
-    "content_type": [
-      "properties",
-      "property"
-    ],
-    "object_id": "8",
-    "object_repr": "kekekek - Kisii (Available)",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 10,
-  "fields": {
-    "action_time": "2026-11-15T15:58:34.661Z",
-    "user": [
-      "japhet"
-    ],
-    "content_type": [
-      "properties",
-      "property"
-    ],
-    "object_id": "7",
-    "object_repr": "spacious bedisitter - Kisii (Available)",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Status\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 11,
-  "fields": {
-    "action_time": "2026-11-16T05:22:39.126Z",
-    "user": [
-      "japhet"
-    ],
-    "content_type": [
-      "properties",
-      "property"
-    ],
-    "object_id": "8",
-    "object_repr": "kekekek - Kisii (Available)",
-    "action_flag": 3,
-    "change_message": ""
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 12,
-  "fields": {
-    "action_time": "2026-11-16T05:22:39.126Z",
-    "user": [
-      "japhet"
-    ],
-    "content_type": [
-      "properties",
-      "property"
-    ],
-    "object_id": "7",
-    "object_repr": "spacious bedisitter - Kisii (Available)",
-    "action_flag": 3,
-    "change_message": ""
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 13,
-  "fields": {
-    "action_time": "2026-11-16T06:36:22.763Z",
-    "user": [
-      "japhet"
-    ],
-    "content_type": [
-      "users",
-      "customuser"
-    ],
-    "object_id": "5",
-    "object_repr": "cheremo (Landlord)",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"password\"]}}]"
-  }
-},
-{
-  "model": "admin.logentry",
-  "pk": 14,
-  "fields": {
-    "action_time": "2026-11-16T06:42:39.686Z",
-    "user": [
-      "cheremo"
-    ],
-    "content_type": [
-      "users",
-      "customuser"
-    ],
-    "object_id": "5",
-    "object_repr": "cheremo (Landlord)",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Superuser status\"]}}]"
-  }
-}
 ]
