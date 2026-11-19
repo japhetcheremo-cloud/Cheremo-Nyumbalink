@@ -22,6 +22,29 @@ def migrate_view(request):
             # If admin.0001_initial was applied without users.0001_initial, clean django_migrations
             # or fake/run correctly
             action = request.GET.get('action', 'inspect')
+            if action == 'load_seed':
+                from django.contrib.auth import get_user_model
+                User = get_user_model()
+                try:
+                    call_command('loaddata', 'seed_data.json', stdout=out, stderr=err)
+                except Exception as load_err:
+                    err.write(f"Loaddata error: {load_err}\n")
+
+                cheremo_user = User.objects.filter(username='cheremo').first()
+                if cheremo_user:
+                    cheremo_user.set_password('Japhet@2006')
+                    cheremo_user.is_superuser = True
+                    cheremo_user.is_staff = True
+                    cheremo_user.role = 'landlord'
+                    cheremo_user.save()
+
+                return JsonResponse({
+                    'status': 'success',
+                    'action': 'loaded seed data',
+                    'stdout': out.getvalue(),
+                    'stderr': err.getvalue(),
+                })
+
             if action == 'clean_migrations':
                 cursor.execute("DROP SCHEMA public CASCADE; CREATE SCHEMA public;")
                 cursor.execute("GRANT ALL ON SCHEMA public TO public;")
