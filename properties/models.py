@@ -192,6 +192,32 @@ class Property(models.Model):
     def property_id(self):
         return f"NL-{self.id:05d}" if self.id else "NL-PENDING"
 
+    @property
+    def default_image_url(self):
+        category_fallbacks = {
+            "bedsitter": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&q=80&w=800",
+            "single_room": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&q=80&w=800",
+            "studio": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&q=80&w=800",
+            "one_bedroom": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&q=80&w=800",
+            "two_bedroom": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=800",
+            "three_bedroom": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800",
+            "apartment": "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&q=80&w=800",
+            "villa": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800",
+            "maisonette": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=800",
+            "bungalow": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&q=80&w=800",
+        }
+        return category_fallbacks.get(self.category, "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=800")
+
+    @property
+    def display_image_url(self):
+        feat = self.images.filter(is_featured=True).first() or self.images.first()
+        if feat and feat.image:
+            try:
+                return feat.image.url
+            except Exception:
+                pass
+        return self.default_image_url
+
 
 # ==========================================================
 # PROPERTY IMAGES

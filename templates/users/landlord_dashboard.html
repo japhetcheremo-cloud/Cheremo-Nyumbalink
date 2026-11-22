@@ -101,15 +101,7 @@
                                     <td class="py-4">
                                         <div class="flex items-center gap-2">
                                             <div class="h-10 w-10 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
-                                                {% if property.images.all %}
-                                                    {% for img in property.images.all %}
-                                                        {% if img.is_featured %}
-                                                        <img src="{{ img.image.url }}" alt="" class="h-full w-full object-cover">
-                                                        {% endif %}
-                                                    {% endfor %}
-                                                {% else %}
-                                                    <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=150" alt="" class="h-full w-full object-cover">
-                                                {% endif %}
+                                                <img src="{{ property.display_image_url }}" alt="" class="h-full w-full object-cover" onerror="this.onerror=null; this.src='{{ property.default_image_url }}';">
                                             </div>
                                             <div class="flex flex-col min-w-0">
                                                 <span class="font-bold text-brandDark truncate max-w-[150px]">{{ property.title }}</span>

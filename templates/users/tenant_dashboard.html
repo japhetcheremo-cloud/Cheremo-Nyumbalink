@@ -136,15 +136,7 @@
                         {% for fav in favorites %}
                         <div class="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-xl transition">
                             <div class="h-12 w-12 rounded-lg bg-gray-100 overflow-hidden flex-shrink-0">
-                                {% if fav.property.images.all %}
-                                    {% for img in fav.property.images.all %}
-                                        {% if img.is_featured %}
-                                        <img src="{{ img.image.url }}" alt="" class="h-full w-full object-cover">
-                                        {% endif %}
-                                    {% endfor %}
-                                {% else %}
-                                    <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=150" alt="" class="h-full w-full object-cover">
-                                {% endif %}
+                                <img src="{{ fav.property.display_image_url }}" alt="" class="h-full w-full object-cover" onerror="this.onerror=null; this.src='{{ fav.property.default_image_url }}';">
                             </div>
                             <div class="flex-grow min-w-0">
                                 <h4 class="font-bold text-xs text-brandDark truncate"><a href="{% url 'property_detail' fav.property.id %}" class="hover:text-brandBlue">{{ fav.property.title }}</a></h4>

@@ -42,15 +42,11 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
             <!-- Large Display -->
             <div class="lg:col-span-2 rounded-2xl overflow-hidden shadow-md h-[400px] md:h-[480px] bg-gray-200">
-                {% if property.images.all %}
-                    {% for img in property.images.all %}
-                        {% if img.is_featured %}
-                        <img id="primary-gallery-display" src="{{ img.image.url }}" alt="{{ property.title }}" class="h-full w-full object-cover">
-                        {% endif %}
-                    {% endfor %}
-                {% else %}
-                    <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&q=80&w=1200" alt="{{ property.title }}" class="h-full w-full object-cover">
-                {% endif %}
+                <img id="primary-gallery-display" 
+                     src="{{ property.display_image_url }}" 
+                     alt="{{ property.title }}" 
+                     class="h-full w-full object-cover"
+                     onerror="this.onerror=null; this.src='{{ property.default_image_url }}';">
             </div>
             
             <!-- Thumbnails sidebar list -->
@@ -59,7 +55,7 @@
                     {% for img in property.images.all %}
                     <button onclick="document.getElementById('primary-gallery-display').src='{{ img.image.url }}'" 
                             class="h-20 w-28 lg:w-full lg:h-32 rounded-xl overflow-hidden border-2 border-transparent hover:border-brandGold focus:outline-none flex-shrink-0 transition">
-                        <img src="{{ img.image.url }}" class="h-full w-full object-cover" alt="">
+                        <img src="{{ img.image.url }}" class="h-full w-full object-cover" alt="" onerror="this.onerror=null; this.src='{{ property.default_image_url }}';">
                     </button>
                     {% endfor %}
                 {% else %}

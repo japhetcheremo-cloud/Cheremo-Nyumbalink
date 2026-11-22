@@ -23,7 +23,7 @@
         <!-- Feature Image -->
         {% if blog.image %}
         <div class="rounded-2xl overflow-hidden shadow-lg mb-8 h-96 bg-gray-100">
-            <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="h-full w-full object-cover">
+            <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="h-full w-full object-cover" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80&w=1200';">
         </div>
         {% endif %}
 
